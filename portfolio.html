@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포트폴리오 - SKY Commerce</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 포트폴리오 페이지 추가 스타일 */
+        .page-header {
+            background: linear-gradient(rgba(78, 115, 223, 0.1), rgba(78, 115, 223, 0.2)), url('img/portfolio-header.jpg') no-repeat center center/cover;
+            height: 40vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #333;
+            margin-top: 80px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .portfolio-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .portfolio-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 30px;
+            background-color: #f0f0f0;
+            color: #555;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .filter-btn.active {
+            background-color: #4e73df;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #4e73df;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            background-color: #fff;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .portfolio-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(78, 115, 223, 0.9), rgba(78, 115, 223, 0.8));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .portfolio-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .portfolio-category {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .portfolio-link {
+            display: inline-block;
+            background-color: #fff;
+            color: #4e73df;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #4e73df;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .portfolio-link:hover {
+            background-color: #4e73df;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .portfolio-details {
+            background-color: #fff;
+            padding: 20px;
+            color: #555;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .portfolio-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .portfolio-details p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .portfolio-tags {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .portfolio-tag {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            color: #555;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .portfolio-tag:hover {
+            background-color: #4e73df;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 포트폴리오 상세 모달 */
+        .portfolio-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 50px 0;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+            background-color: #007bff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background-color: #0056b3;
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .modal-info {
+            padding: 30px;
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .modal-category {
+            color: #007bff;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .modal-description {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .modal-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .detail-item i {
+            color: #007bff;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        
+        .detail-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .modal-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .gallery-item {
+            height: 150px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .modal-cta {
+            text-align: center;
+        }
+        
+        /* 반응형 스타일 */
+        @media (max-width: 992px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .modal-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .modal-content {
+                margin: 0 20px;
+            }
+            
+            .modal-image {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-image {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>SKY Commerce</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="about.html">회사소개</a></li>
+                    <li><a href="services.html">서비스</a></li>
+                    <li><a href="portfolio.html">포트폴리오</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>포트폴리오</h1>
+        </div>
+    </section>
+
+    <section class="portfolio-section">
+        <div class="container">
+            <h2 class="section-title">우리의 프로젝트</h2>
+            
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">전체</button>
+                <button class="filter-btn" data-filter="sourcing">글로벌 소싱</button>
+                <button class="filter-btn" data-filter="distribution">제품 유통</button>
+                <button class="filter-btn" data-filter="marketing">브랜드 마케팅</button>
+                <button class="filter-btn" data-filter="support">고객 지원</button>
+            </div>
+            
+            <div class="portfolio-grid">
+                <!-- 포트폴리오 아이템 1 -->
+                <div class="portfolio-item" data-category="sourcing">
+                    <img src="img/portfolio1.jpg" alt="프로젝트 1" class="portfolio-image">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">A전자 글로벌 소싱 프로젝트</h3>
+                        <p class="portfolio-category">글로벌 소싱</p>
+                        <a href="#" class="portfolio-link" data-modal="modal1">자세히 보기</a>
+                    </div>
+                    <div class="portfolio-details">
+                        <h3>A전자 글로벌 소싱 프로젝트</h3>
+                        <p>아시아 지역 전자부품 공급망 구축 및 품질 관리 시스템 도입</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">품질 관리</span>
+                            <span class="portfolio-tag">공급망 구축</span>
+                            <span class="portfolio-tag">원가 절감</span>
+                            <span class="portfolio-tag">수입 통관</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 포트폴리오 아이템 2 -->
+                <div class="portfolio-item" data-category="distribution">
+                    <img src="img/portfolio2.jpg" alt="프로젝트 2" class="portfolio-image">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">B마트 유통망 확장 프로젝트</h3>
+                        <p class="portfolio-category">제품 유통</p>
+                        <a href="#" class="portfolio-link" data-modal="modal2">자세히 보기</a>
+                    </div>
+                    <div class="portfolio-details">
+                        <h3>B마트 유통망 확장 프로젝트</h3>
+                        <p>전국 대형마트 및 온라인 채널 유통 네트워크 구축</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">물류 관리</span>
+                            <span class="portfolio-tag">재고 시스템</span>
+                            <span class="portfolio-tag">유통 채널</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 포트폴리오 아이템 3 -->
+                <div class="portfolio-item" data-category="marketing">
+                    <img src="img/portfolio3.jpg" alt="프로젝트 3" class="portfolio-image">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">C화장품 브랜드 마케팅 캠페인</h3>
+                        <p class="portfolio-category">브랜드 마케팅</p>
+                        <a href="#" class="portfolio-link" data-modal="modal3">자세히 보기</a>
+                    </div>
+                    <div class="portfolio-details">
+                        <h3>C화장품 브랜드 마케팅 캠페인</h3>
+                        <p>신제품 출시에 따른 통합 마케팅 전략 수립 및 실행</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">SNS 마케팅</span>
+                            <span class="portfolio-tag">인플루언서</span>
+                            <span class="portfolio-tag">브랜딩</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 포트폴리오 아이템 4 -->
+                <div class="portfolio-item" data-category="support">
+                    <img src="img/portfolio4.jpg" alt="프로젝트 4" class="portfolio-image">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">D가전 고객 지원 시스템 구축</h3>
+                        <p class="portfolio-category">고객 지원</p>
+                        <a href="#" class="portfolio-link" data-modal="modal4">자세히 보기</a>
+                    </div>
+                    <div class="portfolio-details">
+                        <h3>D가전 고객 지원 시스템 구축</h3>
+                        <p>통합 고객 지원 플랫폼 개발 및 A/S 네트워크 확장</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">고객 서비스</span>
+                            <span class="portfolio-tag">A/S 시스템</span>
+                            <span class="portfolio-tag">기술 지원</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 포트폴리오 아이템 5 -->
+                <div class="portfolio-item" data-category="sourcing">
+                    <img src="img/portfolio5.jpg" alt="프로젝트 5" class="portfolio-image">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">E스포츠 글로벌 소싱 프로젝트</h3>
+                        <p class="portfolio-category">글로벌 소싱</p>
+                        <a href="#" class="portfolio-link" data-modal="modal5">자세히 보기</a>
+                    </div>
+                    <div class="portfolio-details">
+                        <h3>E스포츠 글로벌 소싱 프로젝트</h3>
+                        <p>유럽 지역 스포츠 용품 제조업체 발굴 및 품질 인증</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">해외 소싱</span>
+                            <span class="portfolio-tag">품질 인증</span>
+                            <span class="portfolio-tag">수입 대행</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 포트폴리오 아이템 6 -->
+                <div class="portfolio-item" data-category="distribution">
+                    <img src="img/portfolio6.jpg" alt="프로젝트 6" class="portfolio-image">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">F식품 유통 채널 최적화</h3>
+                        <p class="portfolio-category">제품 유통</p>
+                        <a href="#" class="portfolio-link" data-modal="modal6">자세히 보기</a>
+                    </div>
+                    <div class="portfolio-details">
+                        <h3>F식품 유통 채널 최적화</h3>
+                        <p>신선식품 콜드체인 구축 및 유통 경로 다각화</p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">콜드체인</span>
+                            <span class="portfolio-tag">유통 최적화</span>
+                            <span class="portfolio-tag">재고 관리</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 포트폴리오 모달 1 -->
+    <div class="portfolio-modal" id="modal1">
+        <div class="modal-content">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <img src="img/portfolio1-large.jpg" alt="프로젝트 1 상세" class="modal-image">
+            <div class="modal-info">
+                <h2 class="modal-title">A전자 글로벌 소싱 프로젝트</h2>
+                <p class="modal-category">글로벌 소싱</p>
+                
+                <div class="modal-description">
+                    <p>A전자의 아시아 지역 전자부품 공급망 구축 및 품질 관리 시스템 도입 프로젝트입니다. 중국, 베트남, 말레이시아 등 아시아 지역의 신뢰할 수 있는 부품 제조업체를 발굴하고, 엄격한 품질 검증 프로세스를 구축했습니다. 또한 현지 통관 및 물류 시스템을 최적화하여 원가 절감과 안정적인 공급망을 확보했습니다.</p>
+                    <p>이 프로젝트를 통해 A전자는 부품 조달 비용을 18% 절감하고, 불량률을 5% 이하로 낮추는 성과를 거두었습니다. 또한 납기 준수율이 95% 이상으로 향상되어 생산 효율성이 크게 개선되었습니다.</p>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <i class="fas fa-user"></i>
+                        <div class="detail-content">
+                            <h4>클라이언트</h4>
+                            <p>A전자</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div class="detail-content">
+                            <h4>프로젝트 기간</h4>
+                            <p>2022.05 - 2022.12</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-globe"></i>
+                        <div class="detail-content">
+                            <h4>소싱 지역</h4>
+                            <p>중국, 베트남, 말레이시아</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-tasks"></i>
+                        <div class="detail-content">
+                            <h4>주요 성과</h4>
+                            <p>원가 18% 절감, 불량률 5% 이하 달성</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-gallery">
+                    <div class="gallery-item">
+                        <img src="img/portfolio1-detail1.jpg" alt="상세 이미지 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/portfolio1-detail2.jpg" alt="상세 이미지 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/portfolio1-detail3.jpg" alt="상세 이미지 3">
+                    </div>
+                </div>
+                
+                <div class="modal-cta">
+                    <a href="contact.html" class="btn">유사한 프로젝트 문의하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta">
+        <div class="container">
+            <h2>나만의 프로젝트를 시작하고 싶으신가요?</h2>
+            <p>지금 바로 문의하시고 비즈니스 성장의 기회를 잡으세요.</p>
+            <a href="contact.html" class="btn">프로젝트 의뢰하기</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>SKY COMMERCE</h3>
+                    <p>혁신적인 솔루션으로 비즈니스의 성공을 돕습니다</p>
+                </div>
+                <div class="footer-links">
+                    <h4>바로가기</h4>
+                    <ul>
+                        <li><a href="index.html">홈</a></li>
+                        <li><a href="about.html">회사소개</a></li>
+                        <li><a href="services.html">서비스</a></li>
+                        <li><a href="portfolio.html">포트폴리오</a></li>
+                        <li><a href="contact.html">문의하기</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>연락처</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 경기도 화성시 동탄대로 677-12 / 621호</p>
+                    <p><i class="fas fa-phone"></i> 02-123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@company.com</p>
+                </div>
+                <div class="footer-social">
+                    <h4>소셜 미디어</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 SKY Commerce. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 포트폴리오 필터링 기능
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 활성화된 버튼 스타일 변경
+                    filterBtns.forEach(btn => btn.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // 선택된 카테고리에 따라 아이템 필터링
+                    const filterValue = btn.getAttribute('data-filter');
+                    
+                    portfolioItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // 포트폴리오 모달 기능
+            const modalLinks = document.querySelectorAll('.portfolio-link');
+            const modals = document.querySelectorAll('.portfolio-modal');
+            const modalCloses = document.querySelectorAll('.modal-close');
+            
+            modalLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const modalId = link.getAttribute('data-modal');
+                    document.getElementById(modalId).style.display = 'block';
+                    document.body.style.overflow = 'hidden'; // 스크롤 방지
+                });
+            });
+            
+            modalCloses.forEach(close => {
+                close.addEventListener('click', () => {
+                    modals.forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                    document.body.style.overflow = 'auto'; // 스크롤 복원
+                });
+            });
+            
+            // 모달 외부 클릭 시 닫기
+            window.addEventListener('click', (e) => {
+                modals.forEach(modal => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+이 폴더는 웹사이트에서 사용할 이미지 파일을 저장하는 용도입니다.
+
+다음과 같은 이미지 파일을 이 폴더에 추가해주세요:
+- hero-bg.jpg: 메인 페이지 히어로 섹션 배경 이미지
+- about.jpg: 회사 소개 이미지
+- cta-bg.jpg: CTA 섹션 배경 이미지
+- about-header.jpg: 회사소개 페이지 헤더 이미지
+- services-header.jpg: 서비스 페이지 헤더 이미지
+- portfolio-header.jpg: 포트폴리오 페이지 헤더 이미지
+- contact-header.jpg: 문의하기 페이지 헤더 이미지
+- service1.jpg ~ service4.jpg: 서비스 섹션 이미지
+- portfolio1.jpg ~ portfolio6.jpg: 포트폴리오 섹션 이미지
+- team1.jpg ~ team4.jpg: 팀원 소개 이미지
+
+이미지는 최적화된 웹 포맷(JPEG, WebP)으로 준비하고, 적절한 크기로 리사이징하여 사용하세요.
