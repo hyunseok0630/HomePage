@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+<<<<<<< HEAD
     // 언어 전환 기능
     const languageSelector = document.querySelector('.language-selector');
     if (languageSelector) {
@@ -394,6 +395,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+=======
+>>>>>>> 94b73668c5be4ad5932bf1577e92ffd9cab78526
     // 모바일 메뉴 토글 기능
     const createMobileMenu = () => {
         const header = document.querySelector('header');
