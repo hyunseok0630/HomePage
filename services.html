@@ -9,7 +9,7 @@
     <style>
         /* 서비스 페이지 추가 스타일 */
         .page-header {
-            background: linear-gradient(135deg, rgba(78, 115, 223, 0.1), rgba(78, 115, 223, 0.2));
+            background: url('../img/clean-bg.svg') no-repeat center center, linear-gradient(135deg, rgba(78, 115, 223, 0.1), rgba(78, 115, 223, 0.2));
             background-size: cover;
             background-position: center;
             padding: 80px 0;
@@ -19,6 +19,8 @@
             margin-bottom: 80px;
             position: relative;
             z-index: 1;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
         
         .page-header h1 {
@@ -348,8 +350,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <a href="https://www.rayneo.com/" class="btn" target="_blank">공식 웹사이트 방문하기</a>
                 </div>
             </div>
         </div>
@@ -422,6 +422,21 @@
             </div>
         </div>
     </section>
+    
+    <style>
+        /* CTA 섹션 스타일 */
+        .cta {
+            background: linear-gradient(135deg, rgba(78, 115, 223, 0.1), rgba(78, 115, 223, 0.2));
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+    </style>
 
     <footer>
         <div class="container">
