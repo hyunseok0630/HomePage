@@ -50,11 +50,22 @@ img {
     font-weight: 500;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
 }
 
 .btn:hover {
     background-color: #2e59d9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background-color: #36b9cc;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #2c9faf;
+    color: #fff;
 }
 
 .section-title {
