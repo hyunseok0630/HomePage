@@ -10,7 +10,7 @@ body {
     line-height: 1.6;
     color: #333;
     background-color: #f8f9fa;
-    background-image: url('../img/clean-bg.svg');
+    background-image: url('img/clean-bg.svg');
     background-size: cover;
     background-attachment: fixed;
 }
@@ -182,7 +182,7 @@ nav ul li a:hover::after {
 
 /* 히어로 섹션 */
 .hero {
-    background: linear-gradient(rgba(78, 115, 223, 0.1), rgba(78, 115, 223, 0.2)), url('../img/hero-bg.jpg') no-repeat center center/cover;
+    background: linear-gradient(rgba(78, 115, 223, 0.1), rgba(78, 115, 223, 0.2)), url('img/hero-bg.jpg') no-repeat center center/cover;
     height: 100vh;
     display: flex;
     align-items: center;

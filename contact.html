@@ -8,8 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* 문의하기 페이지 추가 스타일 */
+        body {
+            font-size: 16px; /* 기본 폰트 크기 설정 */
+        }
+        
         .page-header {
-            background: linear-gradient(135deg, rgba(78, 115, 223, 0.9) 0%, rgba(120, 150, 230, 0.9) 100%), url('../img/clean-bg.svg');
+            background: linear-gradient(135deg, rgba(78, 115, 223, 0.9) 0%, rgba(120, 150, 230, 0.9) 100%), url('img/clean-bg.svg');
             background-size: cover;
             background-position: center;
             padding: 100px 0;
@@ -25,6 +29,11 @@
             font-weight: 700;
             margin-bottom: 20px;
             text-shadow: none;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            font-weight: 400;
         }
         
         .contact-section {
@@ -44,15 +53,17 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             border: 1px solid #f0f0f0;
             color: #333333;
+            text-align: left;
         }
         
         .contact-info h3 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 30px;
             position: relative;
             padding-bottom: 15px;
             color: #4e73df;
             text-shadow: none;
+            text-align: left;
         }
         
         .contact-info h3::after {
@@ -68,7 +79,8 @@
         
         .contact-item {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: flex-start;
             margin-bottom: 25px;
         }
         
@@ -81,14 +93,17 @@
         }
         
         .contact-item-content h4 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 5px;
             color: #333333;
+            text-align: left;
         }
         
         .contact-item-content p {
+            font-size: 1rem;
             color: #666666;
             line-height: 1.6;
+            text-align: left;
         }
         
         .contact-item-content a {
@@ -104,12 +119,20 @@
         
         .contact-social {
             margin-top: 40px;
+            text-align: left;
         }
         
         .contact-social h4 {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             margin-bottom: 15px;
             color: #333333;
+            text-align: left;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
         }
         
         .social-icons a {
@@ -120,7 +143,7 @@
             height: 40px;
             background-color: #f8f9fc;
             border-radius: 50%;
-            margin-right: 10px;
+            margin: 0 5px;
             transition: background-color 0.3s ease;
         }
         
@@ -134,92 +157,7 @@
             background-color: #eaecf4;
         }
         
-        .contact-form {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #f0f0f0;
-            color: #333333;
-        }
-        
-        .contact-form h3 {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            position: relative;
-            padding-bottom: 15px;
-            color: #4e73df;
-            text-shadow: none;
-        }
-        
-        .contact-form h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background-color: #4e73df;
-            box-shadow: none;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #333333;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            background-color: #f8f9fc;
-            color: #333333;
-        }
-        
-        .form-control:focus {
-            border-color: #4e73df;
-            outline: none;
-            box-shadow: 0 0 5px rgba(78, 115, 223, 0.2);
-        }
-        
-        textarea.form-control {
-            resize: vertical;
-            min-height: 150px;
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .btn-submit {
-            background-color: #4e73df;
-            color: #ffffff;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-submit:hover {
-            background-color: #3a5fc8;
-            color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+        /* 문의하기 양식 스타일이 제거되었습니다 */
         
         /* 지도 섹션 */
         .map-section {
@@ -227,16 +165,18 @@
         }
         
         .map-container {
-            height: 400px;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
         }
         
         .map-container iframe {
             width: 100%;
             height: 100%;
-            border: 0;
+            min-height: 400px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         /* 반응형 스타일 */
@@ -244,13 +184,31 @@
             .contact-container {
                 grid-template-columns: 1fr;
             }
+            
+            body {
+                font-size: 16px; /* 태블릿에서도 동일한 폰트 크기 유지 */
+            }
         }
         
         @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
+            body {
+                font-size: 16px; /* 모바일에서도 동일한 폰트 크기 유지 */
+            }
+            
+            .contact-info h3 {
+                font-size: 1.8rem;
+            }
+            
+            .contact-item-content h4 {
+                font-size: 1.1rem;
+            }
+            
+            .contact-social h4 {
+                font-size: 1.2rem;
             }
         }
+        
+        /* 문의하기 양식 반응형 스타일이 제거되었습니다 */
     </style>
 </head>
 <body>
@@ -260,24 +218,27 @@
                 <a href="index.html"><h1>SKY Commerce</h1></a>
             </div>
             <nav>
-                <ul>
+                <ul class="nav-menu">
                     <li><a href="index.html">홈</a></li>
-                    <li><a href="about.html">회사소개</a></li>
+                    <li><a href="about.html">회사 소개</a></li>
                     <li><a href="services.html">서비스</a></li>
-                    <li><a href="portfolio.html">포트폴리오</a></li>
-                    <li><a href="contact.html">문의하기</a></li>
+                    <li><a href="product.html">제품</a></li>
+                    <li><a href="contact.html" class="active">문의하기</a></li>
                 </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
             </nav>
-            <div class="language-selector">
-                <a href="#" class="active" data-lang="kr">Kr</a> / 
-                <a href="#" data-lang="en">En</a>
-            </div>
+
         </div>
     </header>
 
-    <section class="page-header">
+    <section class="page-header" style="background: url('img/clean-bg.svg') no-repeat center center; background-size: cover; color: #333;">
         <div class="container">
             <h1>문의하기</h1>
+            <p>TCL RayNeo 스마트 글래스 공식 판매처</p>
         </div>
     </section>
 
@@ -315,7 +276,7 @@
                         <i class="fas fa-clock"></i>
                         <div class="contact-item-content">
                             <h4>업무 시간</h4>
-                            <p>월요일 - 금요일: 오전 9시 - 오후 6시<br>토요일, 일요일: 휴무</p>
+                            <p>월요일 - 금요일: 오전 10시 - 오후 6시<br>토요일, 일요일, 공휴일: 휴무</p>
                         </div>
                     </div>
                     
@@ -330,57 +291,10 @@
                     </div>
                 </div>
                 
-                <div class="contact-form">
-                    <h3>문의하기</h3>
-                    <form id="contactForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">이름</label>
-                                <input type="text" id="name" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">이메일</label>
-                                <input type="email" id="email" class="form-control" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="phone">전화번호</label>
-                                <input type="tel" id="phone" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">문의 주제</label>
-                                <select id="subject" class="form-control" required>
-                                    <option value="" selected disabled>선택해주세요</option>
-                                    <option value="general">일반 문의</option>
-                                    <option value="service">서비스 문의</option>
-                                    <option value="quote">견적 요청</option>
-                                    <option value="partnership">제휴 제안</option>
-                                    <option value="other">기타</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">메시지</label>
-                            <textarea id="message" class="form-control" required></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button type="submit" class="btn-submit">메시지 보내기</button>
-                        </div>
-                    </form>
+                <div class="map-container">
+                    <!-- 구글 지도 임베드 코드 (경기도 화성시 동탄대로 677-12) -->
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d198.58602880126384!2d127.09980083194563!3d37.21503720179771!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b45a0c4939093%3A0xdc91864f72380d38!2z6rK96riw64-EIO2ZlOyEseyLnCDrj5ntg4TrjIDroZwgNjc3LTEyIDYyMe2YuA!5e0!3m2!1sko!2skr!4v1749974209801!5m2!1sko!2skr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="map-section">
-        <div class="container">
-            <div class="map-container">
-                <!-- 구글 지도 임베드 코드 (경기도 화성시 동탄대로 677-12) -->
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3174.8901256342827!2d127.09934687650486!3d37.29296087198435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b5c1d8b6b5a3d%3A0x4c5c9e1f8c4e977!2z6rK97KO87Yq567OE7IucIO2ZlOyEseyLnCDrj5nthLTrjIDroZwgNjc3LTEy!5e0!3m2!1sko!2skr!4v1718184000000!5m2!1sko!2skr" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </section>
@@ -389,16 +303,16 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <h3>SKY COMMERCE</h3>
-                    <p>혁신적인 솔루션으로 비즈니스의 성공을 돕습니다</p>
+                    <h3>SKY Commerce</h3>
+                    <p>TCL RayNeo 스마트 글래스 공식 판매처</p>
                 </div>
                 <div class="footer-links">
                     <h4>바로가기</h4>
                     <ul>
                         <li><a href="index.html">홈</a></li>
-                        <li><a href="about.html">회사소개</a></li>
+                        <li><a href="about.html">회사 소개</a></li>
                         <li><a href="services.html">서비스</a></li>
-                        <li><a href="portfolio.html">포트폴리오</a></li>
+                        <li><a href="product.html">제품</a></li>
                         <li><a href="contact.html">문의하기</a></li>
                     </ul>
                 </div>
@@ -406,7 +320,7 @@
                     <h4>연락처</h4>
                     <p><i class="fas fa-map-marker-alt"></i> 경기도 화성시 동탄대로 677-12 / 621호</p>
                     <p><i class="fas fa-phone"></i> 02-123-4567</p>
-                    <p><i class="fas fa-envelope"></i> info@company.com</p>
+                    <p><i class="fas fa-envelope"></i> info@skycommerce.co.kr</p>
                 </div>
                 <div class="footer-social">
                     <h4>소셜 미디어</h4>
@@ -419,39 +333,12 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 SKY Commerce. All Rights Reserved.</p>
+                <p>&copy; 2025 SKY Commerce. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 폼 제출 이벤트 처리
-            const contactForm = document.getElementById('contactForm');
-            
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // 폼 데이터 수집
-                const formData = {
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    subject: document.getElementById('subject').value,
-                    message: document.getElementById('message').value
-                };
-                
-                // 여기에 폼 데이터 처리 로직 추가 (서버로 전송 등)
-                console.log('폼 데이터:', formData);
-                
-                // 성공 메시지 표시 (실제 구현 시 서버 응답 후 표시)
-                alert('메시지가 성공적으로 전송되었습니다. 빠른 시일 내에 답변 드리겠습니다.');
-                
-                // 폼 초기화
-                contactForm.reset();
-            });
-        });
-    </script>
+    <!-- 문의하기 양식 스크립트가 제거되었습니다 -->
 </body>
 </html>

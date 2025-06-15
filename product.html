@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 - SKY Commerce</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 제품 페이지 추가 스타일 */
+        .page-header {
+            background: linear-gradient(135deg, rgba(78, 115, 223, 0.9) 0%, rgba(120, 150, 230, 0.9) 100%), url('img/clean-bg.svg');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            text-align: center;
+            color: #ffffff;
+            margin-top: 80px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .product-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .product-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 150px;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding-top: 30px;
+        }
+        
+        .filter-btn {
+            background: none;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 30px;
+            background-color: #f0f0f0;
+            color: #555;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+        
+        .filter-btn:hover {
+            background-color: #e8e8e8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-btn.active {
+            background-color: #4e73df;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(78, 115, 223, 0.3);
+            border: 1px solid #4e73df;
+            transform: translateY(-2px);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .product-item {
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            background-color: #fff;
+        }
+        
+        .product-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(78, 115, 223, 0.9), rgba(78, 115, 223, 0.8));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .product-item:hover .product-overlay {
+            opacity: 1;
+        }
+        
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .product-category {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .product-link {
+            display: inline-block;
+            background-color: #fff;
+            color: #4e73df;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #4e73df;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-link:hover {
+            background-color: #4e73df;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-details {
+            background-color: #fff;
+            padding: 20px;
+            color: #555;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .product-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .product-details p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .product-tags {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .product-tag {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            color: #555;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .product-tag:hover {
+            background-color: #4e73df;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 제품 상세 모달 */
+        .product-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 50px 0;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+            background-color: #007bff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background-color: #0056b3;
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .modal-info {
+            padding: 30px;
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .modal-category {
+            color: #007bff;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .modal-description {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .modal-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .detail-item i {
+            color: #007bff;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        
+        .detail-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .modal-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .gallery-item {
+            height: 150px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .modal-cta {
+            text-align: center;
+        }
+        
+        /* 반응형 스타일 */
+        @media (max-width: 992px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .modal-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .modal-content {
+                margin: 0 20px;
+            }
+            
+            .modal-image {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-image {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><h1>SKY Commerce</h1></a>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="about.html">회사 소개</a></li>
+                    <li><a href="services.html">서비스</a></li>
+                    <li><a href="product.html" class="active">제품</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+
+        </div>
+    </header>
+
+    <section class="page-header" style="background: url('img/clean-bg.svg') no-repeat center center; background-size: cover; color: #333;">
+        <div class="container">
+            <h1>제품</h1>
+            <p>(주)스카이커머스 - TCL RayNeo 스마트 글래스 공식 판매처</p>
+        </div>
+    </section>
+
+    <!-- Product Start -->
+    <div class="product">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-filter" style="margin-bottom: 20px;">
+                        <button class="filter-btn active" data-filter="all">전체</button>
+                        <button class="filter-btn" data-filter="판매중(국내)">판매중(국내)</button>
+                        <button class="filter-btn" data-filter="판매중(국외)">판매중(국외)</button>
+                        <button class="filter-btn" data-filter="품절">품절</button>
+                        <button class="filter-btn" data-filter="부속품">부속품</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row product-container product-grid">
+                <!-- 제품 아이템 1 -->
+                <div class="product-item 판매중(국내)">
+                    <img src="img/portfolio1.jpg" alt="TCL RayNeo Air 3s" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">TCL RayNeo Air 3s</h3>
+                        <p class="product-category">프리미엄 스마트 글래스</p>
+                        <a href="#" class="product-link" data-modal="modal1">자세히 보기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>TCL RayNeo Air 3s</h3>
+                        <p>최신 HueView™ 마이크로 OLED 디스플레이와 듀얼 오포징 어쿠스틱 챔버 사운드 시스템</p>
+                        <div class="product-tags">
+                            <span class="product-tag">판매중(국내)</span>
+                            <span class="product-tag">마이크로 OLED</span>
+                            <span class="product-tag">650 nits</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 제품 아이템 2 -->
+                <div class="product-item 판매중(국내) 판매중(국외)">
+                    <img src="img/portfolio2.jpg" alt="TCL RayNeo Air 2s" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">TCL RayNeo Air 2s</h3>
+                        <p class="product-category">고성능 스마트 글래스</p>
+                        <a href="#" class="product-link" data-modal="modal2">자세히 보기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>TCL RayNeo Air 2s</h3>
+                        <p>소니 마이크로 OLED 디스플레이와 Push-Push 쿼드 스피커 시스템</p>
+                        <div class="product-tags">
+                            <span class="product-tag">판매중(국내)</span>
+                            <span class="product-tag">판매중(국외)</span>
+                            <span class="product-tag">201인치 화면</span>
+                            <span class="product-tag">120Hz</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 제품 아이템 3 -->
+                <div class="product-item 판매중(국외)">
+                    <img src="img/portfolio3.jpg" alt="TCL RayNeo Air 2" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">TCL RayNeo Air 2</h3>
+                        <p class="product-category">경량 스마트 글래스</p>
+                        <a href="#" class="product-link" data-modal="modal3">자세히 보기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>TCL RayNeo Air 2</h3>
+                        <p>소니 마이크로 OLED 디스플레이와 Whisper Mode 2.0 기술</p>
+                        <div class="product-tags">
+                            <span class="product-tag">판매중(국외)</span>
+                            <span class="product-tag">600 nits</span>
+                            <span class="product-tag">76g 경량</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 제품 아이템 4 - Pocket TV (부속품) -->
+                <div class="product-item 판매중(국내) 판매중(국외) 부속품">
+                    <img src="img/portfolio4.jpg" alt="TCL RayNeo Pocket TV" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">Pocket TV</h3>
+                        <p class="product-category">스마트 글래스 액세서리</p>
+                        <a href="#" class="product-link" data-modal="modal4">자세히 보기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>Pocket TV</h3>
+                        <p>스마트 글래스를 위한 휴대용 미디어 플레이어</p>
+                        <div class="product-tags">
+                            <span class="product-tag">판매중(국내)</span>
+                            <span class="product-tag">판매중(국외)</span>
+                            <span class="product-tag">부속품</span>
+                            <span class="product-tag">4K 지원</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 제품 아이템 5 -->
+                <div class="product-item 품절">
+                    <img src="img/portfolio5.jpg" alt="TCL RayNeo X2" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">TCL RayNeo X2</h3>
+                        <p class="product-category">AR 스마트 글래스</p>
+                        <a href="#" class="product-link" data-modal="modal5">자세히 보기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>TCL RayNeo X2</h3>
+                        <p>마이크로 LED 디스플레이와 고급 AR 기능을 갖춘 스마트 글래스</p>
+                        <div class="product-tags">
+                            <span class="product-tag">품절</span>
+                            <span class="product-tag">마이크로 LED</span>
+                            <span class="product-tag">AR 기능</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 제품 아이템 6 -->
+                <div class="product-item 품절">
+                    <img src="img/portfolio6.jpg" alt="TCL NXTWEAR S+" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">TCL NXTWEAR S+</h3>
+                        <p class="product-category">시네마틱 스마트 글래스</p>
+                        <a href="#" class="product-link" data-modal="modal6">자세히 보기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>TCL NXTWEAR S+</h3>
+                        <p>140인치 대형 화면 경험과 고품질 사운드 시스템</p>
+                        <div class="product-tags">
+                            <span class="product-tag">품절</span>
+                            <span class="product-tag">듀얼 1080p</span>
+                            <span class="product-tag">140인치 화면</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 제품 아이템 7 - JoyDock (부속품) -->
+                <div class="product-item 판매중(국내) 부속품">
+                    <img src="img/portfolio7.jpg" alt="TCL RayNeo JoyDock" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">JoyDock</h3>
+                        <p class="product-category">스마트 글래스 액세서리</p>
+                        <a href="#" class="product-link" data-modal="modal7">자세히 보기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>JoyDock</h3>
+                        <p>스마트 글래스를 위한 게임 컨트롤러 도킹 스테이션</p>
+                        <div class="product-tags">
+                            <span class="product-tag">판매중(국내)</span>
+                            <span class="product-tag">부속품</span>
+                            <span class="product-tag">게임 컨트롤러</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 제품 모달 1 - TCL RayNeo Air 3s -->
+    <div class="product-modal" id="modal1">
+        <div class="modal-content">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <img src="img/portfolio1-large.jpg" alt="TCL RayNeo Air 3s 상세" class="modal-image">
+            <div class="modal-info">
+                <h2 class="modal-title">TCL RayNeo Air 3s</h2>
+                <p class="modal-category">프리미엄 스마트 글래스</p>
+                
+                <div class="modal-description">
+                    <p>TCL RayNeo Air 3s는 최신 HueView™ 마이크로 OLED 디스플레이를 탑재하여 650 nits의 밝기와 120Hz의 주사율을 제공합니다. 이를 통해 선명하고 부드러운 영상을 즐길 수 있으며, 듀얼 오포징 어쿠스틱 챔버 디자인으로 향상된 사운드 경험을 제공합니다.</p>
+                    <p>또한 9-Point FlexiFit 시스템을 통해 다양한 조정이 가능하며, 더 부드럽고 안정적인 착용감을 제공합니다. USB Type-C 디스플레이포트를 지원하여 iPhone, Nintendo Switch, Steam Deck, PS4/PS5, Xbox, MacBook, iPad 등 다양한 기기와 호환됩니다.</p>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <i class="fas fa-tag"></i>
+                        <div class="detail-content">
+                            <h4>판매 상태</h4>
+                            <p>판매중</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-globe"></i>
+                        <div class="detail-content">
+                            <h4>판매 지역</h4>
+                            <p>국내</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-tv"></i>
+                        <div class="detail-content">
+                            <h4>디스플레이</h4>
+                            <p>HueView™ 마이크로 OLED, 650 nits</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-sync-alt"></i>
+                        <div class="detail-content">
+                            <h4>주사율</h4>
+                            <p>120Hz</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-volume-up"></i>
+                        <div class="detail-content">
+                            <h4>사운드 시스템</h4>
+                            <p>듀얼 오포징 어쿠스틱 챔버</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-plug"></i>
+                        <div class="detail-content">
+                            <h4>호환성</h4>
+                            <p>USB-C 디스플레이포트 지원 기기</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-gallery">
+                    <div class="gallery-item">
+                        <img src="img/portfolio1-detail1.jpg" alt="TCL RayNeo Air 3s 이미지 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/portfolio1-detail2.jpg" alt="TCL RayNeo Air 3s 이미지 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/portfolio1-detail3.jpg" alt="TCL RayNeo Air 3s 이미지 3">
+                    </div>
+                </div>
+                
+                <div class="modal-cta">
+                    <a href="contact.html" class="btn">제품 문의하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 제품 모달 4 - Pocket TV -->
+    <div class="product-modal" id="modal4">
+        <div class="modal-content">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <img src="img/portfolio4-large.jpg" alt="Pocket TV 상세" class="modal-image">
+            <div class="modal-info">
+                <h2 class="modal-title">Pocket TV</h2>
+                <p class="modal-category">스마트 글래스 액세서리</p>
+                
+                <div class="modal-description">
+                    <p>Pocket TV는 TCL RayNeo 스마트 글래스를 위한 휴대용 미디어 플레이어입니다. 4K 해상도를 지원하며, 최대 128GB의 저장 공간을 제공하여 영화, 드라마, 게임 등 다양한 콘텐츠를 즐길 수 있습니다.</p>
+                    <p>내장 배터리로 최대 6시간의 재생 시간을 제공하며, HDMI 입력 포트를 통해 외부 기기와 연결할 수 있습니다. 또한 블루투스 5.0을 지원하여 무선 헤드폰이나 스피커와 연결할 수 있습니다.</p>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <i class="fas fa-tag"></i>
+                        <div class="detail-content">
+                            <h4>판매 상태</h4>
+                            <p>판매중</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-globe"></i>
+                        <div class="detail-content">
+                            <h4>판매 지역</h4>
+                            <p>국내/국외</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-hdd"></i>
+                        <div class="detail-content">
+                            <h4>저장 용량</h4>
+                            <p>64GB / 128GB</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-battery-full"></i>
+                        <div class="detail-content">
+                            <h4>배터리</h4>
+                            <p>5000mAh, 최대 6시간 재생</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-plug"></i>
+                        <div class="detail-content">
+                            <h4>연결</h4>
+                            <p>USB-C, HDMI, 블루투스 5.0</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-weight"></i>
+                        <div class="detail-content">
+                            <h4>무게</h4>
+                            <p>120g</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-gallery">
+                    <div class="gallery-item">
+                        <img src="img/portfolio4-detail1.jpg" alt="Pocket TV 이미지 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/portfolio4-detail2.jpg" alt="Pocket TV 이미지 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/portfolio4-detail3.jpg" alt="Pocket TV 이미지 3">
+                    </div>
+                </div>
+                
+                <div class="modal-cta">
+                    <a href="contact.html" class="btn">제품 문의하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 제품 모달 7 - JoyDock -->
+    <div class="product-modal" id="modal7">
+        <div class="modal-content">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <img src="img/portfolio7-large.jpg" alt="JoyDock 상세" class="modal-image">
+            <div class="modal-info">
+                <h2 class="modal-title">JoyDock</h2>
+                <p class="modal-category">스마트 글래스 액세서리</p>
+                
+                <div class="modal-description">
+                    <p>JoyDock은 TCL RayNeo 스마트 글래스를 위한 게임 컨트롤러 도킹 스테이션입니다. 인체공학적 디자인과 정밀한 조작감으로 게임 경험을 향상시켜 줍니다.</p>
+                    <p>내장 배터리로 최대 15시간의 사용 시간을 제공하며, 블루투스 5.0을 통해 스마트 글래스와 연결됩니다. 또한 진동 피드백과 프로그래밍 가능한 버튼을 제공하여 다양한 게임에 최적화할 수 있습니다.</p>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <i class="fas fa-tag"></i>
+                        <div class="detail-content">
+                            <h4>판매 상태</h4>
+                            <p>판매중</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-globe"></i>
+                        <div class="detail-content">
+                            <h4>판매 지역</h4>
+                            <p>국내</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-gamepad"></i>
+                        <div class="detail-content">
+                            <h4>버튼</h4>
+                            <p>프로그래밍 가능한 16개 버튼</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-battery-full"></i>
+                        <div class="detail-content">
+                            <h4>배터리</h4>
+                            <p>3000mAh, 최대 15시간 사용</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-plug"></i>
+                        <div class="detail-content">
+                            <h4>연결</h4>
+                            <p>블루투스 5.0, USB-C 충전</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-weight"></i>
+                        <div class="detail-content">
+                            <h4>무게</h4>
+                            <p>180g</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-gallery">
+                    <div class="gallery-item">
+                        <img src="img/portfolio7-detail1.jpg" alt="JoyDock 이미지 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/portfolio7-detail2.jpg" alt="JoyDock 이미지 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img/portfolio7-detail3.jpg" alt="JoyDock 이미지 3">
+                    </div>
+                </div>
+                
+                <div class="modal-cta">
+                    <a href="contact.html" class="btn">제품 문의하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta">
+        <div class="container">
+            <h2>TCL RayNeo 스마트 글래스로 새로운 경험을 시작하세요</h2>
+            <p>(주)스카이커머스와 함께 최신 AR/XR 기술을 경험하고 몰입감 있는 엔터테인먼트와 생산성을 향상시켜 보세요</p>
+            <a href="contact.html" class="btn">제품 문의하기</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>SKY Commerce</h3>
+                    <p>TCL RayNeo 스마트 글래스 공식 판매처</p>
+                </div>
+                <div class="footer-links">
+                    <h4>바로가기</h4>
+                    <ul>
+                        <li><a href="index.html">홈</a></li>
+                        <li><a href="about.html">회사 소개</a></li>
+                        <li><a href="services.html">서비스</a></li>
+                        <li><a href="product.html">제품</a></li>
+                        <li><a href="contact.html">문의하기</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>연락처</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 경기도 화성시 동탄대로 677-12 / 621호</p>
+                    <p><i class="fas fa-phone"></i> 02-123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@skycommerce.co.kr</p>
+                </div>
+                <div class="footer-social">
+                    <h4>소셜 미디어</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SKY Commerce. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 제품 필터링 기능
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const productItems = document.querySelectorAll('.product-item');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 활성화된 버튼 스타일 변경
+                    filterBtns.forEach(btn => btn.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // 선택된 카테고리에 따라 아이템 필터링
+                    const filterValue = btn.getAttribute('data-filter');
+                    
+                    productItems.forEach(item => {
+                        if (filterValue === 'all') {
+                            item.style.display = 'block';
+                        } else {
+                            // 제품 태그 확인
+                            const tags = item.querySelectorAll('.product-tag');
+                            let hasTag = false;
+                            
+                            tags.forEach(tag => {
+                                // 태그 텍스트에 필터 값이 포함되어 있는지 확인
+                                if (tag.textContent.includes(filterValue)) {
+                                    hasTag = true;
+                                }
+                            });
+                            
+                            // 클래스 기반 필터링도 유지
+                            if (hasTag || item.classList.contains(filterValue)) {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // 제품 모달 기능
+            const modalLinks = document.querySelectorAll('.product-link');
+            const modals = document.querySelectorAll('.product-modal');
+            const modalCloses = document.querySelectorAll('.modal-close');
+            
+            modalLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const modalId = link.getAttribute('data-modal');
+                    document.getElementById(modalId).style.display = 'block';
+                    document.body.style.overflow = 'hidden'; // 스크롤 방지
+                });
+            });
+            
+            modalCloses.forEach(close => {
+                close.addEventListener('click', () => {
+                    modals.forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                    document.body.style.overflow = 'auto'; // 스크롤 복원
+                });
+            });
+            
+            // 모달 외부 클릭 시 닫기
+            window.addEventListener('click', (e) => {
+                modals.forEach(modal => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
