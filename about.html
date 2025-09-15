@@ -172,48 +172,63 @@
         
         .timeline {
             position: relative;
-            max-width: 800px;
-            margin: 50px auto 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
         }
         
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
-            background-color: #4e73df;
-            transform: translateX(-50%);
-        }
+
         
         .timeline-item {
             position: relative;
-            margin-bottom: 50px;
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 20px;
         }
         
         .timeline-dot {
             position: absolute;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            background-color: #4e73df;
+            top: 30px;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #4e73df, #224abe);
+            border: 4px solid #fff;
             border-radius: 50%;
-            transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(78, 115, 223, 0.3);
             z-index: 2;
         }
         
         .timeline-content {
             position: relative;
-            width: 45%;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            padding: 25px;
+            margin-left: 20px;
+            background: linear-gradient(135deg, #fff, #f8f9fc);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(78, 115, 223, 0.1);
+            transition: all 0.3s ease;
+            text-align: left;
         }
         
-        .timeline-item:nth-child(odd) .timeline-content {
-            margin-left: auto;
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: -24px;
+            width: 0;
+            height: 0;
+            border: 12px solid transparent;
+            border-right-color: #fff;
         }
         
         .timeline-content h3 {
@@ -227,12 +242,36 @@
                 grid-template-columns: 1fr;
             }
             
-            .timeline::before {
-                left: 30px;
+            .timeline {
+                padding: 0 10px;
+                display: block;
+                max-width: 600px;
+            }
+            
+            .timeline {
+                display: block;
+            }
+            
+            .timeline-item {
+                justify-content: flex-start !important;
+                margin-bottom: 40px;
             }
             
             .timeline-dot {
-                left: 30px;
+                left: 18px !important;
+                right: auto !important;
+            }
+            
+            .timeline-content {
+                margin-left: 60px;
+                max-width: none;
+            }
+            
+            .timeline-content::before {
+                left: -24px !important;
+                right: auto !important;
+                border-left-color: transparent !important;
+                border-right-color: #fff !important;
             }
             
             .timeline-content {
@@ -252,7 +291,6 @@
                 <ul class="nav-menu">
                     <li><a href="index.html">홈</a></li>
                     <li><a href="about.html" class="active">회사 소개</a></li>
-                    <li><a href="services.html">서비스</a></li>
                     <li><a href="product.html">제품</a></li>
                     <li><a href="contact.html">문의하기</a></li>
                 </ul>
@@ -286,14 +324,17 @@
     <section class="about-section">
         <div class="container">
             <div class="about-content">
-                <h2>우리의 미션 & 비전</h2>
+                <h2>사업 분야</h2>
                 <div class="mission-vision">
                     <div class="mission-box">
-                        <h3>미션</h3>
+                        <h3>설비 제작</h3>
+                    </div>
+                    <div class="mission-box">
+                        <h3>소제 무역</h3>
                         <p>혁신적인 AR 스마트 글래스 기술을 통해 사람들의 일상과 업무 방식을 향상시키고, 디지털과 현실 세계를 원활하게 연결하는 경험을 제공합니다.</p>
                     </div>
                     <div class="vision-box">
-                        <h3>비전</h3>
+                        <h3>일반 유통</h3>
                         <p>AR 기술 분야의 선도적인 기업으로 성장하여, 모든 사람이 증강현실의 혜택을 누릴 수 있는 미래를 만들어 나갑니다.</p>
                     </div>
                 </div>
@@ -330,93 +371,70 @@
             </div>
         </div>
     </section>
-
-    <section class="about-section">
-        <div class="container">
-            <div class="about-content">
-                <h2>우리 팀</h2>
-                <p>SKY Commerce는 AR 기술과 비즈니스 분야의 전문가들로 구성된 열정적인 팀입니다. 우리는 다양한 배경과 경험을 가진 인재들이 모여 혁신적인 솔루션을 개발하고 있습니다.</p>
-                
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="img/team/ceo.jpg" alt="CEO">
-                        </div>
-                        <h3>홍길동</h3>
-                        <p class="position">CEO</p>
-                        <p class="bio">AR 기술 분야에서 10년 이상의 경험을 가진 전문가로, SKY Commerce의 비전과 전략을 이끌고 있습니다.</p>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="img/team/cto.jpg" alt="CTO">
-                        </div>
-                        <h3>홍일동</h3>
-                        <p class="position">CTO</p>
-                        <p class="bio">소프트웨어 개발 및 AR 기술 구현을 담당하며, 혁신적인 제품 개발을 주도하고 있습니다.</p>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="img/team/marketing.jpg" alt="Marketing Director">
-                        </div>
-                        <h3>홍이동</h3>
-                        <p class="position">마케팅 디렉터</p>
-                        <p class="bio">브랜드 전략 및 마케팅 캠페인을 통해 SKY Commerce의 시장 입지를 강화하고 있습니다.</p>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="img/team/sales.jpg" alt="Sales Manager">
-                        </div>
-                        <h3>홍삼동</h3>
-                        <p class="position">영업 매니저</p>
-                        <p class="bio">고객 관계 관리 및 비즈니스 개발을 통해 회사의 성장에 기여하고 있습니다.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="about-section">
         <div class="container">
             <div class="about-content">
                 <h2>회사 연혁</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h3>2020</h3>
-                            <p>SKY Commerce 설립</p>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>2015</h3>
+                                <p>주식회사 스카이커머스 설립</p>
+                                <p>삼성전기 1차 협력사 특수소재 공급</p>
+                                <p>Inconel Plate, Tube, Pipe, Mesh Belt 등</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h3>2021</h3>
-                            <p>TCL RayNeo와 공식 파트너십 체결</p>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>2016</h3>
+                                <p>삼성전기 1차 협력사 세라믹 관련 제품 공급</p>
+                                <p>단열재, Roller, Pipe 등</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h3>2022</h3>
-                            <p>한국 시장 진출 및 첫 번째 쇼룸 오픈</p>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>2017</h3>
+                                <p>LG 1차 협력사 Titanium 공급</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h3>2023</h3>
-                            <p>기업 고객 솔루션 서비스 출시</p>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>2018</h3>
+                                <p>삼성전기 N2 Box Oven 제작 납품</p>
+                                <p>SIC & SISIC 품목 추가</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h3>2024</h3>
-                            <p>연간 매출 100억 달성 및 아시아 시장 확장</p>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>2023</h3>
+                                <p>TCL NXTWEAR 독점 계약</p>
+                                <p>온라인 쇼핑몰 23개사 협력업체 등록</p>
+                                <p>Eloam 독점 계약</p>
+                                <p>RayNeo 독점 계약</p>
+                            </div>
                         </div>
-                    </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>2024</h3>
+                                <p>Keheal 독점계약</p>
+                                <p>SKY Brand 런칭</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>2025</h3>
+                                <p>삼성전기 N2 Box Oven 39대 납품</p>
+                                <p>삼성전기 화성기 9대 납품</p>
+                                <p>Mudra 독점 계약</p>
+                            </div>
+                        </div>
                 </div>
-            </div>
         </div>
     </section>
 
@@ -432,7 +450,6 @@
                     <ul>
                         <li><a href="index.html">홈</a></li>
                         <li><a href="about.html">회사 소개</a></li>
-                        <li><a href="services.html">서비스</a></li>
                         <li><a href="product.html">제품</a></li>
                         <li><a href="contact.html">문의하기</a></li>
                     </ul>
