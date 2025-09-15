@@ -71,17 +71,97 @@
     <section class="about-preview">
         <div class="container">
             <h2 class="section-title">회사 소개</h2>
-            <div class="about-grid">
-                <div class="about-content">
-                    <p>(주)스카이커머스는 TCL RayNeo 스마트 글래스의 공식 판매처로서 최신 AR/XR 기술을 국내 소비자들에게 소개하고 있습니다. 고객 만족을 최우선으로 생각하며, 정품 보증과 전문적인 고객 지원 서비스를 제공합니다. 또한 신속한 배송과 국내 A/S 서비스를 통해 고객들이 안심하고 제품을 사용할 수 있도록 지원하고 있습니다.</p>
-                    <a href="about.html" class="btn">회사 상세 정보</a>
-                </div>
-                <div class="about-image">
-                    <img src="img/logo.svg" alt="스카이커머스 회사 이미지">
+            <div class="about-images-only">
+                <div class="images-grid">
+                    <div class="image-item">
+                        <img src="img/RayNeo_Logo.png" alt="RayNeo">
+                    </div>
+                    <div class="image-item">
+                        <img src="img/Keheal_Logo.jpg" alt="Keheal">
+                    </div>
+                    <div class="image-item">
+                        <img src="img/Mudra_Logo.png" alt="Mudra">
+                    </div>
+                    <div class="image-item">
+                        <img src="img/Eloam.png" alt="Eloam">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+    
+    <style>
+         .about-images-only {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             padding: 40px 0;
+         }
+         
+         .images-grid {
+             display: grid;
+             grid-template-columns: repeat(2, 1fr);
+             gap: 30px;
+             max-width: 800px;
+             width: 100%;
+         }
+         
+         .image-item {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             padding: 20px;
+             background: rgba(255, 255, 255, 0.95);
+             border-radius: 15px;
+             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
+             overflow: hidden;
+         }
+         
+         .image-item:hover {
+             transform: translateY(-8px);
+             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+         }
+         
+         .image-item img {
+             max-width: 100%;
+             max-height: 150px;
+             width: auto;
+             height: auto;
+             object-fit: contain;
+             border-radius: 8px;
+         }
+         
+         @media (max-width: 768px) {
+             .images-grid {
+                 grid-template-columns: repeat(2, 1fr);
+                 gap: 20px;
+                 max-width: 100%;
+             }
+             
+             .image-item {
+                 padding: 15px;
+             }
+             
+             .image-item img {
+                 max-height: 100px;
+             }
+         }
+         
+         @media (max-width: 480px) {
+             .images-grid {
+                 gap: 15px;
+             }
+             
+             .image-item {
+                 padding: 10px;
+             }
+             
+             .image-item img {
+                 max-height: 80px;
+             }
+         }
+     </style>
 
     <section class="testimonials">
         <div class="container">
@@ -153,10 +233,8 @@
                 <div class="footer-social">
                     <h4>소셜 미디어</h4>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://blog.naver.com/nxtwear" target="_blank" title="네이버카페"><i class="fas fa-coffee"></i></a>
+                        <a href="https://smartstore.naver.com/nxtwear" target="_blank" title="네이버 스마트스토어"><i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
             </div>
