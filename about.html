@@ -175,17 +175,17 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 0;
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 40px;
+            align-items: start;
         }
         
 
         
         .timeline-item {
             position: relative;
-            flex: 1;
-            min-width: 300px;
+            width: 100%;
             margin-bottom: 20px;
         }
         
@@ -243,40 +243,20 @@
             }
             
             .timeline {
-                padding: 0 10px;
-                display: block;
-                max-width: 600px;
-            }
-            
-            .timeline {
-                display: block;
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
             
             .timeline-item {
-                justify-content: flex-start !important;
-                margin-bottom: 40px;
+                margin-bottom: 20px;
             }
             
             .timeline-dot {
-                left: 18px !important;
-                right: auto !important;
+                left: -12px;
             }
             
             .timeline-content {
-                margin-left: 60px;
-                max-width: none;
-            }
-            
-            .timeline-content::before {
-                left: -24px !important;
-                right: auto !important;
-                border-left-color: transparent !important;
-                border-right-color: #fff !important;
-            }
-            
-            .timeline-content {
-                width: calc(100% - 60px);
-                margin-left: 60px !important;
+                margin-left: 20px;
             }
         }
     </style>
@@ -456,9 +436,9 @@
                 </div>
                 <div class="footer-contact">
                     <h4>연락처</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> 경기도 화성시 동탄대로 677-12 / 621호</p>
-                    <p><i class="fas fa-phone"></i> 02-123-4567</p>
-                    <p><i class="fas fa-envelope"></i> info@skycommerce.co.kr</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 경기도 화성시 동탄대로 677-12 / 620 ~ 621호</p>
+                    <p><i class="fas fa-phone"></i> 031-205-4133</p>
+                    <p><i class="fas fa-envelope"></i> car2314@naver.com</p>
                 </div>
                 <div class="footer-social">
                     <h4>소셜 미디어</h4>
