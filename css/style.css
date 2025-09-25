@@ -160,6 +160,10 @@ nav {
         padding: 15px; /* 패딩 조정 */
     }
     
+    nav {
+        position: static; /* 모바일에서 static으로 변경 */
+    }
+    
     .language-selector {
         margin-left: auto;
         margin-right: 50px; /* 모바일 메뉴 버튼 공간 확보 */
@@ -563,17 +567,18 @@ footer {
     }
     
     nav ul {
-        display: none; /* 기본적으로 숨김 */
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: #ffffff;
-        flex-direction: column;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        margin-top: 0;
-    }
+         display: none; /* 기본적으로 숨김 */
+         position: fixed; /* fixed로 변경하여 전체 화면 덮기 */
+         top: 70px; /* 헤더 높이만큼 아래로 */
+         left: 0;
+         right: 0;
+         width: 100vw; /* 뷰포트 전체 너비 */
+         background-color: #ffffff; /* 상단바와 동일한 완전 불투명 */
+         flex-direction: column;
+         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+         z-index: 999;
+         margin-top: 0;
+     }
     
     nav ul.active {
         display: flex; /* 활성화 시 표시 */
@@ -615,14 +620,15 @@ footer {
     
     nav ul {
          display: none; /* 기본적으로 숨김 */
-         position: absolute;
-         top: 100%;
+         position: fixed; /* fixed로 변경하여 전체 화면 덮기 */
+         top: 70px; /* 헤더 높이만큼 아래로 */
          left: 0;
-         width: 100%;
-         background-color: #ffffff;
+         right: 0;
+         width: 100vw; /* 뷰포트 전체 너비 */
+         background-color: #ffffff; /* 상단바와 동일한 완전 불투명 */
          flex-direction: column;
          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-         z-index: 1000;
+         z-index: 999;
          margin-top: 0;
      }
     
