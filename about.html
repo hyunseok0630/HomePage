@@ -301,6 +301,29 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
+        
+        /* 모바일 반응형 스타일 */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 60px 0; /* 모바일에서 패딩 조정 */
+                margin-top: 70px; /* 모바일에서 상단 마진 조정 */
+            }
+            
+            .page-header h1 {
+                font-size: 2rem; /* 모바일에서 폰트 크기 조정 */
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                padding: 50px 0; /* 더 작은 화면에서 패딩 조정 */
+                margin-top: 60px; /* 더 작은 화면에서 상단 마진 조정 */
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem; /* 더 작은 화면에서 폰트 크기 조정 */
+            }
+        }
     </style>
 
     <section class="about-section">

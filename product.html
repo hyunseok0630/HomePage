@@ -175,6 +175,24 @@
             color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
+
+        .buy-now-link {
+            display: inline-block;
+            background-color: #fff;
+            color: #4e73df;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #4e73df;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .buy-now-link:hover {
+            background-color: #4e73df;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
         
         .product-details {
             background-color: #fff;
@@ -411,6 +429,29 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
+        
+        /* 모바일 반응형 스타일 */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 60px 0; /* 모바일에서 패딩 조정 */
+                margin-top: 70px; /* 모바일에서 상단 마진 조정 */
+            }
+            
+            .page-header h1 {
+                font-size: 2rem; /* 모바일에서 폰트 크기 조정 */
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                padding: 50px 0; /* 더 작은 화면에서 패딩 조정 */
+                margin-top: 60px; /* 더 작은 화면에서 상단 마진 조정 */
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem; /* 더 작은 화면에서 폰트 크기 조정 */
+            }
+        }
     </style>
 
     <!-- Product Start -->
@@ -436,7 +477,7 @@
                     <div class="product-overlay">
                         <h3 class="product-title">TCL RayNeo Air 3s</h3>
                         <p class="product-category">프리미엄 스마트 글래스</p>
-                        <a href="#" class="product-link">자세히 보기</a>
+                        <a href="#" class="product-link" data-modal="modal1">자세히 보기</a>
                     </div>
                     <div class="product-details">
                         <h3>TCL RayNeo Air 3s</h3>
@@ -445,6 +486,43 @@
                             <span class="product-tag">RayNeo</span>
                             <span class="product-tag">마이크로 OLED</span>
                             <span class="product-tag">650 nits</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 제품 아이템 2 - TCL RayNeo Air 3s Pro -->
+                <div class="product-item RayNeo">
+                    <img src="img/air3s_pro.png" alt="TCL RayNeo Air 3s Pro" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">TCL RayNeo Air 3s Pro</h3>
+                        <p class="product-category">프로페셔널 스마트 글래스</p>
+                        <a href="#" class="product-link" data-modal="modal3">자세히 보기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>TCL RayNeo Air 3s Pro</h3>
+                        <p>업그레이드된 HueView™ 마이크로 OLED 디스플레이와 향상된 사운드 시스템을 탑재한 프로 모델</p>
+                        <div class="product-tags">
+                            <span class="product-tag">RayNeo</span>
+                            <span class="product-tag">Pro 모델</span>
+                            <span class="product-tag">750 nits</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 제품 아이템 3 - Air 3s Pro 전용 암막커버 -->
+                <div class="product-item RayNeo">
+                    <img src="img/air3s_pro_cover.png" alt="Air 3s Pro 전용 암막커버" class="product-image">
+                    <div class="product-overlay">
+                        <h3 class="product-title">Air 3s Pro 암막커버</h3>
+                        <p class="product-category">전용 액세서리</p>
+                        <a href="https://smartstore.naver.com/nxtwear/products/12384561114" class="buy-now-link" target="_blank">구매하기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>Air 3s Pro 전용 암막커버</h3>
+                        <p>TCL RayNeo Air 3s Pro 전용 차광 커버로 외부 빛을 완전히 차단하여 몰입감 있는 시청 경험 제공</p>
+                        <div class="product-tags">
+                            <span class="product-tag">RayNeo</span>
+                            <span class="product-tag">액세서리</span>
                         </div>
                     </div>
                 </div>
@@ -769,6 +847,143 @@
     </div>
 </div>
 
+    <!-- 제품 모달 3 - TCL RayNeo Air 3s Pro -->
+    <div class="product-modal" id="modal3">
+        <div class="modal-content">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <div class="modal-info">
+                <h2 class="modal-title">TCL RayNeo Air 3s Pro</h2>
+                <p class="modal-category">프로페셔널 스마트 글래스</p>
+                
+                <div class="modal-description">
+                    <p>TCL RayNeo Air 3s Pro는 업그레이드된 HueView™ 마이크로 OLED 디스플레이를 탑재하여 750 nits의 향상된 밝기와 120Hz의 주사율을 제공합니다. 프로페셔널 사용자를 위한 고급 모델로, 더욱 선명하고 밝은 영상을 즐길 수 있으며, 향상된 듀얼 오포징 어쿠스틱 챔버 디자인으로 프리미엄 사운드 경험을 제공합니다.</p>
+                    <p>개선된 9-Point FlexiFit Pro 시스템을 통해 더욱 정밀한 조정이 가능하며, 장시간 착용에도 편안함을 유지합니다. USB Type-C 디스플레이포트를 지원하여 iPhone, Nintendo Switch, Steam Deck, PS4/PS5, Xbox, MacBook, iPad 등 다양한 기기와 호환되며, 프로페셔널 워크플로우에 최적화되어 있습니다.</p>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <i class="fas fa-tag"></i>
+                        <div class="detail-content">
+                            <h4>판매 상태</h4>
+                            <p>판매중</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-globe"></i>
+                        <div class="detail-content">
+                            <h4>판매 지역</h4>
+                            <p>국내</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-tv"></i>
+                        <div class="detail-content">
+                            <h4>디스플레이</h4>
+                            <p>HueView™ 마이크로 OLED Pro, 750 nits</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-sync-alt"></i>
+                        <div class="detail-content">
+                            <h4>주사율</h4>
+                            <p>120Hz</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-volume-up"></i>
+                        <div class="detail-content">
+                            <h4>사운드 시스템</h4>
+                            <p>향상된 듀얼 오포징 어쿠스틱 챔버</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-plug"></i>
+                        <div class="detail-content">
+                            <h4>호환성</h4>
+                            <p>USB-C 디스플레이포트 지원 기기</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-cogs"></i>
+                        <div class="detail-content">
+                            <h4>특별 기능</h4>
+                            <p>9-Point FlexiFit Pro 시스템</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-cta">
+                    <a href="https://smartstore.naver.com/nxtwear/products/12343645054" class="btn btn-primary" style="width: 200px;" target="_blank">구매하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 제품 모달 4 - Air 3s Pro 전용 암막커버 -->
+    <div class="product-modal" id="modal4">
+        <div class="modal-content">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <div class="modal-info">
+                <h2 class="modal-title">Air 3s Pro 전용 암막커버</h2>
+                <p class="modal-category">전용 액세서리</p>
+                
+                <div class="modal-description">
+                    <p>TCL RayNeo Air 3s Pro 전용으로 설계된 프리미엄 암막커버입니다. 외부 빛을 완전히 차단하여 어떤 환경에서도 최적의 시청 경험을 제공합니다. 고품질 소재로 제작되어 내구성이 뛰어나며, Air 3s Pro의 디자인과 완벽하게 조화를 이룹니다.</p>
+                    <p>간편한 착탈식 구조로 필요에 따라 쉽게 장착하고 제거할 수 있으며, 스마트 글래스의 기능을 전혀 방해하지 않습니다. 영화 감상, 게임, 업무용 디스플레이 사용 시 외부 환경의 영향을 받지 않고 몰입감 있는 경험을 제공합니다.</p>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="detail-item">
+                        <i class="fas fa-tag"></i>
+                        <div class="detail-content">
+                            <h4>판매 상태</h4>
+                            <p>판매중</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-globe"></i>
+                        <div class="detail-content">
+                            <h4>판매 지역</h4>
+                            <p>국내</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="detail-content">
+                            <h4>차광 효과</h4>
+                            <p>100% 외부 빛 차단</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-puzzle-piece"></i>
+                        <div class="detail-content">
+                            <h4>호환성</h4>
+                            <p>TCL RayNeo Air 3s Pro 전용</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-tools"></i>
+                        <div class="detail-content">
+                            <h4>설치 방식</h4>
+                            <p>간편한 착탈식 구조</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-gem"></i>
+                        <div class="detail-content">
+                            <h4>소재</h4>
+                            <p>고품질 차광 소재</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-cta">
+                    <a href="https://smartstore.naver.com/nxtwear/products/11869172707" class="btn btn-primary" style="width: 200px;" target="_blank">구매하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <section class="cta">
         <div class="container">
             <h2>(주)스카이커머스와 함께 새로운 경험을 시작하세요</h2>
@@ -1010,12 +1225,24 @@
             const modals = document.querySelectorAll('.product-modal');
             const modalCloses = document.querySelectorAll('.modal-close');
             
-            productLinks.forEach((link, index) => {
+            productLinks.forEach((link) => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    // 해당 인덱스의 모달 열기
-                    modals[index].style.display = 'flex';
-                    document.body.style.overflow = 'hidden'; // 스크롤 방지
+                    const modalId = link.getAttribute('data-modal');
+                    if (modalId) {
+                        const modal = document.getElementById(modalId);
+                        if (modal) {
+                            modal.style.display = 'flex';
+                            document.body.style.overflow = 'hidden'; // 스크롤 방지
+                        }
+                    } else {
+                        // 기존 인덱스 방식 유지 (data-modal이 없는 경우)
+                        const index = Array.from(productLinks).indexOf(link);
+                        if (modals[index]) {
+                            modals[index].style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    }
                 });
             });
             

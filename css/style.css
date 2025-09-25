@@ -92,13 +92,14 @@ img {
 
 /* 헤더 스타일 */
 header {
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     position: fixed;
-    width: 100%;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 로고 스타일 수정 */
@@ -149,12 +150,14 @@ header .container {
 
 nav {
     margin-left: 30px; /* 네비게이션과 로고 사이 간격 조정 */
+    position: relative; /* 햄버거 메뉴의 절대 위치 기준점 */
 }
 
 /* 모바일 반응형 스타일 */
 @media (max-width: 768px) {
     header .container {
         flex-wrap: wrap;
+        padding: 15px; /* 패딩 조정 */
     }
     
     .language-selector {
@@ -190,6 +193,34 @@ nav ul li a::after {
 
 nav ul li a:hover::after {
     width: 100%;
+}
+
+/* 햄버거 메뉴 스타일 */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.hamburger .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+.hamburger.active .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
 }
 
 /* 히어로 섹션 */
@@ -518,25 +549,50 @@ footer {
 
 @media (max-width: 768px) {
     header .container {
-        flex-direction: column;
+        flex-direction: row; /* 가로 방향으로 변경 */
+        justify-content: space-between; /* 양쪽 끝으로 정렬 */
         align-items: center; /* 중앙 정렬 추가 */
+        padding: 15px; /* 패딩 일관성 유지 */
     }
     
     nav {
         margin-left: 0; /* 모바일에서는 왼쪽 마진 제거 */
-        width: 100%; /* 전체 너비 사용 */
+        width: auto; /* 자동 너비 */
         display: flex;
-        justify-content: center; /* 중앙 정렬 */
+        justify-content: flex-end; /* 오른쪽 정렬 */
     }
     
     nav ul {
-        margin-top: 20px;
-        justify-content: center; /* 중앙 정렬 */
-        width: 100%; /* 전체 너비 사용 */
+        display: none; /* 기본적으로 숨김 */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        flex-direction: column;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        margin-top: 0;
+    }
+    
+    nav ul.active {
+        display: flex; /* 활성화 시 표시 */
     }
     
     nav ul li {
-        margin: 0 10px;
+        margin: 0;
+        text-align: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    nav ul li a {
+        display: block;
+        padding: 15px 20px;
+        color: #333;
+    }
+    
+    .hamburger {
+        display: flex; /* 모바일에서 햄버거 메뉴 표시 */
     }
     
     .hero h1 {
@@ -549,13 +605,41 @@ footer {
 }
 
 @media (max-width: 576px) {
+    header .container {
+        padding: 10px 15px; /* 더 작은 화면에서 패딩 조정 */
+    }
+    
+    .hamburger {
+        display: flex; /* 작은 화면에서도 햄버거 메뉴 표시 */
+    }
+    
     nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
+         display: none; /* 기본적으로 숨김 */
+         position: absolute;
+         top: 100%;
+         left: 0;
+         width: 100%;
+         background-color: #ffffff;
+         flex-direction: column;
+         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+         z-index: 1000;
+         margin-top: 0;
+     }
+    
+    nav ul.active {
+        display: flex; /* 활성화 시 표시 */
     }
     
     nav ul li {
-        margin: 5px 10px;
+        margin: 0;
+        text-align: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    nav ul li a {
+        display: block;
+        padding: 15px 20px;
+        color: #333;
     }
     
     .hero h1 {
