@@ -1664,39 +1664,39 @@
                     });
                 }
 
-                if (publishBtn) {
-                    publishBtn.addEventListener('click', () => {
-                        const payload = {
-                            staticOverrides: JSON.parse(localStorage.getItem('staticOverrides') || '{}'),
-                            deletedStaticIds: JSON.parse(localStorage.getItem('deletedStaticIds') || '[]'),
-                            customProducts: JSON.parse(localStorage.getItem('customProducts') || '[]'),
-                            deletedCustomProducts: JSON.parse(localStorage.getItem('deletedCustomProducts') || '[]')
-                        };
-
-                        const toBase64 = function(str){ return btoa(unescape(encodeURIComponent(str))); };
-                        const ghToken = localStorage.getItem('githubToken');
-                        const ghOwner = localStorage.getItem('githubOwner');
-                        const ghRepo = localStorage.getItem('githubRepo');
-                        const ghBranch = localStorage.getItem('githubBranch') || 'main';
-                        const ghPath = localStorage.getItem('githubPath') || 'overrides.json';
-                        const tryGitHub = function(){
-                            if (!ghToken || !ghOwner || !ghRepo) return Promise.reject();
-                            const api = 'https://api.github.com';
-                            const getUrl = api + '/repos/' + ghOwner + '/' + ghRepo + '/contents/' + encodeURIComponent(ghPath) + '?ref=' + ghBranch;
-                            const headers = { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' };
-                            return fetch(getUrl, { headers: headers })
-                                .then(function(resp){ return resp.ok ? resp.json() : Promise.reject(); })
-                                .then(function(existing){ return existing.sha; })
-                                .catch(function(){ return undefined; })
-                                .then(function(sha){
-                                    const putUrl = api + '/repos/' + ghOwner + '/' + ghRepo + '/contents/' + encodeURIComponent(ghPath);
-                                    const body = { message: 'Publish overrides', content: toBase64(JSON.stringify(payload, null, 2)), branch: ghBranch };
-                                    if (sha) body.sha = sha;
-                                    return fetch(putUrl, { method: 'PUT', headers: headers, body: JSON.stringify(body) })
-                                        .then(function(resp){ if (!resp.ok) throw new Error(); });
-                                });
-                        };
-
+                const publishOverrides = function(silent){
+                    const payload = {
+                        staticOverrides: JSON.parse(localStorage.getItem('staticOverrides') || '{}'),
+                        deletedStaticIds: JSON.parse(localStorage.getItem('deletedStaticIds') || '[]'),
+                        customProducts: JSON.parse(localStorage.getItem('customProducts') || '[]'),
+                        deletedCustomProducts: JSON.parse(localStorage.getItem('deletedCustomProducts') || '[]')
+                    };
+                    const toBase64 = function(str){ return btoa(unescape(encodeURIComponent(str))); };
+                    const ghToken = localStorage.getItem('githubToken');
+                    const ghOwner = localStorage.getItem('githubOwner');
+                    const ghRepo = localStorage.getItem('githubRepo');
+                    const ghBranch = localStorage.getItem('githubBranch') || 'main';
+                    const ghPath = localStorage.getItem('githubPath') || 'overrides.json';
+                    const tryGitHub = function(){
+                        if (!ghToken || !ghOwner || !ghRepo) return Promise.reject();
+                        const api = 'https://api.github.com';
+                        const getUrl = api + '/repos/' + ghOwner + '/' + ghRepo + '/contents/' + encodeURIComponent(ghPath) + '?ref=' + ghBranch;
+                        const headers = { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' };
+                        return fetch(getUrl, { headers: headers })
+                            .then(function(resp){ return resp.ok ? resp.json() : Promise.reject(); })
+                            .then(function(existing){ return existing.sha; })
+                            .catch(function(){ return undefined; })
+                            .then(function(sha){
+                                const putUrl = api + '/repos/' + ghOwner + '/' + ghRepo + '/contents/' + encodeURIComponent(ghPath);
+                                const body = { message: 'Publish overrides', content: toBase64(JSON.stringify(payload, null, 2)), branch: ghBranch };
+                                if (sha) body.sha = sha;
+                                return fetch(putUrl, { method: 'PUT', headers: headers, body: JSON.stringify(body) })
+                                    .then(function(resp){ if (!resp.ok) throw new Error(); });
+                            });
+                    };
+                    if (silent) {
+                        return tryGitHub().catch(function(){ return Promise.resolve(); });
+                    } else {
                         const endpoint = localStorage.getItem('publishEndpoint') || '/api/overrides';
                         const tryPost = () => fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                         const tryPutFile = () => fetch('/overrides.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -1712,30 +1712,36 @@
                             URL.revokeObjectURL(url);
                             alert(msg || '업로드 실패로 파일을 다운로드했습니다. 서버에 업로드해 주세요.');
                         };
-
-                        tryGitHub().then(function(){
+                        return tryGitHub().then(function(){
                             alert('GitHub에 공개 저장되었습니다.');
                         }).catch(function(){
-                            tryPost().then(function(resp){
+                            return tryPost().then(function(resp){
                                 if (!resp.ok) throw new Error();
                                 alert('공개 저장이 서버에 업로드되었습니다.');
                             }).catch(function(){
-                                tryPutFile().then(function(resp){
+                                return tryPutFile().then(function(resp){
                                     if (!resp.ok) throw new Error();
                                     alert('공개 저장이 서버에 업로드되었습니다.');
                                 }).catch(function(){
                                     const input = prompt('업로드 주소를 입력하세요 (예: https://example.com/api/overrides)');
                                     if (input && input.trim()) {
                                         localStorage.setItem('publishEndpoint', input.trim());
-                                        fetch(input.trim(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+                                        return fetch(input.trim(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
                                             .then(function(resp){ if (!resp.ok) throw new Error(); alert('공개 저장이 서버에 업로드되었습니다.'); })
                                             .catch(function(){ downloadFallback('업로드가 불가능하여 파일을 다운로드했습니다. 설정한 주소로 서버 업로드를 구성해 주세요.'); });
                                     } else {
                                         downloadFallback();
+                                        return Promise.resolve();
                                     }
                                 });
                             });
                         });
+                    }
+                };
+
+                if (publishBtn) {
+                    publishBtn.addEventListener('click', () => {
+                        publishOverrides(false);
                     });
                 }
 
@@ -2119,8 +2125,10 @@
                                     };
                                     try {
                                         localStorage.setItem('customProducts', JSON.stringify(products));
-                                        alert('제품이 수정되었습니다.');
-                                        window.location.reload();
+                                        publishOverrides(true).finally(function(){
+                                            alert('제품이 수정되었습니다.');
+                                            window.location.reload();
+                                        });
                                     } catch (err) {
                                         alert('저장 공간 부족 (이미지 용량 초과)');
                                     }
@@ -2133,8 +2141,10 @@
                                   };
                                  try {
                                      localStorage.setItem('staticOverrides', JSON.stringify(overrides));
-                                     alert('제품이 수정되었습니다.');
-                                     window.location.reload();
+                                     publishOverrides(true).finally(function(){
+                                         alert('제품이 수정되었습니다.');
+                                         window.location.reload();
+                                     });
                                  } catch (err) {
                                      alert('저장 공간 부족 (이미지 용량 초과)');
                                  }
@@ -2149,8 +2159,10 @@
                             products.push(newProduct);
                             try {
                                 localStorage.setItem('customProducts', JSON.stringify(products));
-                                alert('제품이 추가되었습니다.');
-                                window.location.reload();
+                                publishOverrides(true).finally(function(){
+                                    alert('제품이 추가되었습니다.');
+                                    window.location.reload();
+                                });
                             } catch (err) {
                                 alert('저장 공간 부족 (이미지 용량 초과)');
                             }
