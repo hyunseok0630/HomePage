@@ -500,6 +500,7 @@
                                 <button id="reorderBtn" class="filter-btn" style="background-color: #858796; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-arrows-alt"></i> 순서</button>
                                 <button id="restoreBtn" class="filter-btn" style="background-color: #1cc88a; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-trash-restore"></i> 복구</button>
                                 <button id="removeProductBtn" class="filter-btn" style="background-color: #e74a3b; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-trash"></i> 제거</button>
+                                <button id="publishBtn" class="filter-btn" style="background-color: #20c997; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-cloud-upload-alt"></i> 공개 저장</button>
                             </div>
                         </div>
                     </div>
@@ -921,8 +922,8 @@
                         <textarea id="newProdDesc" rows="4" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px; resize: vertical;"></textarea>
                     </div>
                     <div style="margin-bottom: 15px;">
-                        <label style="display:block; margin-bottom:5px; font-weight:bold;">가격 (숫자만)</label>
-                        <input type="number" id="newProdPrice" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:bold;">가격 (선택, 숫자만)</label>
+                        <input type="number" id="newProdPrice" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;" placeholder="미입력 시 가격 표시 없음">
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display:block; margin-bottom:5px; font-weight:bold;">제품 이미지 업로드</label>
@@ -1385,6 +1386,25 @@
     
     <script src="js/main.js"></script>
     <script>
+        (function(){
+            try {
+                if (!sessionStorage.getItem('overridesLoaded')) {
+                    fetch('overrides.json', { cache: 'no-store' })
+                        .then(function(resp){ if (!resp.ok) throw new Error('no overrides'); return resp.json(); })
+                        .then(function(data){
+                            if (data && typeof data === 'object') {
+                                if (data.staticOverrides) localStorage.setItem('staticOverrides', JSON.stringify(data.staticOverrides));
+                                if (data.deletedStaticIds) localStorage.setItem('deletedStaticIds', JSON.stringify(data.deletedStaticIds));
+                                if (data.customProducts) localStorage.setItem('customProducts', JSON.stringify(data.customProducts));
+                                if (data.deletedCustomProducts) localStorage.setItem('deletedCustomProducts', JSON.stringify(data.deletedCustomProducts));
+                                sessionStorage.setItem('overridesLoaded', 'true');
+                                window.location.reload();
+                            }
+                        })
+                        .catch(function(){ /* ignore */ });
+                }
+            } catch(e) {}
+        })();
         // 이미지 슬라이드 기능
         let currentSlideIndex = 0;
         const slides = document.querySelectorAll('.carousel-slide');
@@ -1610,6 +1630,7 @@
                 const reorderBtn = document.getElementById('reorderBtn');
                 const restoreBtn = document.getElementById('restoreBtn');
                 const removeBtn = document.getElementById('removeProductBtn');
+                const publishBtn = document.getElementById('publishBtn');
 
                 if (adminControls) {
                     adminControls.style.display = 'inline-flex';
@@ -1625,6 +1646,27 @@
                             // 모든 모드 비활성화
                             disableAllModes();
                         }
+                    });
+                }
+
+                if (publishBtn) {
+                    publishBtn.addEventListener('click', () => {
+                        const payload = {
+                            staticOverrides: JSON.parse(localStorage.getItem('staticOverrides') || '{}'),
+                            deletedStaticIds: JSON.parse(localStorage.getItem('deletedStaticIds') || '[]'),
+                            customProducts: JSON.parse(localStorage.getItem('customProducts') || '[]'),
+                            deletedCustomProducts: JSON.parse(localStorage.getItem('deletedCustomProducts') || '[]')
+                        };
+                        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'overrides.json';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        alert('overrides.json 파일이 다운로드되었습니다. 서버에 업로드하면 모든 화면에 반영됩니다.');
                     });
                 }
 
@@ -2067,7 +2109,8 @@
                 div.className = `product-item ${prod.filter} custom-product`;
                 div.dataset.id = prod.id;
                 
-                const formattedPrice = Number(prod.price).toLocaleString() + '원';
+                const hasPrice = prod.price !== undefined && prod.price !== null && String(prod.price).trim() !== '';
+                const formattedPrice = hasPrice ? (Number(prod.price).toLocaleString() + '원') : '';
 
                 const hasLink = prod.link && prod.link.trim() !== '' && prod.link !== '#';
                 const buyHref = hasLink ? prod.link : '#';
@@ -2086,7 +2129,7 @@
                         ${prod.desc ? `<p>${prod.desc}</p>` : ''}
                         <div class="product-tags">
                             <span class="product-tag">${prod.filter}</span>
-                            <span class="product-tag">${formattedPrice}</span>
+                            ${hasPrice ? `<span class=\"product-tag\">${formattedPrice}</span>` : ''}
                         </div>
                     </div>
                 `;
