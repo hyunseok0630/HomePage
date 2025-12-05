@@ -1946,7 +1946,9 @@
                 // Immediate reload might close modal.
                 // Let's alert and reload.
                 if(confirm('복구되었습니다. 페이지를 새로고침 하시겠습니까?')) {
-                    window.location.reload();
+                    publishOverrides(true).finally(function(){
+                        window.location.reload();
+                    });
                 }
             };
             
@@ -1965,7 +1967,9 @@
                     
                     renderTrashBin();
                     if(confirm('복구되었습니다. 페이지를 새로고침 하시겠습니까?')) {
-                        window.location.reload();
+                        publishOverrides(true).finally(function(){
+                            window.location.reload();
+                        });
                     }
                 }
             };
@@ -2089,6 +2093,7 @@
                 });
                 
                 localStorage.setItem('customProducts', JSON.stringify(reorderedProducts));
+                publishOverrides(true);
                 alert('순서가 저장되었습니다. (주의: 고정 제품의 순서는 저장되지 않을 수 있습니다)');
             }
 
@@ -2298,8 +2303,9 @@
                     // Remove from active
                     products = products.filter(p => p.id !== id);
                     localStorage.setItem('customProducts', JSON.stringify(products));
-                    
-                    window.location.reload();
+                    publishOverrides(true).finally(function(){
+                        window.location.reload();
+                    });
                 }
             }
             
@@ -2309,7 +2315,9 @@
                     deleted.push(staticId);
                     localStorage.setItem('deletedStaticIds', JSON.stringify(deleted));
                 }
-                window.location.reload();
+                publishOverrides(true).finally(function(){
+                    window.location.reload();
+                });
             }
             
             function openEditModal(item) {
