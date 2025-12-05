@@ -2319,7 +2319,11 @@
                 if (prod) {
                     // Add to Trash
                     let deleted = JSON.parse(localStorage.getItem('deletedCustomProducts') || '[]');
+                    const maxTrash = parseInt(localStorage.getItem('trashMax') || '50');
                     deleted.push(prod);
+                    if (deleted.length > maxTrash) {
+                        deleted = deleted.slice(-maxTrash);
+                    }
                     localStorage.setItem('deletedCustomProducts', JSON.stringify(deleted));
                     
                     // Remove from active
@@ -2332,9 +2336,13 @@
             }
             
             function deleteStaticProduct(staticId) {
-                const deleted = JSON.parse(localStorage.getItem('deletedStaticIds') || '[]');
+                let deleted = JSON.parse(localStorage.getItem('deletedStaticIds') || '[]');
+                const maxTrash = parseInt(localStorage.getItem('trashMax') || '50');
                 if (!deleted.includes(staticId)) {
                     deleted.push(staticId);
+                    if (deleted.length > maxTrash) {
+                        deleted = deleted.slice(-maxTrash);
+                    }
                     localStorage.setItem('deletedStaticIds', JSON.stringify(deleted));
                 }
                 publishOverrides(true).finally(function(){
