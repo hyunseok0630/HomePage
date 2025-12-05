@@ -1389,6 +1389,28 @@
         (function(){
             try {
                 if (!sessionStorage.getItem('overridesLoaded')) {
+                    var tryProductsJson = function(){
+                        return fetch('products.json', { cache: 'no-store' })
+                            .then(function(resp){ if (!resp.ok) throw new Error('no products'); return resp.json(); })
+                            .then(function(arr){
+                                if (!Array.isArray(arr)) throw new Error('invalid products');
+                                var mapped = arr.map(function(p){
+                                    return {
+                                        id: p.id || Date.now() + Math.floor(Math.random()*1000),
+                                        name: p.name || '',
+                                        filter: p.filter || (p.category || '산업 분야'),
+                                        sub: p.sub || (p.category || ''),
+                                        desc: p.description || p.desc || '',
+                                        price: p.price,
+                                        img: p.image || p.img || 'img/logo_blue.png',
+                                        link: p.link || '#',
+                                        isCustom: true
+                                    };
+                                });
+                                localStorage.setItem('customProducts', JSON.stringify(mapped));
+                                return { customProducts: mapped };
+                            });
+                    };
                     var tryApi = function(){
                         return fetch('/api/overrides', { cache: 'no-store' })
                             .then(function(resp){ if (!resp.ok) throw new Error('no overrides'); return resp.json(); });
@@ -1407,7 +1429,7 @@
                         return fetch('overrides.json', { cache: 'no-store' })
                             .then(function(resp){ if (!resp.ok) throw new Error('no overrides'); return resp.json(); });
                     };
-                    tryApi().catch(tryGitRaw).catch(tryFile).then(function(data){
+                    tryProductsJson().catch(tryApi).catch(tryGitRaw).catch(tryFile).then(function(data){
                         if (data && typeof data === 'object') {
                             if (data.staticOverrides) localStorage.setItem('staticOverrides', JSON.stringify(data.staticOverrides));
                             if (data.deletedStaticIds) localStorage.setItem('deletedStaticIds', JSON.stringify(data.deletedStaticIds));
