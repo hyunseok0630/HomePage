@@ -151,6 +151,19 @@ header .container {
 nav {
     margin-left: 30px; /* 네비게이션과 로고 사이 간격 조정 */
     position: relative; /* 햄버거 메뉴의 절대 위치 기준점 */
+    flex: 1; /* 남은 공간 모두 차지 */
+    display: flex;
+    justify-content: space-between; /* 메뉴와 로그인 버튼 사이 공간 분배 */
+}
+
+nav ul.nav-menu {
+    display: flex;
+    flex: 1;
+}
+
+/* 로그인/로그아웃 버튼 항목 스타일 */
+nav ul.nav-menu li.auth-btn-item {
+    margin-left: auto !important; /* 오른쪽 끝으로 밀기 */
 }
 
 /* 모바일 반응형 스타일 */
@@ -566,7 +579,7 @@ footer {
         justify-content: flex-end; /* 오른쪽 정렬 */
     }
     
-    nav ul {
+    nav ul.nav-menu {
          display: none; /* 기본적으로 숨김 */
          position: fixed; /* fixed로 변경하여 전체 화면 덮기 */
          top: 70px; /* 헤더 높이만큼 아래로 */
@@ -580,7 +593,7 @@ footer {
          margin-top: 0;
      }
     
-    nav ul.active {
+    nav ul.nav-menu.active {
         display: flex; /* 활성화 시 표시 */
     }
     
@@ -618,7 +631,7 @@ footer {
         display: flex; /* 작은 화면에서도 햄버거 메뉴 표시 */
     }
     
-    nav ul {
+    nav ul.nav-menu {
          display: none; /* 기본적으로 숨김 */
          position: fixed; /* fixed로 변경하여 전체 화면 덮기 */
          top: 70px; /* 헤더 높이만큼 아래로 */
@@ -632,7 +645,7 @@ footer {
          margin-top: 0;
      }
     
-    nav ul.active {
+    nav ul.nav-menu.active {
         display: flex; /* 활성화 시 표시 */
     }
     

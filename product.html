@@ -12,6 +12,17 @@
      <meta name="theme-color" content="#4e73df">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        (function(){
+            try {
+                var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                var userRole = localStorage.getItem('userRole');
+                if (isLoggedIn && userRole === 'admin') {
+                    document.documentElement.classList.add('is-admin');
+                }
+            } catch(e) {}
+        })();
+    </script>
     <style>
         /* 제품 페이지 추가 스타일 */
         .page-header {
@@ -62,6 +73,7 @@
             position: relative;
             z-index: 1;
         }
+        .is-admin #adminControls { display: inline-flex !important; }
         
         .product-filter {
             display: flex;
@@ -198,6 +210,11 @@
             background-color: #4e73df;
             color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .buy-now-link.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
         }
         
         .product-details {
@@ -472,13 +489,26 @@
                         <button class="filter-btn" data-filter="Mudra">Mudra</button>
                         <button class="filter-btn" data-filter="Keheal">Keheal</button>
                         <button class="filter-btn" data-filter="SKY">SKY</button>
+                        
+                        <!-- 관리자 컨트롤 패널 -->
+                        <div id="adminControls" style="display: none; margin-left: 15px;">
+                            <button id="mainEditBtn" class="filter-btn" style="background-color: #4e73df; color: white;"><i class="fas fa-cog"></i> 관리</button>
+                            
+                            <div id="subControls" style="display: none; margin-left: 10px;">
+                                <button id="addProductBtn" class="filter-btn" style="background-color: #36b9cc; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-plus"></i> 추가</button>
+                                <button id="editContentBtn" class="filter-btn" style="background-color: #f6c23e; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-pen"></i> 수정</button>
+                                <button id="reorderBtn" class="filter-btn" style="background-color: #858796; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-arrows-alt"></i> 순서</button>
+                                <button id="restoreBtn" class="filter-btn" style="background-color: #1cc88a; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-trash-restore"></i> 복구</button>
+                                <button id="removeProductBtn" class="filter-btn" style="background-color: #e74a3b; color: white; font-size: 0.9rem; padding: 8px 15px;"><i class="fas fa-trash"></i> 제거</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <div class="row product-container product-grid">
                 <!-- 제품 아이템 1 -->
-                <div class="product-item RayNeo">
+                <div class="product-item RayNeo" data-static-id="static_rayneo_air3s">
                     <img src="img/air3s.jpg" alt="TCL RayNeo Air 3s" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">TCL RayNeo Air 3s</h3>
@@ -497,7 +527,7 @@
                 </div>
 
                 <!-- 제품 아이템 2 - TCL RayNeo Air 3s Pro -->
-                <div class="product-item RayNeo">
+                <div class="product-item RayNeo" data-static-id="static_rayneo_air3s_pro">
                     <img src="img/air3s_pro.png" alt="TCL RayNeo Air 3s Pro" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">TCL RayNeo Air 3s Pro</h3>
@@ -516,7 +546,7 @@
                 </div>
 
                 <!-- 제품 아이템 3 - Air 3s Pro 전용 암막커버 -->
-                <div class="product-item RayNeo">
+                <div class="product-item RayNeo" data-static-id="static_rayneo_cover">
                     <img src="img/air3s_pro_cover.png" alt="Air 3s Pro 전용 암막커버" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Air 3s Pro 암막커버</h3>
@@ -533,7 +563,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 4 - Mudra Link -->
-                <div class="product-item Mudra">
+                <div class="product-item Mudra" data-static-id="static_mudra_link">
                     <img src="img/mudra_link.png" alt="Mudra Link" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Mudra Link</h3>
@@ -550,7 +580,7 @@
                     </div>
                 </div>
 
-                <div class="product-item Mudra">
+                <div class="product-item Mudra" data-static-id="static_mudra_band">
                     <img src="img/mudra_band.png" alt="Mudra Band" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Mudra Band</h3>
@@ -568,7 +598,7 @@
                 </div>
 
                 <!-- 제품 아이템 8 - 벨트 (산업 분야) -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_belt_barrier">
                     <img src="img/차단봉.jpg" alt="Belt" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Belt Barrier</h3>
@@ -586,7 +616,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 99 - belt_laser -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_belt_laser">
                     <img src="img/belt_laser.png" alt="belt_laser" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Belt Barrier_레이저각인</h3>
@@ -603,7 +633,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 2 - Sic & Sisic Roller -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_sic_roller">
                     <img src="img/roller.jpg" alt="Sic & Sisic Roller" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Sic & Sisic Roller</h3>
@@ -617,7 +647,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 3 - 세라믹 보드 & 울 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_ceramic_board">
                     <img src="img/whiteboard.jpg" alt="세라믹 보드 & 울" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">세라믹 보드 & 울</h3>
@@ -631,7 +661,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 4 - Eye Link Belt -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_eyelink_belt">
                     <img src="img/EyeLinkBelt.jpg" alt="Eye Link Belt" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Eye Link Belt</h3>
@@ -645,7 +675,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 5 - Mesh Belt -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_mesh_belt">
                     <img src="img/inconel.jpg" alt="Mesh Belt" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Mesh Belt</h3>
@@ -659,7 +689,7 @@
                     </div>
                 </div>
                                 <!-- 제품 아이템 8 - Grating Sus 보강판 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_grating_sus1">
                     <img src="img/Grating Sus1.png" alt="Grating Sus" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Grating Sus 보강판</h3>
@@ -677,7 +707,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 11 - Grating Sus 보강판2 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_grating_sus2">
                     <img src="img/Grating Sus2.png" alt="Grating Sus" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Grating Sus 보강판</h3>
@@ -695,7 +725,7 @@
                     </div>
                 </div>
                  <!-- 제품 아이템 12 - Grating Sus 보강판3 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_grating_sus3">
                     <img src="img/Grating Sus3.png" alt="Grating Sus" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Grating Sus 보강판</h3>
@@ -713,7 +743,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 94 - Grating Sus 보강판 고정핀 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_grating_pin">
                     <img src="img/PIN.png" alt="Grating Sus PIN" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Grating Sus 보강판 고정 핀</h3>
@@ -730,7 +760,7 @@
                     </div>
                 </div>
                                 <!-- 제품 아이템 93 - Grating Sus 보강판 이동 캐비넷 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_grating_cart">
                     <img src="img/Cart.png" alt="Grating Sus push truck " class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Grating Sus 보강판 이동 캐비넷</h3>
@@ -749,7 +779,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 13 - 테이프 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_tape">
                     <img src="img/tape.png" alt="tpae" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">비점착 안전 롤 테이프</h3>
@@ -767,7 +797,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 9 - 항온·항습챔버용 온습도센서(XB32A) -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_sensor">
                     <img src="img/XB32A.jpeg" alt="XB32A" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">항온·항습챔버용 온습도센서(XB32A)</h3>
@@ -787,7 +817,7 @@
                     </div>
                 </div>
                                 <!-- 제품 아이템 10 - CMP 카파 전용 세정제 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_cmp">
                     <img src="img/CMP.jpg" alt="CMP" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">CMP 카파 전용 세정제</h3>
@@ -805,7 +835,7 @@
                     </div>
                 </div>
                 <!-- 제품 아이템 6 - Ceramic Rollers -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_ceramic_rollers">
                     <img src="img/Ceramic Rollers.jpg" alt="Ceramic Rollers" class="product-image">
                     <div class="product-overlay">
                         <h3 class="product-title">Ceramic Rollers</h3>
@@ -819,7 +849,7 @@
                     </div>
                 </div>
                                 <!-- 제품 아이템 98 - Fire Tube_01 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_fire_tube1">
                     <img src="img/fire Tube1.png" alt="Fire Tube" class="Fire Tube">
                     <div class="product-overlay">
                         <h3 class="product-title">소화 튜브</h3>
@@ -838,7 +868,7 @@
                     </div>
                 </div>
                                                 <!-- 제품 아이템 97 - Fire Tube_02 -->
-                <div class="product-item 산업 분야">
+                <div class="product-item 산업 분야" data-static-id="static_fire_tube2">
                     <img src="img/fire Tube2.png" alt="Fire Tube" class="Fire Tube">
                     <div class="product-overlay">
                         <h3 class="product-title">소화 튜브</h3>
@@ -860,6 +890,75 @@
             </div>
         </div>
     </section>
+
+    <!-- 제품 추가 모달 -->
+    <div class="product-modal" id="addProductModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <div class="modal-info">
+                <h2 class="modal-title">새 제품 추가</h2>
+                <form id="addProductForm">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:bold;">제품명</label>
+                        <input type="text" id="newProdName" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:bold;">카테고리 (필터용)</label>
+                        <select id="newProdFilter" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                            <option value="산업 분야">산업 분야</option>
+                            <option value="RayNeo">RayNeo</option>
+                            <option value="Mudra">Mudra</option>
+                            <option value="Keheal">Keheal</option>
+                            <option value="SKY">SKY</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:bold;">부제목 (카테고리/짧은 설명)</label>
+                        <input type="text" id="newProdSub" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:bold;">상세 설명</label>
+                        <textarea id="newProdDesc" rows="4" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px; resize: vertical;"></textarea>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:bold;">가격 (숫자만)</label>
+                        <input type="number" id="newProdPrice" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:bold;">제품 이미지 업로드</label>
+                        <input type="file" id="newProdImgFile" accept="image/*" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                        <small style="color:#888;">* 이미지를 업로드하지 않으면 기본 이미지가 사용됩니다.</small>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:bold;">구매 링크</label>
+                        <input type="text" id="newProdLink" placeholder="#" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                    </div>
+                    <div style="text-align:center; margin-top:20px;">
+                        <button type="submit" class="btn btn-primary" style="padding:10px 30px; border:none; background:#4e73df; color:white; border-radius:5px; cursor:pointer;">추가하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 휴지통 모달 -->
+    <div class="product-modal" id="trashModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <div class="modal-info">
+                <h2 class="modal-title">삭제된 제품 복구</h2>
+                <p class="modal-category">삭제된 제품 목록입니다. 복구 버튼을 누르면 다시 표시됩니다.</p>
+                
+                <div id="trashList" style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+                    <!-- 삭제된 아이템들이 여기에 표시됨 -->
+                </div>
+                
+                <div class="modal-cta">
+                    <button id="closeTrashBtn" class="btn btn-primary" style="background-color: #858796; border: none;">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 제품 모달 1 - TCL RayNeo Air 3s -->
     <div class="product-modal" id="modal1">
@@ -1397,10 +1496,812 @@
                     if (e.target === modal) {
                         modal.style.display = 'none';
                         document.body.style.overflow = 'auto';
+                        
+                        // 모달이 닫힐 때 폼 리셋
+                        if (modal.id === 'addProductModal') {
+                            const form = document.getElementById('addProductForm');
+                            if (form) form.reset();
+                        }
                     }
                 });
             });
+
+            // --- 제품 추가 기능 (Admin Only) ---
+            const userRole = localStorage.getItem('userRole');
+            let isDeleteMode = false;
+            let isEditMode = false;
+            let isReorderMode = false;
+            let editTargetId = null; // 수정할 제품 ID (number for custom, string for static)
+
+            // Load Static Overrides & Deletions
+            const deletedStaticIds = JSON.parse(localStorage.getItem('deletedStaticIds') || '[]');
+            const staticOverrides = JSON.parse(localStorage.getItem('staticOverrides') || '{}');
+            
+            // Load Deleted Custom Products (Trash Bin)
+            const deletedCustomProducts = JSON.parse(localStorage.getItem('deletedCustomProducts') || '[]');
+
+            // Apply Static Overrides & Deletions
+            document.querySelectorAll('.product-item[data-static-id]').forEach(item => {
+                const staticId = item.getAttribute('data-static-id');
+                
+                // 1. Hide deleted items
+                if (deletedStaticIds.includes(staticId)) {
+                    item.remove();
+                    return;
+                }
+
+                // 2. Apply overrides
+                if (staticOverrides[staticId]) {
+                    const data = staticOverrides[staticId];
+                    
+                    // Update Classes (Filter)
+                    item.classList.add(data.filter);
+                    
+                    // Update Content
+                    const titleEl = item.querySelector('.product-title');
+                    const overlayCatEl = item.querySelector('.product-overlay .product-category');
+                    const imgEl = item.querySelector('.product-image');
+                    const detailsTitle = item.querySelector('.product-details h3');
+                    // const detailsDesc = item.querySelector('.product-details p'); // 기존
+                    
+                    if (titleEl) titleEl.textContent = data.name;
+                    if (overlayCatEl) overlayCatEl.textContent = data.sub; // Subtitle for Overlay
+                    if (imgEl && data.img) imgEl.src = data.img;
+                    if (detailsTitle) detailsTitle.textContent = data.name;
+                    
+                    // Update Details Description (Separate from subtitle if possible)
+                    // We need to reconstruct the details part carefully to include both sub and desc
+                    const detailsDiv = item.querySelector('.product-details');
+                    if (detailsDiv) {
+                        // Find or create subtitle/desc elements
+                        // Strategy: Clear and rebuild inner HTML for details (except tags maybe?)
+                        // Or just target specific elements.
+                        // Let's rebuild the content before tags.
+                        
+                        // Save tags
+                        const tagsContainer = detailsDiv.querySelector('.product-tags');
+                        const tagsHtml = tagsContainer ? tagsContainer.innerHTML : '';
+                        
+                        // Rebuild
+                        let newDetailsHtml = `<h3>${data.name}</h3>`;
+                        if (data.sub) newDetailsHtml += `<p style="color:#4e73df; font-weight:500; margin-bottom:5px;">${data.sub}</p>`;
+                        if (data.desc) newDetailsHtml += `<p>${data.desc}</p>`;
+                        else if (data.sub && !data.desc) {
+                             // Fallback: if no desc, maybe original had one?
+                             // For overrides, we assume data.desc is authoritative if present.
+                             // If not present, we might be losing original desc.
+                             // But usually when editing we save both.
+                        }
+                        
+                        newDetailsHtml += `<div class="product-tags">`;
+                        
+                        // Rebuild Tags based on Filter + Price
+                        let newTagsHtml = `<span class="product-tag">${data.filter}</span>`;
+                        if (data.price) {
+                            const formattedPrice = Number(data.price).toLocaleString() + '원';
+                            newTagsHtml += `<span class="product-tag">${formattedPrice}</span>`;
+                        }
+                        newDetailsHtml += newTagsHtml;
+                        newDetailsHtml += `</div>`;
+                        
+                        detailsDiv.innerHTML = newDetailsHtml;
+                    }
+                    
+                    const buyEl = item.querySelector('a.buy-now-link');
+                    if (buyEl) {
+                        const hasLink = data.link && data.link.trim() !== '' && data.link !== '#';
+                        if (hasLink) {
+                            buyEl.href = data.link;
+                            buyEl.setAttribute('target', '_blank');
+                        } else {
+                            buyEl.remove();
+                        }
+                    }
+                }
+            });
+
+            if (userRole === 'admin') {
+                const adminControls = document.getElementById('adminControls');
+                const mainEditBtn = document.getElementById('mainEditBtn');
+                const subControls = document.getElementById('subControls');
+                
+                const addBtn = document.getElementById('addProductBtn');
+                const editContentBtn = document.getElementById('editContentBtn');
+                const reorderBtn = document.getElementById('reorderBtn');
+                const restoreBtn = document.getElementById('restoreBtn');
+                const removeBtn = document.getElementById('removeProductBtn');
+
+                if (adminControls) {
+                    adminControls.style.display = 'inline-flex';
+                    adminControls.style.alignItems = 'center';
+                    
+                    // 메인 관리 버튼 토글
+                    mainEditBtn.addEventListener('click', () => {
+                        if (subControls.style.display === 'none') {
+                            subControls.style.display = 'inline-flex';
+                            subControls.style.gap = '5px';
+                        } else {
+                            subControls.style.display = 'none';
+                            // 모든 모드 비활성화
+                            disableAllModes();
+                        }
+                    });
+                }
+
+                // 모드 초기화 함수
+                function disableAllModes() {
+                    isDeleteMode = false;
+                    isEditMode = false;
+                    isReorderMode = false;
+                    
+                    document.body.classList.remove('delete-mode', 'edit-mode', 'reorder-mode');
+                    
+                    // 버튼 스타일 초기화
+                    if(removeBtn) {
+                        removeBtn.innerHTML = '<i class="fas fa-trash"></i> 제거';
+                        removeBtn.style.backgroundColor = '#e74a3b';
+                    }
+                    if(editContentBtn) {
+                        editContentBtn.innerHTML = '<i class="fas fa-pen"></i> 수정';
+                        editContentBtn.style.backgroundColor = '#f6c23e';
+                    }
+                    if(reorderBtn) {
+                        reorderBtn.innerHTML = '<i class="fas fa-arrows-alt"></i> 순서';
+                        reorderBtn.style.backgroundColor = '#858796';
+                        disableDragAndDrop();
+                    }
+                }
+
+                // 추가 버튼
+                if (addBtn) {
+                    addBtn.addEventListener('click', () => {
+                        disableAllModes(); // 다른 모드 끄기
+                        editTargetId = null; // 신규 추가 모드
+                        document.querySelector('#addProductModal .modal-title').textContent = '새 제품 추가';
+                        document.querySelector('#addProductForm button[type="submit"]').textContent = '추가하기';
+                        document.getElementById('addProductForm').reset();
+                        document.getElementById('addProductModal').style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    });
+                }
+
+                // 수정 버튼 (내용 수정)
+                if (editContentBtn) {
+                    editContentBtn.addEventListener('click', () => {
+                        const wasActive = isEditMode;
+                        disableAllModes();
+                        
+                        if (!wasActive) {
+                            isEditMode = true;
+                            editContentBtn.innerHTML = '<i class="fas fa-check"></i> 완료';
+                            editContentBtn.style.backgroundColor = '#28a745';
+                            alert('수정할 제품을 클릭하세요.');
+                            document.body.classList.add('edit-mode');
+                        }
+                    });
+                }
+
+                // 순서 변경 버튼
+                if (reorderBtn) {
+                    reorderBtn.addEventListener('click', () => {
+                        const wasActive = isReorderMode;
+                        disableAllModes();
+                        
+                        if (!wasActive) {
+                            isReorderMode = true;
+                            reorderBtn.innerHTML = '<i class="fas fa-save"></i> 저장';
+                            reorderBtn.style.backgroundColor = '#28a745';
+                            alert('제품을 드래그하여 순서를 변경하세요. 완료 후 저장 버튼을 누르세요.');
+                            document.body.classList.add('reorder-mode');
+                            enableDragAndDrop();
+                        } else {
+                            // 저장 로직 실행
+                            saveOrder();
+                        }
+                    });
+                }
+                
+                // 복구 버튼 (휴지통)
+                if (restoreBtn) {
+                    restoreBtn.addEventListener('click', () => {
+                        disableAllModes();
+                        renderTrashBin();
+                        document.getElementById('trashModal').style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    });
+                }
+
+                // 제거 버튼
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', () => {
+                        const wasActive = isDeleteMode;
+                        disableAllModes();
+                        
+                        if (!wasActive) {
+                            isDeleteMode = true;
+                            removeBtn.innerHTML = '<i class="fas fa-check"></i> 완료';
+                            removeBtn.style.backgroundColor = '#28a745';
+                            alert('삭제할 제품을 클릭하세요.');
+                            document.body.classList.add('delete-mode');
+                        }
+                    });
+                }
+            }
+            
+            // 휴지통 렌더링 함수
+            function renderTrashBin() {
+                const trashList = document.getElementById('trashList');
+                trashList.innerHTML = '';
+                
+                const deletedStaticIds = JSON.parse(localStorage.getItem('deletedStaticIds') || '[]');
+                const deletedCustomProducts = JSON.parse(localStorage.getItem('deletedCustomProducts') || '[]');
+                
+                if (deletedStaticIds.length === 0 && deletedCustomProducts.length === 0) {
+                    trashList.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">휴지통이 비어있습니다.</p>';
+                    return;
+                }
+
+                // Render Static Deleted Items
+                // We assume we can't get full details of static items easily if they are removed from DOM.
+                // But wait, they ARE removed from DOM.
+                // Strategy: We should just show their ID or Name if we have it?
+                // Actually, static overrides might have name. If not, we only have ID.
+                // To make this user friendly, we might need to store "name" when deleting static item.
+                // Let's update deleteStaticProduct to store metadata.
+                
+                deletedStaticIds.forEach(id => {
+                    // Check if we have override data for name
+                    let name = id;
+                    const overrides = JSON.parse(localStorage.getItem('staticOverrides') || '{}');
+                    if (overrides[id] && overrides[id].name) {
+                        name = overrides[id].name;
+                    } else {
+                        // Try to infer from ID
+                        name = id.replace('static_', '').replace(/_/g, ' ').toUpperCase();
+                    }
+                    
+                    const div = document.createElement('div');
+                    div.className = 'product-item';
+                    div.style.border = '1px solid #e74a3b';
+                    div.innerHTML = `
+                        <div style="padding: 20px; text-align: center;">
+                            <h4 style="margin-bottom:10px;">${name}</h4>
+                            <p style="color:#888; font-size:0.8rem;">기본(Static) 제품</p>
+                            <button onclick="restoreStaticProduct('${id}')" class="btn btn-primary" style="margin-top:10px; padding: 5px 15px; font-size:0.8rem;">복구</button>
+                        </div>
+                    `;
+                    trashList.appendChild(div);
+                });
+                
+                // Render Custom Deleted Items
+                deletedCustomProducts.forEach(prod => {
+                    const div = document.createElement('div');
+                    div.className = 'product-item';
+                    div.style.border = '1px solid #e74a3b';
+                    div.innerHTML = `
+                        <img src="${prod.img}" style="width:100%; height:150px; object-fit:contain;">
+                        <div style="padding: 15px; text-align: center;">
+                            <h4 style="margin-bottom:5px;">${prod.name}</h4>
+                            <p style="color:#888; font-size:0.8rem;">커스텀 제품</p>
+                            <button onclick="restoreCustomProduct(${prod.id})" class="btn btn-primary" style="margin-top:10px; padding: 5px 15px; font-size:0.8rem;">복구</button>
+                        </div>
+                    `;
+                    trashList.appendChild(div);
+                });
+            }
+            
+            // Global functions for onclick access
+            window.restoreStaticProduct = function(id) {
+                let deleted = JSON.parse(localStorage.getItem('deletedStaticIds') || '[]');
+                deleted = deleted.filter(d => d !== id);
+                localStorage.setItem('deletedStaticIds', JSON.stringify(deleted));
+                renderTrashBin(); // Refresh modal
+                // We also need to refresh main page eventually, but let's wait for user to close modal or reload manually?
+                // Better UX: Reload on close or immediate reload?
+                // Immediate reload might close modal.
+                // Let's alert and reload.
+                if(confirm('복구되었습니다. 페이지를 새로고침 하시겠습니까?')) {
+                    window.location.reload();
+                }
+            };
+            
+            window.restoreCustomProduct = function(id) {
+                let deleted = JSON.parse(localStorage.getItem('deletedCustomProducts') || '[]');
+                const prod = deleted.find(p => p.id === id);
+                if (prod) {
+                    // Add back to active
+                    let products = JSON.parse(localStorage.getItem('customProducts') || '[]');
+                    products.push(prod);
+                    localStorage.setItem('customProducts', JSON.stringify(products));
+                    
+                    // Remove from deleted
+                    deleted = deleted.filter(p => p.id !== id);
+                    localStorage.setItem('deletedCustomProducts', JSON.stringify(deleted));
+                    
+                    renderTrashBin();
+                    if(confirm('복구되었습니다. 페이지를 새로고침 하시겠습니까?')) {
+                        window.location.reload();
+                    }
+                }
+            };
+
+            document.getElementById('closeTrashBtn').addEventListener('click', () => {
+                document.getElementById('trashModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+                window.location.reload(); // Apply changes when closing trash
+            });
+            
+            // Drag and Drop 관련 변수 및 함수
+            let dragSrcEl = null;
+
+            function handleDragStart(e) {
+                if (!isReorderMode) return;
+                this.style.opacity = '0.4';
+                dragSrcEl = this;
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+            }
+
+            function handleDragOver(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                e.dataTransfer.dropEffect = 'move';
+                return false;
+            }
+
+            function handleDragEnter(e) {
+                this.classList.add('over');
+            }
+
+            function handleDragLeave(e) {
+                this.classList.remove('over');
+            }
+
+            function handleDrop(e) {
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+                
+                if (dragSrcEl !== this) {
+                    const grid = this.parentNode;
+                    const allItems = [...grid.children];
+                    const srcIndex = allItems.indexOf(dragSrcEl);
+                    const targetIndex = allItems.indexOf(this);
+                    
+                    if (srcIndex < targetIndex) {
+                        grid.insertBefore(dragSrcEl, this.nextSibling);
+                    } else {
+                        grid.insertBefore(dragSrcEl, this);
+                    }
+                }
+                return false;
+            }
+
+            function handleDragEnd(e) {
+                this.style.opacity = '1';
+                
+                let items = document.querySelectorAll('.product-grid .product-item');
+                items.forEach(function (item) {
+                    item.classList.remove('over');
+                });
+            }
+
+            function enableDragAndDrop() {
+                const items = document.querySelectorAll('.product-grid .product-item');
+                items.forEach(function(item) {
+                    item.setAttribute('draggable', 'true');
+                    item.addEventListener('dragstart', handleDragStart, false);
+                    item.addEventListener('dragenter', handleDragEnter, false);
+                    item.addEventListener('dragover', handleDragOver, false);
+                    item.addEventListener('dragleave', handleDragLeave, false);
+                    item.addEventListener('drop', handleDrop, false);
+                    item.addEventListener('dragend', handleDragEnd, false);
+                });
+            }
+
+            function disableDragAndDrop() {
+                const items = document.querySelectorAll('.product-grid .product-item');
+                items.forEach(function(item) {
+                    item.setAttribute('draggable', 'false');
+                    item.removeEventListener('dragstart', handleDragStart);
+                    item.removeEventListener('dragenter', handleDragEnter);
+                    item.removeEventListener('dragover', handleDragOver);
+                    item.removeEventListener('dragleave', handleDragLeave);
+                    item.removeEventListener('drop', handleDrop);
+                    item.removeEventListener('dragend', handleDragEnd);
+                });
+            }
+
+            function saveOrder() {
+                // 1. Save Custom Products Order
+                const items = document.querySelectorAll('.product-grid .product-item');
+                const newOrderIds = [];
+                const staticOrder = []; // Array of static IDs in order
+
+                items.forEach(item => {
+                    if (item.dataset.id) {
+                        newOrderIds.push(parseInt(item.dataset.id));
+                    }
+                    // Static items order logic could be complex if we mix them freely.
+                    // For now, we only reorder custom products in their storage.
+                    // To fully support mixed reordering, we'd need a 'master order' list in localStorage.
+                });
+                
+                // Custom products sorting
+                const currentProducts = JSON.parse(localStorage.getItem('customProducts') || '[]');
+                const reorderedProducts = [];
+                
+                newOrderIds.forEach(id => {
+                    const prod = currentProducts.find(p => p.id === id);
+                    if (prod) reorderedProducts.push(prod);
+                });
+                
+                currentProducts.forEach(prod => {
+                    if (!newOrderIds.includes(prod.id)) {
+                        reorderedProducts.push(prod);
+                    }
+                });
+                
+                localStorage.setItem('customProducts', JSON.stringify(reorderedProducts));
+                alert('순서가 저장되었습니다. (주의: 고정 제품의 순서는 저장되지 않을 수 있습니다)');
+            }
+
+            // 모달 닫기 버튼 클릭 시에도 폼 리셋
+            modalCloses.forEach(close => {
+                close.addEventListener('click', () => {
+                     const form = document.getElementById('addProductForm');
+                     if (form) form.reset();
+                });
+            });
+
+            // 새 제품 추가 및 수정 폼 처리
+            const addProductForm = document.getElementById('addProductForm');
+            if (addProductForm) {
+                addProductForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('newProdName').value;
+                    const filter = document.getElementById('newProdFilter').value;
+                    const sub = document.getElementById('newProdSub').value;
+                    const desc = document.getElementById('newProdDesc').value;
+                    const price = document.getElementById('newProdPrice').value;
+                    const fileInput = document.getElementById('newProdImgFile');
+                    const link = document.getElementById('newProdLink').value || '#';
+                    
+                    let currentImg = 'img/logo_blue.png';
+                    
+                    // 기존 이미지 로드
+                    if (editTargetId) {
+                        if (typeof editTargetId === 'number') {
+                            // Custom
+                            const products = JSON.parse(localStorage.getItem('customProducts') || '[]');
+                            const target = products.find(p => p.id === editTargetId);
+                            if (target) currentImg = target.img;
+                        } else {
+                            // Static
+                            // Try to find in overrides first
+                            const overrides = JSON.parse(localStorage.getItem('staticOverrides') || '{}');
+                            if (overrides[editTargetId] && overrides[editTargetId].img) {
+                                currentImg = overrides[editTargetId].img;
+                            } else {
+                                // Try to find in DOM
+                                const item = document.querySelector(`.product-item[data-static-id="${editTargetId}"]`);
+                                if (item) {
+                                    const img = item.querySelector('.product-image');
+                                    if (img) currentImg = img.src;
+                                }
+                            }
+                        }
+                    }
+
+                    const saveProduct = (imgData) => {
+                        if (editTargetId) {
+                             if (typeof editTargetId === 'number') {
+                                // 수정 모드 (Custom)
+                                const products = JSON.parse(localStorage.getItem('customProducts') || '[]');
+                                const index = products.findIndex(p => p.id === editTargetId);
+                                if (index !== -1) {
+                                    products[index] = {
+                                        ...products[index],
+                                        name, filter, sub, desc, price, img: imgData, link
+                                    };
+                                    try {
+                                        localStorage.setItem('customProducts', JSON.stringify(products));
+                                        alert('제품이 수정되었습니다.');
+                                        window.location.reload();
+                                    } catch (err) {
+                                        alert('저장 공간 부족 (이미지 용량 초과)');
+                                    }
+                                }
+                             } else {
+                                 // 수정 모드 (Static Override)
+                                 const overrides = JSON.parse(localStorage.getItem('staticOverrides') || '{}');
+                                 overrides[editTargetId] = {
+                                      name, filter, sub, desc, price, img: imgData, link
+                                  };
+                                 try {
+                                     localStorage.setItem('staticOverrides', JSON.stringify(overrides));
+                                     alert('제품이 수정되었습니다.');
+                                     window.location.reload();
+                                 } catch (err) {
+                                     alert('저장 공간 부족 (이미지 용량 초과)');
+                                 }
+                             }
+                        } else {
+                            // 추가 모드
+                            const products = JSON.parse(localStorage.getItem('customProducts') || '[]');
+                            const newProduct = {
+                                id: Date.now(),
+                                name, filter, sub, desc, price, img: imgData, link, isCustom: true
+                            };
+                            products.push(newProduct);
+                            try {
+                                localStorage.setItem('customProducts', JSON.stringify(products));
+                                alert('제품이 추가되었습니다.');
+                                window.location.reload();
+                            } catch (err) {
+                                alert('저장 공간 부족 (이미지 용량 초과)');
+                            }
+                        }
+                    };
+
+                    if (fileInput.files && fileInput.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            saveProduct(e.target.result);
+                        };
+                        reader.readAsDataURL(fileInput.files[0]);
+                    } else {
+                        saveProduct(currentImg);
+                    }
+                });
+            }
+
+            // 저장된 커스텀 제품 로드 및 표시
+            const customProducts = JSON.parse(localStorage.getItem('customProducts') || '[]');
+            const productGrid = document.querySelector('.product-grid');
+
+            const renderCustomProduct = (prod) => {
+                const div = document.createElement('div');
+                div.className = `product-item ${prod.filter} custom-product`;
+                div.dataset.id = prod.id;
+                
+                const formattedPrice = Number(prod.price).toLocaleString() + '원';
+
+                const hasLink = prod.link && prod.link.trim() !== '' && prod.link !== '#';
+                const buyHref = hasLink ? prod.link : '#';
+                const buyClass = hasLink ? 'buy-now-link' : 'buy-now-link disabled';
+                const buyTarget = hasLink ? ' target="_blank"' : '';
+                div.innerHTML = `
+                    <img src="${prod.img}" alt="${prod.name}" class="product-image" style="object-fit:contain; padding:20px;">
+                    <div class="product-overlay">
+                        <h3 class="product-title">${prod.name}</h3>
+                        <p class="product-category">${prod.sub}</p>
+                        <a href="${buyHref}" class="${buyClass}"${buyTarget}>구매하기</a>
+                    </div>
+                    <div class="product-details">
+                        <h3>${prod.name}</h3>
+                        <p style="color:#4e73df; font-weight:500; margin-bottom:5px;">${prod.sub}</p>
+                        ${prod.desc ? `<p>${prod.desc}</p>` : ''}
+                        <div class="product-tags">
+                            <span class="product-tag">${prod.filter}</span>
+                            <span class="product-tag">${formattedPrice}</span>
+                        </div>
+                    </div>
+                `;
+                return div;
+            };
+
+            customProducts.forEach(prod => {
+                productGrid.appendChild(renderCustomProduct(prod));
+            });
+            
+            // Event Delegation for Click Actions (Edit/Delete)
+            if (userRole === 'admin') {
+                productGrid.addEventListener('click', function(e) {
+                    const item = e.target.closest('.product-item');
+                    if (!item) return;
+
+                    if (isDeleteMode) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const name = item.querySelector('.product-title').textContent;
+                        if (confirm(`'${name}' 제품을 삭제하시겠습니까?`)) {
+                            if (item.dataset.id) {
+                                // Custom
+                                deleteProduct(parseInt(item.dataset.id));
+                            } else if (item.getAttribute('data-static-id')) {
+                                // Static
+                                deleteStaticProduct(item.getAttribute('data-static-id'));
+                            }
+                        }
+                    } else if (isEditMode) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openEditModal(item);
+                    }
+                });
+            }
+            
+            function deleteProduct(id) {
+                let products = JSON.parse(localStorage.getItem('customProducts') || '[]');
+                const prod = products.find(p => p.id === id);
+                
+                if (prod) {
+                    // Add to Trash
+                    let deleted = JSON.parse(localStorage.getItem('deletedCustomProducts') || '[]');
+                    deleted.push(prod);
+                    localStorage.setItem('deletedCustomProducts', JSON.stringify(deleted));
+                    
+                    // Remove from active
+                    products = products.filter(p => p.id !== id);
+                    localStorage.setItem('customProducts', JSON.stringify(products));
+                    
+                    window.location.reload();
+                }
+            }
+            
+            function deleteStaticProduct(staticId) {
+                const deleted = JSON.parse(localStorage.getItem('deletedStaticIds') || '[]');
+                if (!deleted.includes(staticId)) {
+                    deleted.push(staticId);
+                    localStorage.setItem('deletedStaticIds', JSON.stringify(deleted));
+                }
+                window.location.reload();
+            }
+            
+            function openEditModal(item) {
+                editTargetId = item.dataset.id ? parseInt(item.dataset.id) : item.getAttribute('data-static-id');
+                
+                // Scrape data
+                const name = item.querySelector('.product-title').textContent;
+                
+                // Overlay category sometimes has text content, sometimes not
+                const overlayCat = item.querySelector('.product-overlay .product-category');
+                const sub = overlayCat ? overlayCat.textContent.trim() : '';
+                
+                const imgEl = item.querySelector('.product-image');
+                const img = imgEl ? imgEl.src : '';
+                
+                // Description scraping
+                // For static items, the description is usually in the first <p> of .product-details
+                // But for custom items (or overrides), we separated them.
+                // Let's check if there is a <p> that is NOT the subtitle (which we styled blue in overrides)
+                // Actually, we can try to fetch data from overrides/customProducts if available, instead of DOM scraping.
+                
+                let desc = '';
+                if (item.dataset.id) {
+                     // Custom Product - get from storage
+                     const products = JSON.parse(localStorage.getItem('customProducts') || '[]');
+                     const p = products.find(x => x.id === parseInt(item.dataset.id));
+                     if(p && p.desc) desc = p.desc;
+                     if(p && p.sub) {
+                         // Confirm sub match?
+                     }
+                } else if (item.getAttribute('data-static-id')) {
+                     // Static Product
+                     const staticId = item.getAttribute('data-static-id');
+                     const overrides = JSON.parse(localStorage.getItem('staticOverrides') || '{}');
+                     if (overrides[staticId]) {
+                         if(overrides[staticId].desc) desc = overrides[staticId].desc;
+                     } else {
+                         // Scraping original static HTML
+                         // Original HTML: <div class="product-details"><h3>...</h3><p>DESC</p>...</div>
+                         // Overlay: <p class="product-category">SUB</p>
+                         // So 'sub' is Overlay Category. 'desc' is Details Paragraph.
+                         const detailsDescP = item.querySelector('.product-details p:not(.product-subtitle)');
+                         if(detailsDescP) desc = detailsDescP.textContent.trim();
+                     }
+                }
+
+                // Price scraping
+                let price = '';
+                const tags = item.querySelectorAll('.product-tag');
+                tags.forEach(t => {
+                    if(t.textContent.includes('원') || t.textContent.includes('₩')) {
+                         price = t.textContent.replace(/[^0-9]/g, '');
+                    }
+                });
+                
+                // Link scraping (구매 링크만 대상)
+                const buyEl = item.querySelector('a.buy-now-link');
+                const link = buyEl ? buyEl.href : '';
+                
+                // Filter detection
+                const filters = ['산업 분야', 'RayNeo', 'Mudra', 'Keheal', 'SKY'];
+                let filter = '산업 분야';
+                for(let f of filters) {
+                    if(item.classList.contains(f)) {
+                        filter = f;
+                        break;
+                    }
+                }
+
+                document.getElementById('newProdName').value = name;
+                document.getElementById('newProdFilter').value = filter;
+                document.getElementById('newProdSub').value = sub;
+                document.getElementById('newProdDesc').value = desc;
+                document.getElementById('newProdPrice').value = price;
+                document.getElementById('newProdLink').value = link;
+                document.getElementById('newProdImgFile').value = '';
+                
+                document.querySelector('#addProductModal .modal-title').textContent = '제품 수정';
+                document.querySelector('#addProductForm button[type="submit"]').textContent = '수정하기';
+                
+                document.getElementById('addProductModal').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+
         });
     </script>
+    <style>
+        /* 삭제 모드 스타일 */
+        .delete-mode .product-item.custom-product {
+            cursor: pointer;
+            position: relative;
+            /* animation: shake 0.5s infinite; 제거됨 */
+            border: 2px solid #e74a3b;
+        }
+        
+        .delete-mode .product-item.custom-product::after {
+            content: '\f2ed'; /* FontAwesome trash icon */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74a3b;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* 수정 모드 스타일 */
+        .edit-mode .product-item.custom-product {
+            cursor: pointer;
+            position: relative;
+            border: 2px solid #f6c23e;
+        }
+
+        .edit-mode .product-item.custom-product::after {
+            content: '\f304'; /* FontAwesome pen icon */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f6c23e;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        /* 순서 변경 모드 스타일 */
+        .reorder-mode .product-item {
+            cursor: move; /* 드래그 커서 */
+            border: 2px dashed #858796;
+            transition: transform 0.2s;
+        }
+        
+        .product-item.over {
+            border: 2px solid #4e73df;
+            transform: scale(1.02);
+        }
+
+        /* @keyframes shake 제거됨 */
+    </style>
 </body>
 </html>

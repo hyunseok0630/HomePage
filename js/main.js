@@ -89,6 +89,30 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     fadeInOnScroll();
+
+    const navMenuInit = document.querySelector('.nav-menu');
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (navMenuInit && !isLoggedIn) navMenuInit.style.visibility = 'hidden';
+    
+    const resetMenuState = () => {
+        const navMenuEl = document.querySelector('.nav-menu');
+        const hamburgerEl = document.querySelector('.hamburger');
+        const overlayEl = document.querySelector('.overlay');
+        const mobileMenuEl = document.querySelector('.mobile-menu');
+        if (navMenuEl) navMenuEl.classList.remove('active');
+        if (hamburgerEl) hamburgerEl.classList.remove('active');
+        if (overlayEl) overlayEl.classList.remove('active');
+        if (mobileMenuEl) mobileMenuEl.classList.remove('active');
+        document.body.classList.remove('menu-open');
+    };
+    
+    resetMenuState();
+    window.addEventListener('resize', resetMenuState);
+    
+    // 로그인 상태 확인 및 메뉴 업데이트
+    checkLoginStatus();
+    const navMenuShow = document.querySelector('.nav-menu');
+    if (navMenuShow) navMenuShow.style.visibility = 'visible';
 });
 
 // 모바일 메뉴 토글
@@ -127,3 +151,43 @@ function fadeInOnScroll() {
 
 window.addEventListener('scroll', fadeInOnScroll);
 window.addEventListener('load', fadeInOnScroll);
+
+// 로그인 상태 관리 함수
+function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (navMenu) {
+        // 중복 방지를 위해 기존 항목 모두 제거
+        const existingAuthBtns = navMenu.querySelectorAll('.auth-btn-item');
+        existingAuthBtns.forEach(btn => btn.remove());
+
+        const loginItem = document.createElement('li');
+        loginItem.className = 'auth-btn-item';
+        
+        if (isLoggedIn) {
+            // 로그아웃 버튼
+            const logoutLink = document.createElement('a');
+            logoutLink.href = "#";
+            logoutLink.textContent = "로그아웃";
+            logoutLink.style.color = "#e74a3b"; // 로그아웃은 빨간색 계열로 구분
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                if(confirm('로그아웃 하시겠습니까?')) {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userRole');
+                    alert('로그아웃 되었습니다.');
+                    window.location.href = 'index.html';
+                }
+            });
+            loginItem.appendChild(logoutLink);
+        } else {
+            // 로그인 버튼
+            const loginLink = document.createElement('a');
+            loginLink.href = "login.html";
+            loginLink.textContent = "로그인";
+            loginItem.appendChild(loginLink);
+        }
+        navMenu.appendChild(loginItem);
+    }
+}
