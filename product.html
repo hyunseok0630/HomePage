@@ -1739,6 +1739,34 @@
                     }
                 };
 
+                const uploadImageToGitHub = function(file){
+                    return new Promise(function(resolve, reject){
+                        const ghToken = localStorage.getItem('githubToken');
+                        const ghOwner = localStorage.getItem('githubOwner');
+                        const ghRepo = localStorage.getItem('githubRepo');
+                        const ghBranch = localStorage.getItem('githubBranch') || 'main';
+                        const baseDir = localStorage.getItem('githubImagePath') || 'uploads/';
+                        if (!ghToken || !ghOwner || !ghRepo) return reject(new Error('no github config'));
+                        const reader = new FileReader();
+                        reader.onload = function(e){
+                            const dataUrl = e.target.result;
+                            const base64 = String(dataUrl).split(',')[1];
+                            const api = 'https://api.github.com';
+                            const safeName = Date.now() + '_' + (file.name || 'image.png');
+                            const path = baseDir + safeName;
+                            const url = api + '/repos/' + ghOwner + '/' + ghRepo + '/contents/' + encodeURIComponent(path);
+                            const headers = { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' };
+                            const body = { message: 'Upload product image', content: base64, branch: ghBranch };
+                            fetch(url, { method: 'PUT', headers: headers, body: JSON.stringify(body) })
+                                .then(function(resp){ if (!resp.ok) throw new Error('upload failed');
+                                    resolve('https://raw.githubusercontent.com/' + ghOwner + '/' + ghRepo + '/' + ghBranch + '/' + path);
+                                })
+                                .catch(function(err){ reject(err); });
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                };
+
                 if (publishBtn) {
                     publishBtn.addEventListener('click', () => {
                         publishOverrides(false);
@@ -2170,11 +2198,22 @@
                     };
 
                     if (fileInput.files && fileInput.files[0]) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            saveProduct(e.target.result);
-                        };
-                        reader.readAsDataURL(fileInput.files[0]);
+                        const ghToken = localStorage.getItem('githubToken');
+                        const ghOwner = localStorage.getItem('githubOwner');
+                        const ghRepo = localStorage.getItem('githubRepo');
+                        if (ghToken && ghOwner && ghRepo) {
+                            uploadImageToGitHub(fileInput.files[0])
+                                .then(function(url){ saveProduct(url); })
+                                .catch(function(){
+                                    const reader = new FileReader();
+                                    reader.onload = function(e){ saveProduct(e.target.result); };
+                                    reader.readAsDataURL(fileInput.files[0]);
+                                });
+                        } else {
+                            const reader = new FileReader();
+                            reader.onload = function(e){ saveProduct(e.target.result); };
+                            reader.readAsDataURL(fileInput.files[0]);
+                        }
                     } else {
                         saveProduct(currentImg);
                     }
