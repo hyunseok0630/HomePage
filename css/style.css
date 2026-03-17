@@ -41,18 +41,21 @@ header {
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     z-index: 1000;
-    
+
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-header.scrolled {
+/* 스크롤 또는 호버 시 표시 ★ */
+header.scrolled,
+header.hovered {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
+
 
 .header-inner {
     display: flex;
