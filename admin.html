@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의 관리 | SKY Commerce (관리자 전용)</title>
+    <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true' || localStorage.getItem('userRole') !== 'admin') {
+            alert('접근 권한이 없습니다. 관리자 로그인이 필요합니다.');
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <style>
+        .admin-section {
+            padding: 140px 0 100px;
+            background: var(--bg-color);
+            min-height: calc(100vh - 250px);
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #e5e5ea;
+            padding-bottom: 20px;
+        }
+        .admin-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.03em;
+        }
+        
+        /* 상단 액션 버튼 영역 */
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+        }
+        .manage-btn {
+            padding: 10px 24px;
+            background: #1d1d1f;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .manage-btn:hover { background: #000; }
+        .manage-btn.active { background: #86868b; }
+        
+        .delete-all-btn {
+            padding: 10px 24px;
+            background: #ff3b30;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .delete-all-btn:hover { opacity: 0.8; }
+        
+        /* 문의 내역 그리드 및 카드 */
+        .inquiry-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .inquiry-card {
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            transition: opacity 0.3s, background 0.3s;
+        }
+        /* 확인 완료된 카드 스타일 */
+        .inquiry-card.completed {
+            opacity: 0.6;
+            background: #fbfbfd;
+        }
+        
+        .inquiry-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f5f5f7;
+            padding-bottom: 15px;
+        }
+        .inquiry-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .inquiry-date {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .inquiry-contact {
+            margin-bottom: 15px;
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+        .inquiry-contact span { margin-right: 20px; display: inline-block; margin-bottom: 5px; }
+        .inquiry-contact i { color: var(--accent-blue); margin-right: 6px; }
+        
+        .inquiry-message {
+            background: #f5f5f7;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-main);
+            white-space: pre-wrap; 
+        }
+        
+        /* 하단 액션 버튼들 (글씨 겹침 방지용 분리) */
+        .inquiry-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #f5f5f7;
+        }
+        .btn-complete {
+            padding: 10px 20px;
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-complete:hover { background: #005bb5; }
+        .btn-complete.completed-state {
+            background: #86868b;
+            cursor: default;
+        }
+        .btn-delete {
+            padding: 10px 20px;
+            background: #ff3b30;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .btn-delete:hover { opacity: 0.8; }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 0;
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            .inquiry-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .admin-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .admin-actions { width: 100%; justify-content: flex-end; }
+        }
+    </style>
+</head>
+<body>
+    <header id="main-header" class="scrolled"> 
+        <div class="header-inner">
+            <div class="header-left logo"><a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a></div>
+            <nav class="header-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="about.html">회사 소개</a></li>
+                    <li><a href="product.html">제품</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+            <div class="header-right utility-icons">
+                <a href="#"><i class="fas fa-globe"></i></a>
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <a href="admin.html" id="adminMenuBtn" style="color: #ff3b30;" title="문의 관리"><i class="fas fa-clipboard-list"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="admin-section">
+        <div class="container" style="max-width: 900px;">
+            <div class="admin-header">
+                <h1>고객 문의 접수 내역</h1>
+                <div class="admin-actions">
+                    <button id="deleteAllBtn" class="delete-all-btn manage-item" onclick="deleteAllInquiries()" style="display: none;">전체 삭제</button>
+                    <button id="manageBtn" class="manage-btn" onclick="toggleManageMode()">문의 관리</button>
+                </div>
+            </div>
+
+            <div id="inquiryContainer" class="inquiry-grid">
+                </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content" style="border-top: 1px solid #e5e5ea; padding-top: 40px;">
+                <div class="footer-logo">
+                    <h3>SKY COMMERCE</h3>
+                    <p>미래를 일상으로.</p>
+                </div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        let isManageMode = false;
+
+        // 1. 문의 관리 모드 토글 (삭제 버튼들 숨김/표시)
+        function toggleManageMode() {
+            isManageMode = !isManageMode;
+            const manageBtn = document.getElementById('manageBtn');
+            const manageItems = document.querySelectorAll('.manage-item');
+
+            if (isManageMode) {
+                manageBtn.textContent = '관리 종료';
+                manageBtn.classList.add('active');
+                manageItems.forEach(item => item.style.display = 'inline-block');
+            } else {
+                manageBtn.textContent = '문의 관리';
+                manageBtn.classList.remove('active');
+                manageItems.forEach(item => item.style.display = 'none');
+            }
+        }
+
+        // 2. 문의 내역 불러오기 및 렌더링
+        function loadInquiries() {
+            const container = document.getElementById('inquiryContainer');
+            const inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
+
+            if (inquiries.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>현재 접수된 문의 내역이 없습니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = ''; // 초기화
+
+            inquiries.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `inquiry-card ${item.completed ? 'completed' : ''}`;
+                
+                // 확인 완료 여부에 따른 버튼 상태
+                const completeBtnHTML = item.completed 
+                    ? `<button class="btn-complete completed-state" disabled><i class="fas fa-check-double"></i> 확인됨</button>`
+                    : `<button class="btn-complete" onclick="completeInquiry(${index})"><i class="fas fa-check"></i> 확인 완료</button>`;
+
+                card.innerHTML = `
+                    <div class="inquiry-meta">
+                        <div class="inquiry-name">${item.name}</div>
+                        <div class="inquiry-date">${item.date}</div>
+                    </div>
+                    <div class="inquiry-contact">
+                        <span><i class="fas fa-envelope"></i> ${item.email}</span>
+                        <span><i class="fas fa-phone"></i> ${item.phone || '번호 미기재'}</span>
+                    </div>
+                    <div class="inquiry-message">${item.message}</div>
+                    
+                    <div class="inquiry-actions">
+                        ${completeBtnHTML}
+                        <button class="btn-delete manage-item" onclick="deleteInquiry(${index})" style="display: ${isManageMode ? 'inline-block' : 'none'};"><i class="fas fa-trash-alt"></i> 삭제</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 3. 확인 완료 처리
+        function completeInquiry(index) {
+            let inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
+            inquiries[index].completed = true; // 완료 상태 저장
+            localStorage.setItem('inquiries', JSON.stringify(inquiries));
+            loadInquiries(); // 화면 다시 그리기
+        }
+
+        // 4. 개별 문의 내역 삭제
+        function deleteInquiry(index) {
+            if(confirm("정말로 이 문의 내역을 삭제하시겠습니까?")) {
+                let inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
+                inquiries.splice(index, 1); 
+                localStorage.setItem('inquiries', JSON.stringify(inquiries));
+                loadInquiries(); 
+            }
+        }
+
+        // 5. 전체 문의 내역 삭제
+        function deleteAllInquiries() {
+            const inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
+            if(inquiries.length === 0) return;
+            
+            if(confirm("모든 문의 내역을 영구적으로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+                localStorage.setItem('inquiries', JSON.stringify([]));
+                loadInquiries();
+                if(isManageMode) toggleManageMode(); // 삭제 후 관리 모드 자동 종료
+            }
+        }
+
+        // 페이지 로드 시 실행
+        document.addEventListener("DOMContentLoaded", loadInquiries);
+    </script>
+</body>
+</html>

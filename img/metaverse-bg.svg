@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <!-- 메타버스 배경 그라데이션 -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f0c29" />
+      <stop offset="50%" stop-color="#302b63" />
+      <stop offset="100%" stop-color="#24243e" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#ff00cc" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#ff00cc" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glow2" cx="30%" cy="30%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" stop-color="#00ffff" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#00ffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 배경 -->
+  <rect width="100%" height="100%" fill="url(#bg-gradient)" />
+  
+  <!-- 그리드 패턴 -->
+  <g stroke="rgba(0, 255, 255, 0.2)" stroke-width="1">
+    <!-- 수평선 -->
+    <line x1="0" y1="100" x2="1200" y2="100" />
+    <line x1="0" y1="200" x2="1200" y2="200" />
+    <line x1="0" y1="300" x2="1200" y2="300" />
+    <line x1="0" y1="400" x2="1200" y2="400" />
+    <line x1="0" y1="500" x2="1200" y2="500" />
+    <line x1="0" y1="600" x2="1200" y2="600" />
+    <line x1="0" y1="700" x2="1200" y2="700" />
+    
+    <!-- 수직선 -->
+    <line x1="100" y1="0" x2="100" y2="800" />
+    <line x1="200" y1="0" x2="200" y2="800" />
+    <line x1="300" y1="0" x2="300" y2="800" />
+    <line x1="400" y1="0" x2="400" y2="800" />
+    <line x1="500" y1="0" x2="500" y2="800" />
+    <line x1="600" y1="0" x2="600" y2="800" />
+    <line x1="700" y1="0" x2="700" y2="800" />
+    <line x1="800" y1="0" x2="800" y2="800" />
+    <line x1="900" y1="0" x2="900" y2="800" />
+    <line x1="1000" y1="0" x2="1000" y2="800" />
+    <line x1="1100" y1="0" x2="1100" y2="800" />
+  </g>
+  
+  <!-- 빛나는 원 -->
+  <circle cx="600" cy="400" r="200" fill="url(#glow)" opacity="0.7" />
+  <circle cx="300" cy="300" r="150" fill="url(#glow2)" opacity="0.5" />
+  
+  <!-- 디지털 입자 -->
+  <g fill="#00ffff">
+    <circle cx="150" cy="250" r="2" opacity="0.8" />
+    <circle cx="350" cy="150" r="1.5" opacity="0.6" />
+    <circle cx="550" cy="350" r="2" opacity="0.7" />
+    <circle cx="750" cy="250" r="1.5" opacity="0.5" />
+    <circle cx="950" cy="450" r="2" opacity="0.8" />
+    <circle cx="250" cy="550" r="1.5" opacity="0.6" />
+    <circle cx="450" cy="650" r="2" opacity="0.7" />
+    <circle cx="650" cy="550" r="1.5" opacity="0.5" />
+    <circle cx="850" cy="650" r="2" opacity="0.8" />
+    <circle cx="1050" cy="150" r="1.5" opacity="0.6" />
+    <circle cx="200" cy="400" r="2" opacity="0.7" />
+    <circle cx="400" cy="200" r="1.5" opacity="0.5" />
+    <circle cx="600" cy="600" r="2" opacity="0.8" />
+    <circle cx="800" cy="400" r="1.5" opacity="0.6" />
+    <circle cx="1000" cy="300" r="2" opacity="0.7" />
+    <circle cx="300" cy="700" r="1.5" opacity="0.5" />
+    <circle cx="500" cy="100" r="2" opacity="0.8" />
+    <circle cx="700" cy="300" r="1.5" opacity="0.6" />
+    <circle cx="900" cy="700" r="2" opacity="0.7" />
+    <circle cx="1100" cy="500" r="1.5" opacity="0.5" />
+  </g>
+  
+  <!-- 핑크색 입자 -->
+  <g fill="#ff00cc">
+    <circle cx="180" cy="220" r="2" opacity="0.8" />
+    <circle cx="380" cy="120" r="1.5" opacity="0.6" />
+    <circle cx="580" cy="320" r="2" opacity="0.7" />
+    <circle cx="780" cy="220" r="1.5" opacity="0.5" />
+    <circle cx="980" cy="420" r="2" opacity="0.8" />
+    <circle cx="280" cy="520" r="1.5" opacity="0.6" />
+    <circle cx="480" cy="620" r="2" opacity="0.7" />
+    <circle cx="680" cy="520" r="1.5" opacity="0.5" />
+    <circle cx="880" cy="620" r="2" opacity="0.8" />
+    <circle cx="1080" cy="120" r="1.5" opacity="0.6" />
+  </g>
+  
+  <!-- 연결선 -->
+  <g stroke="rgba(0, 255, 255, 0.3)" stroke-width="1">
+    <line x1="150" y1="250" x2="350" y2="150" />
+    <line x1="350" y1="150" x2="550" y2="350" />
+    <line x1="550" y1="350" x2="750" y2="250" />
+    <line x1="750" y1="250" x2="950" y2="450" />
+    <line x1="250" y1="550" x2="450" y2="650" />
+    <line x1="450" y1="650" x2="650" y2="550" />
+    <line x1="650" y1="550" x2="850" y2="650" />
+    <line x1="200" y1="400" x2="400" y2="200" />
+    <line x1="400" y1="200" x2="600" y2="600" />
+    <line x1="600" y1="600" x2="800" y2="400" />
+    <line x1="800" y1="400" x2="1000" y2="300" />
+    <line x1="300" y1="700" x2="500" y2="100" />
+    <line x1="500" y1="100" x2="700" y2="300" />
+    <line x1="700" y1="300" x2="900" y2="700" />
+  </g>
+  
+  <!-- 핑크색 연결선 -->
+  <g stroke="rgba(255, 0, 204, 0.3)" stroke-width="1">
+    <line x1="180" y1="220" x2="380" y2="120" />
+    <line x1="380" y1="120" x2="580" y2="320" />
+    <line x1="580" y1="320" x2="780" y2="220" />
+    <line x1="780" y1="220" x2="980" y2="420" />
+    <line x1="280" y1="520" x2="480" y2="620" />
+    <line x1="480" y1="620" x2="680" y2="520" />
+    <line x1="680" y1="520" x2="880" y2="620" />
+  </g>
+  
+  <!-- 큰 육각형 구조물 -->
+  <g stroke="rgba(255, 0, 204, 0.8)" stroke-width="2" fill="none">
+    <polygon points="600,200 680,250 680,350 600,400 520,350 520,250" />
+  </g>
+  
+  <!-- 작은 육각형들 -->
+  <g stroke="rgba(0, 255, 255, 0.7)" stroke-width="1.5" fill="none">
+    <polygon points="400,300 440,325 440,375 400,400 360,375 360,325" />
+    <polygon points="800,300 840,325 840,375 800,400 760,375 760,325" />
+    <polygon points="600,500 640,525 640,575 600,600 560,575 560,525" />
+  </g>
+  
+  <!-- 빛나는 점들 -->
+  <g fill="#ff00cc">
+    <circle cx="600" cy="200" r="3" opacity="0.9" />
+    <circle cx="680" cy="250" r="3" opacity="0.9" />
+    <circle cx="680" cy="350" r="3" opacity="0.9" />
+    <circle cx="600" cy="400" r="3" opacity="0.9" />
+    <circle cx="520" cy="350" r="3" opacity="0.9" />
+    <circle cx="520" cy="250" r="3" opacity="0.9" />
+  </g>
+  
+  <g fill="#00ffff">
+    <circle cx="400" cy="300" r="2" opacity="0.8" />
+    <circle cx="440" cy="325" r="2" opacity="0.8" />
+    <circle cx="440" cy="375" r="2" opacity="0.8" />
+    <circle cx="400" cy="400" r="2" opacity="0.8" />
+    <circle cx="360" cy="375" r="2" opacity="0.8" />
+    <circle cx="360" cy="325" r="2" opacity="0.8" />
+    
+    <circle cx="800" cy="300" r="2" opacity="0.8" />
+    <circle cx="840" cy="325" r="2" opacity="0.8" />
+    <circle cx="840" cy="375" r="2" opacity="0.8" />
+    <circle cx="800" cy="400" r="2" opacity="0.8" />
+    <circle cx="760" cy="375" r="2" opacity="0.8" />
+    <circle cx="760" cy="325" r="2" opacity="0.8" />
+    
+    <circle cx="600" cy="500" r="2" opacity="0.8" />
+    <circle cx="640" cy="525" r="2" opacity="0.8" />
+    <circle cx="640" cy="575" r="2" opacity="0.8" />
+    <circle cx="600" cy="600" r="2" opacity="0.8" />
+    <circle cx="560" cy="575" r="2" opacity="0.8" />
+    <circle cx="560" cy="525" r="2" opacity="0.8" />
+  </g>
+  
+  <!-- 디지털 파동 효과 -->
+  <g stroke="rgba(0, 255, 255, 0.4)" stroke-width="1" fill="none">
+    <circle cx="600" cy="400" r="50" />
+    <circle cx="600" cy="400" r="100" />
+    <circle cx="600" cy="400" r="150" />
+    <circle cx="600" cy="400" r="200" />
+    <circle cx="600" cy="400" r="250" />
+  </g>
+  
+  <!-- 추가 파동 효과 -->
+  <g stroke="rgba(255, 0, 204, 0.3)" stroke-width="1" fill="none">
+    <circle cx="300" cy="300" r="30" />
+    <circle cx="300" cy="300" r="60" />
+    <circle cx="300" cy="300" r="90" />
+    <circle cx="300" cy="300" r="120" />
+  </g>
+</svg>

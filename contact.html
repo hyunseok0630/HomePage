@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기 | SKY Commerce</title>
+    <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; max-width: 1100px; margin: 0 auto; }
+        .contact-info-card { background: var(--surface-color); padding: 50px 40px; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04); }
+        .contact-info-card h3 { font-size: 28px; font-weight: 700; margin-bottom: 30px; letter-spacing: -0.03em; }
+        .info-row { display: flex; align-items: flex-start; margin-bottom: 25px; }
+        .info-row i { color: var(--accent-blue); font-size: 24px; width: 40px; margin-top: 2px; }
+        .info-row div h4 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: var(--text-main); }
+        .info-row div p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+        .contact-form { background: var(--surface-color); padding: 50px 40px; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--text-main); }
+        .form-control { width: 100%; padding: 14px 16px; border: 1px solid #d2d2d7; border-radius: 10px; font-size: 15px; font-family: inherit; transition: border-color 0.3s; }
+        .form-control:focus { outline: none; border-color: var(--accent-blue); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+        .submit-btn { width: 100%; padding: 16px; background: #1d1d1f; color: #fff; border: none; border-radius: 30px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; margin-top: 10px; }
+        .submit-btn:hover { background: #000; }
+        @media (max-width: 768px) { .contact-wrap { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header id="main-header"> 
+        <div class="header-inner">
+            <div class="header-left logo"><a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a></div>
+            <nav class="header-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="about.html">회사 소개</a></li>
+                    <li><a href="product.html">제품</a></li>
+                    <li><a href="contact.html" class="active">문의하기</a></li>
+                </ul>
+            </nav>
+            <div class="header-right utility-icons">
+                <a href="#"><i class="fas fa-globe"></i></a>
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <a href="admin.html" id="adminMenuBtn" style="display: none; color: #ff3b30;" title="문의 관리"><i class="fas fa-clipboard-list"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="sub-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('img/watch.png') center/cover no-repeat;">
+        <div class="container">
+            <h1 style="position: relative; z-index: 2;">문의하기</h1>
+            <p style="position: relative; z-index: 2;">궁금하신 점이나 제휴 문의를 남겨주시면 빠르게 답변해 드리겠습니다.</p>
+        </div>
+    </section>
+
+    <section class="sub-content" style="background-color: var(--bg-color);">
+        <div class="container">
+            <div class="contact-wrap">
+                <div class="contact-info-card">
+                    <h3>오시는 길 & 연락처</h3>
+                    <div class="info-row">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>본사 주소</h4>
+                            <p>경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</p>
+                        </div>
+                    </div>
+                    <div class="info-row"><i class="fas fa-phone"></i><div><h4>고객 센터</h4><p>031-205-4133</p></div></div>
+                    <div class="info-row"><i class="fas fa-envelope"></i><div><h4>이메일 문의</h4><p>car2314@naver.com</p></div></div>
+                    <div class="info-row"><i class="fas fa-clock"></i><div><h4>운영 시간</h4><p>평일 09:00 - 17:00<br>(주말 및 공휴일 휴무)</p></div></div>
+                </div>
+
+                <div class="contact-form">
+                    <form id="inquiryForm">
+                        <div class="form-group"><label>성함 / 기업명</label><input type="text" id="name" class="form-control" placeholder="이름이나 회사명을 입력해주세요" required></div>
+                        <div class="form-group"><label>이메일 주소</label><input type="email" id="email" class="form-control" placeholder="답변 받으실 이메일을 입력해주세요" required></div>
+                        <div class="form-group"><label>연락처</label><input type="tel" id="phone" class="form-control" placeholder="연락 가능한 전화번호를 입력해주세요"></div>
+                        <div class="form-group"><label>문의 내용</label><textarea id="message" class="form-control" placeholder="견적 문의, 제품 문의 등 상세한 내용을 적어주세요" required></textarea></div>
+                        <button type="submit" class="submit-btn">문의 접수하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>SKY COMMERCE</h3>
+                    <p>미래를 일상으로.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>메뉴</h4>
+                    <ul>
+                        <li><a href="index.html">홈</a></li>
+                        <li><a href="about.html">회사 소개</a></li>
+                        <li><a href="product.html">제품</a></li>
+                        <li><a href="contact.html">문의하기</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>고객지원</h4>
+                    <p>031-205-4133</p>
+                    <p>car2314@naver.com</p>
+                    <p class="address">경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</p>
+                </div>
+                <div class="footer-social">
+                    <h4>커뮤니티</h4>
+                    <div class="social-icons">
+                        <a href="https://cafe.naver.com/skycommerce114" target="_blank"><i class="fas fa-coffee"></i></a>
+                        <a href="https://smartstore.naver.com/nxtwear" target="_blank"><i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const adminMenuBtn = document.getElementById('adminMenuBtn');
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userRole = localStorage.getItem('userRole');
+            if (adminMenuBtn && isLoggedIn === 'true' && userRole === 'admin') {
+                adminMenuBtn.style.display = 'inline-block';
+            }
+
+            document.getElementById('inquiryForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const message = document.getElementById('message').value;
+                
+                const now = new Date();
+                const dateString = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+                const newInquiry = { name, email, phone, message, date: dateString };
+                let inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
+                inquiries.unshift(newInquiry);
+                localStorage.setItem('inquiries', JSON.stringify(inquiries));
+                alert('문의가 성공적으로 접수되었습니다. 담당자가 확인 후 연락드리겠습니다.');
+                this.reset();
+            });
+        });
+    </script>
+</body>
+</html>

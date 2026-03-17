@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 라인업 | SKY Commerce</title>
+    <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+    <style>
+        /* 관리자 편집 모드 전용 스타일 */
+        body.edit-mode .product-card {
+            cursor: grab;
+            border: 2px dashed #007bff;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+            transition: transform 0.2s;
+        }
+        body.edit-mode .product-card:active {
+            cursor: grabbing;
+            transform: scale(1.02);
+        }
+        body.edit-mode .admin-add-btn {
+            display: inline-block !important;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        body.edit-mode .admin-add-btn:hover {
+            background-color: #0056b3;
+        }
+        #adminEditBtn.active {
+            color: #007bff;
+        }
+        .category-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        /* 제품 추가 모달(팝업) 스타일 */
+        .modal-overlay {
+            display: none; /* 기본적으로 숨김 */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 5px 0;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        .modal-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-cancel {
+            background: #e9ecef;
+            color: #495057;
+        }
+        .btn-cancel:hover { background: #dde2e6; }
+        .btn-save {
+            background: #007bff;
+            color: white;
+        }
+        .btn-save:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <header id="main-header"> 
+        <div class="header-inner">
+            <div class="header-left logo"><a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a></div>
+            <nav class="header-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="about.html">회사 소개</a></li>
+                    <li><a href="product.html" class="active">제품</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+            <div class="header-right utility-icons">
+                <a href="#"><i class="fas fa-globe"></i></a>
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="#" id="adminEditBtn" title="제품 편집 모드"><i class="fas fa-edit"></i></a>
+                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="sub-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('img/Air4girl.png') center/cover no-repeat;">
+        <div class="container">
+            <h1 style="position: relative; z-index: 2;">제품 라인업</h1>
+            <p style="position: relative; z-index: 2;">스마트 웨어러블부터 고품질 산업용 소재까지, 혁신을 제공합니다.</p>
+        </div>
+    </section>
+
+    <section class="sub-content" style="background-color: var(--bg-color);">
+        <div class="container">
+            
+            <div class="category-header">
+                <h2 class="category-title">1. 스마트 웨어러블 및 액세서리</h2>
+                <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
+            </div>
+            <div class="product-grid" style="margin-bottom: 100px;">
+                <div class="product-card">
+                    <div class="product-card-img"><img src="img/air3s.jpg" alt="TCL RayNeo Air 3s"></div>
+                    <div class="product-card-info">
+                        <h3>TCL RayNeo Air 3s</h3>
+                        <div class="desc-text">최신 HueView™ 마이크로 OLED 디스플레이와 듀얼 오포징 어쿠스틱 챔버 사운드 시스템</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">RayNeo</span>
+                            <span class="premium-tag">마이크로 OLED</span>
+                            <span class="premium-tag">650 nits</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img"><img src="img/air3s_pro.png" alt="TCL RayNeo Air 3s Pro"></div>
+                    <div class="product-card-info">
+                        <h3>TCL RayNeo Air 3s Pro</h3>
+                        <div class="desc-text">업그레이드된 HueView™ 마이크로 OLED 디스플레이와 향상된 사운드 시스템을 탑재한 프로 모델</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">RayNeo</span>
+                            <span class="premium-tag">Pro 모델</span>
+                            <span class="premium-tag">750 nits</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img"><img src="img/air3s_pro_cover.png" alt="Air 3s Pro 암막커버" onerror="this.src='https://via.placeholder.com/300x300?text=Image'"></div>
+                    <div class="product-card-info">
+                        <h3>Air 3s Pro 암막커버</h3>
+                        <div class="desc-text">TCL RayNeo Air 3s Pro 전용 차광 커버로 외부 빛을 완전히 차단하여 몰입감 있는 시청 경험 제공</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">RayNeo</span>
+                            <span class="premium-tag">액세서리</span>
+                        </div>
+                        <a href="https://smartstore.naver.com/nxtwear/products/12384561114" target="_blank" class="btn-primary">구매하기</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img"><img src="img/mudra_link.png" alt="Mudra Link"></div>
+                    <div class="product-card-info">
+                        <h3>Mudra Link</h3>
+                        <div class="desc-text">스크롤, 클릭, 드래그앤 드롭까지? 마우스와 키보드로 이뤄지는 모든 것을 구현해낸 제스처 밴드.</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">Mudra</span>
+                            <span class="premium-tag">액세서리</span>
+                        </div>
+                        <a href="https://smartstore.naver.com/nxtwear/products/12741568780" target="_blank" class="btn-primary">구매하기</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img"><img src="img/mudra_band.png" alt="Mudra Band"></div>
+                    <div class="product-card-info">
+                        <h3>Mudra Band</h3>
+                        <div class="desc-text">스크롤, 클릭, 드래그앤 드롭까지? 마우스와 키보드로 이뤄지는 모든 것을 구현해낸 제스처 밴드.</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">Mudra</span>
+                            <span class="premium-tag">액세서리</span>
+                        </div>
+                        <a href="https://smartstore.naver.com/nxtwear/products/12741568780" target="_blank" class="btn-primary">구매하기</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-header">
+                <h2 class="category-title">2. 산업용 안전 용품 및 소화설비</h2>
+                <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
+            </div>
+            <div class="product-grid" style="margin-bottom: 100px;">
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/차단봉.jpg" alt="Belt Barrier"></div>
+                    <div class="product-card-info">
+                        <h3>Belt Barrier</h3>
+                        <div class="desc-text">제품 규격 / 지름 8cm, 높이 12.3cm<br>벨트 규격 / 길이 5M, 폭(높이) 5cm</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">산업 분야</span>
+                            <span class="premium-tag price">41,000원</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/belt_laser.png" alt="Belt Barrier 레이저각인"></div>
+                    <div class="product-card-info">
+                        <h3>Belt barrier_레이저각인</h3>
+                        <div class="desc-text">제품 규격 / 지름 8cm, 높이 12.3cm<br>벨트 규격 / 길이 5M, 폭(높이) 5cm</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">산업 분야</span>
+                            <span class="premium-tag price">44,000원</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/tape.png" alt="안전 롤 테이프"></div>
+                    <div class="product-card-info">
+                        <h3>비점착 안전 롤 테이프</h3>
+                        <div class="desc-text">폭(높이): 10cm<br>길이 : 200m<br>최소 수량 20개</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">산업 분야</span>
+                            <span class="premium-tag price">28,000원</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/fire Tube1.png" alt="소화 튜브"></div>
+                    <div class="product-card-info">
+                        <h3>소화 튜브 (소형)</h3>
+                        <div class="desc-text">T20, Φ16*150mm, 105,000원<br>T30, Φ16*200mm, 120,000원<br>T50, Φ16*250mm, 150,000원<br>T100, Φ16*400mm, 200,000원</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/fire Tube2.png" alt="소화 튜브"></div>
+                    <div class="product-card-info">
+                        <h3>소화 튜브 (대형)</h3>
+                        <div class="desc-text">T200, Φ16*600mm, 270,000원<br>T500, Φ16*1300mm, 390,000원<br>T1000, Φ16*2500mm, 590,000원<br>T2000, Φ16*5000mm, 780,000원</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/InQ.png" alt="단열테이프"></div>
+                    <div class="product-card-info">
+                        <h3>단열테이프</h3>
+                        <div class="desc-text">사이즈 및 단가<br>3.5mm(D)*50mm(W)*5M(L) / 60,000원<br>3.5mm(D)*100mm(W)*5M(L) / 110,000원<br>3.5mm(D)*900mm(W)*5M(L) / 3,100,000원</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-header">
+                <h2 class="category-title">3. Grating SUS 보강판 시리즈</h2>
+                <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
+            </div>
+            <div class="product-grid" style="margin-bottom: 100px;">
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/Grating Sus2.png" alt="Grating Sus 보강판"></div>
+                    <div class="product-card-info">
+                        <h3>Grating Sus 보강판</h3>
+                        <div class="desc-text">재질: SUS304<br>두께: 2.5T<br>사이즈 : 465mm(W)*305mm(L)</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span><span class="premium-tag price">190,000원</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/Grating Sus3.png" alt="Grating Sus 보강판"></div>
+                    <div class="product-card-info">
+                        <h3>Grating Sus 보강판</h3>
+                        <div class="desc-text">재질: SUS304<br>두께: 2.5T<br>사이즈 : 800mm(W)*400mm(L)</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span><span class="premium-tag price">220,000원</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/PIN.png" alt="Grating Sus 고정 핀"></div>
+                    <div class="product-card-info">
+                        <h3>Grating Sus 보강판 고정 핀</h3>
+                        <div class="desc-text">재질: SUS304<br>길이 : 40mm</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span><span class="premium-tag price">15,000원</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/Cart.png" alt="Grating Sus 이동 캐비넷"></div>
+                    <div class="product-card-info">
+                        <h3>Grating Sus 보강판 이동 캐비넷</h3>
+                        <div class="desc-text">보관가능수량<br>800*400size : 30EA<br>465*305size : 40EA<br>최대 하중 : 380KG</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span><span class="premium-tag price">3,200,000원</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-header">
+                <h2 class="category-title">4. 산업용 특수 소재 및 정밀 부품</h2>
+                <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-card-img"><img src="img/EyeLinkBelt.jpg" alt="Eye Link Belt"></div>
+                    <div class="product-card-info">
+                        <h3>Eye Link Belt</h3>
+                        <div class="desc-text">스마트 기기를 위한 혁신적인 컨트롤러</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/roller.jpg" alt="Sic & Sisic Roller"></div>
+                    <div class="product-card-info">
+                        <h3>Sic & Sisic Roller</h3>
+                        <div class="desc-text">고온 환경에 강한 정밀 세라믹 롤러</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/whiteboard.jpg" alt="세라믹 보드 & 울"></div>
+                    <div class="product-card-info">
+                        <h3>세라믹 보드 & 울</h3>
+                        <div class="desc-text">우수한 단열성을 제공하는 산업용 세라믹 보드</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/inconel.jpg" alt="Mesh Belt"></div>
+                    <div class="product-card-info">
+                        <h3>Mesh Belt</h3>
+                        <div class="desc-text">열처리 공정을 위한 고강도 메쉬 벨트</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/XB32A.jpeg" alt="온습도센서(XB32A)"></div>
+                    <div class="product-card-info">
+                        <h3>항온·항습챔버용 온습도센서(XB32A)</h3>
+                        <div class="desc-text">Range: -100…200 °C1 / 0…100 %rh<br>Accuracy : ± 1.0 %rh / 0.2 K<br>Output signals : 0~1 V, 0~5 V, 0~10 V, 0(4)~20 mA<br>Circuit type : 3wire</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span><span class="premium-tag price">400,000원</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/CMP.jpg" alt="CMP 카파 전용 세정제"></div>
+                    <div class="product-card-info">
+                        <h3>CMP 카파 전용 세정제</h3>
+                        <div class="desc-text">CMP과정에서 발생하는 카파오염을 제거 할 수 있는 세정제<br>용량 : 500ml/통</div>
+                        <div class="premium-tags">
+                            <span class="premium-tag">산업 분야</span>
+                            <span class="premium-tag price">20L 이상 ₩10,000/500ml</span>
+                            <span class="premium-tag price">20L 이하 ₩16,000/500ml</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img" style="background: #ffffff;"><img src="img/Ceramic Rollers.jpg" alt="Ceramic Rollers"></div>
+                    <div class="product-card-info">
+                        <h3>Ceramic Rollers</h3>
+                        <div class="desc-text">특수 환경용 맞춤형 세라믹 롤러 솔루션</div>
+                        <div class="premium-tags"><span class="premium-tag">산업 분야</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="productModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>새 제품 추가</h3>
+            
+            <div class="form-group">
+                <label for="prodName">상품 이름</label>
+                <input type="text" id="prodName" placeholder="예: 신규 안전 차단봉">
+            </div>
+            
+            <div class="form-group">
+                <label for="prodDesc">설명</label>
+                <textarea id="prodDesc" placeholder="제품의 상세 설명, 규격 등을 입력하세요. (줄바꿈 가능)"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="prodImage">사진 선택</label>
+                <input type="file" id="prodImage" accept="image/*">
+            </div>
+            
+            <div class="form-group">
+                <label for="prodTags">태그 (쉼표로 구분)</label>
+                <input type="text" id="prodTags" placeholder="예: 산업 분야, 신제품">
+            </div>
+            
+            <div class="form-group">
+                <label for="prodPrice">가격 (선택사항)</label>
+                <input type="text" id="prodPrice" placeholder="예: 50,000원">
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeAddModal()">취소</button>
+                <button class="btn-save" onclick="saveNewProduct()">추가하기</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>SKY COMMERCE</h3>
+                    <p>미래를 일상으로.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>메뉴</h4>
+                    <ul>
+                        <li><a href="index.html">홈</a></li>
+                        <li><a href="about.html">회사 소개</a></li>
+                        <li><a href="product.html">제품</a></li>
+                        <li><a href="contact.html">문의하기</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>고객지원</h4>
+                    <p>031-205-4133</p>
+                    <p>car2314@naver.com</p>
+                    <p class="address">경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</p>
+                </div>
+                <div class="footer-social">
+                    <h4>커뮤니티</h4>
+                    <div class="social-icons">
+                        <a href="https://cafe.naver.com/skycommerce114" target="_blank"><i class="fas fa-coffee"></i></a>
+                        <a href="https://smartstore.naver.com/nxtwear" target="_blank"><i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    
+    <script>
+        let sortableInstances = [];
+        let currentTargetGrid = null; // 제품이 추가될 타겟 그리드
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const editBtn = document.getElementById('adminEditBtn');
+            const productGrids = document.querySelectorAll('.product-grid');
+
+            editBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.body.classList.toggle('edit-mode');
+                this.classList.toggle('active');
+
+                if (document.body.classList.contains('edit-mode')) {
+                    // 드래그 앤 드롭 활성화
+                    productGrids.forEach(grid => {
+                        const instance = new Sortable(grid, {
+                            animation: 150,
+                            ghostClass: 'sortable-ghost',
+                            onEnd: function (evt) {
+                                console.log('아이템 순서 변경됨:', evt.oldIndex, '->', evt.newIndex);
+                                // 순서 변경 후 백엔드에 저장하는 API 호출 위치
+                            }
+                        });
+                        sortableInstances.push(instance);
+                    });
+                } else {
+                    // 비활성화
+                    sortableInstances.forEach(instance => instance.destroy());
+                    sortableInstances = [];
+                }
+            });
+        });
+
+        // 제품 추가 모달 열기
+        function openAddModal(btn) {
+            currentTargetGrid = btn.parentElement.nextElementSibling;
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        // 모달 닫기 및 초기화
+        function closeAddModal() {
+            document.getElementById('productModal').style.display = 'none';
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodDesc').value = '';
+            document.getElementById('prodImage').value = '';
+            document.getElementById('prodTags').value = '';
+            document.getElementById('prodPrice').value = '';
+            currentTargetGrid = null;
+        }
+
+        // 새 제품 저장 (DOM에 요소 추가)
+        function saveNewProduct() {
+            if (!currentTargetGrid) return;
+
+            const name = document.getElementById('prodName').value.trim() || '이름 없음';
+            const desc = document.getElementById('prodDesc').value.replace(/\n/g, '<br>');
+            const fileInput = document.getElementById('prodImage');
+            const tagsInput = document.getElementById('prodTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
+            const price = document.getElementById('prodPrice').value.trim();
+
+            // 이미지 처리 (파일이 있으면 미리보기 URL 생성, 없으면 기본 이미지)
+            let imageUrl = 'https://via.placeholder.com/300x300?text=No+Image';
+            if (fileInput.files && fileInput.files[0]) {
+                imageUrl = URL.createObjectURL(fileInput.files[0]);
+            }
+
+            // 태그 및 가격 HTML 생성
+            let tagsHtml = '';
+            tagsInput.forEach(tag => {
+                tagsHtml += `<span class="premium-tag">${tag}</span>`;
+            });
+            if (price) {
+                tagsHtml += `<span class="premium-tag price">${price}</span>`;
+            }
+
+            // 새 제품 카드 HTML 구조 생성
+            const newCard = document.createElement('div');
+            newCard.className = 'product-card';
+            newCard.innerHTML = `
+                <div class="product-card-img" style="background: #ffffff;">
+                    <img src="${imageUrl}" alt="${name}">
+                </div>
+                <div class="product-card-info">
+                    <h3>${name}</h3>
+                    <div class="desc-text">${desc}</div>
+                    <div class="premium-tags">
+                        ${tagsHtml}
+                    </div>
+                </div>
+            `;
+
+            // 그리드의 맨 앞에 새 제품 추가
+            currentTargetGrid.insertBefore(newCard, currentTargetGrid.firstChild);
+            
+            // 모달 닫기
+            closeAddModal();
+        }
+    </script>
+</body>
+</html>

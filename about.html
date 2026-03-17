@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회사 소개 | SKY Commerce</title>
+    <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .intro-text-section { text-align: center; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        .intro-text-section h2 { font-size: 36px; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.04em; }
+        .intro-text-section p { font-size: 18px; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; word-break: keep-all; }
+        .business-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 50px; }
+        .business-card { background: var(--surface-color); padding: 50px 40px; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04); transition: transform 0.4s ease; }
+        .business-card:hover { transform: translateY(-5px); }
+        .business-card h3 { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 16px; }
+        .business-card p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+        .timeline-wrapper { position: relative; margin: 40px auto 0; width: 100%; }
+        .horizontal-timeline { display: flex; overflow-x: auto; padding: 20px 0 40px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #c1c1c1 #f5f5f7; }
+        .horizontal-timeline::-webkit-scrollbar { height: 6px; }
+        .horizontal-timeline::-webkit-scrollbar-track { background: #f5f5f7; border-radius: 10px; }
+        .horizontal-timeline::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
+        .horizontal-timeline::-webkit-scrollbar-thumb:hover { background: #a1a1a6; }
+        .timeline-item-hz { flex: 0 0 320px; position: relative; padding: 0 30px; }
+        .timeline-item-hz::after { content: ''; position: absolute; top: 85px; left: 0; width: 100%; height: 2px; background-color: #e5e5ea; z-index: 1; }
+        .timeline-year-hz { text-align: center; font-size: 38px; font-weight: 700; color: var(--text-main); margin-bottom: 60px; letter-spacing: -0.02em; }
+        .timeline-dot-hz { position: absolute; top: 77px; left: 50%; transform: translateX(-50%); width: 16px; height: 16px; border-radius: 50%; background-color: #ffffff; border: 4px solid var(--accent-blue); z-index: 2; }
+        .timeline-content-hz { margin-top: 35px; text-align: left; }
+        .timeline-content-hz ul { list-style: none; padding: 0; margin: 0; }
+        .timeline-content-hz li { display: flex; align-items: flex-start; font-size: 16px; color: #444; margin-bottom: 16px; line-height: 1.6; letter-spacing: -0.01em; word-break: keep-all; }
+        .timeline-content-hz li::before { content: ''; display: block; width: 6px; height: 6px; background-color: #86868b; border-radius: 50%; margin-top: 10px; margin-right: 14px; flex-shrink: 0; }
+
+        @media (max-width: 768px) {
+            .business-grid { grid-template-columns: 1fr; }
+            .timeline-item-hz { flex: 0 0 280px; padding: 0 20px; }
+            .timeline-year-hz { font-size: 32px; }
+            .timeline-content-hz li { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <header id="main-header"> 
+        <div class="header-inner">
+            <div class="header-left logo"><a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a></div>
+            <nav class="header-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="about.html" class="active">회사 소개</a></li>
+                    <li><a href="product.html">제품</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+            <div class="header-right utility-icons">
+                <a href="#"><i class="fas fa-globe"></i></a>
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="sub-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('img/bird.png') center/cover no-repeat;">
+        <div class="container">
+            <h1 style="position: relative; z-index: 2;">회사 소개</h1>
+            <p style="position: relative; z-index: 2;">미래를 일상으로 만드는 기업, SKY Commerce</p>
+        </div>
+    </section>
+
+    <section class="sub-content" style="background-color: var(--bg-color); padding-top: 80px;">
+        <div class="container">
+            <div class="intro-text-section">
+                <h2>SKY Commerce 소개</h2>
+                <p>SKY Commerce는 2015년 설립된 기업입니다. 우리는 글로벌 스마트 글래스 브랜드 <strong>TCL RayNeo</strong>의 공식 판매처로서, 최첨단 AR 스마트 글래스 기술을 한국 시장에 소개하고 있습니다.</p>
+                <p>우리의 목표는 증강현실 기술을 통해 사람들의 일상생활과 업무 환경을 혁신적으로 변화시키는 것입니다. 고객 중심의 접근 방식과 전문적인 서비스를 통해 최고의 사용자 경험을 제공하기 위해 끊임없이 노력하고 있습니다.</p>
+            </div>
+            <div class="business-grid">
+                <div class="business-card">
+                    <h3>산업 분야</h3>
+                    <p>삼성전기, LG 등 국내 최고 기업들의 1차 협력사로서, 극한의 산업 환경에 필요한 특수 소재(Inconel, Titanium, 세라믹 등)와 산업용 정밀 장비를 안정적으로 공급하는 B2B 전문 솔루션을 제공합니다.</p>
+                </div>
+                <div class="business-card">
+                    <h3>스마트 기기 및 유통</h3>
+                    <p>혁신적인 AR 스마트 글래스와 첨단 웨어러블 기기(TCL RayNeo, Mudra 등)를 유통하여 디지털과 현실 세계를 원활하게 연결하는 최상의 고객 경험을 제공합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sub-content" style="background-color: #ffffff; padding-bottom: 80px;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <h2 style="font-size: 32px; font-weight: 700; color: var(--text-main);">우리의 가치</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-item"><i class="fas fa-lightbulb"></i><h3>혁신</h3><p>끊임없는 혁신을 통해<br>최첨단 기술과 솔루션을 발굴합니다.</p></div>
+                <div class="feature-item"><i class="fas fa-users"></i><h3>고객 중심</h3><p>고객의 니즈를 최우선으로 생각하며,<br>최상의 서비스를 제공합니다.</p></div>
+                <div class="feature-item"><i class="fas fa-shield-alt"></i><h3>신뢰성</h3><p>모든 비즈니스 관계에서<br>투명성을 바탕으로 신뢰를 구축합니다.</p></div>
+                <div class="feature-item"><i class="fas fa-chart-line"></i><h3>성장</h3><p>지속적인 학습과 발전을 통해<br>개인과 조직의 동반 성장을 추구합니다.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sub-content" style="background-color: var(--bg-color);">
+        <div class="container" style="max-width: 1400px; padding: 0 40px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="font-size: 32px; font-weight: 700; color: var(--text-main);">회사 연혁</h2>
+            </div>
+            <div class="timeline-wrapper">
+                <div class="horizontal-timeline">
+                    <div class="timeline-item-hz"><div class="timeline-year-hz">2025</div><div class="timeline-dot-hz"></div><div class="timeline-content-hz"><ul><li>삼성전기 N2 Box Oven 39대 납품</li><li>삼성전기 화성기 9대 납품</li><li>혁신적 제스처 컨트롤러 "Mudra" 독점 계약</li></ul></div></div>
+                    <div class="timeline-item-hz"><div class="timeline-year-hz">2024</div><div class="timeline-dot-hz"></div><div class="timeline-content-hz"><ul><li>"Keheal" 브랜드 독점 계약</li><li>자사 브랜드 "SKY Brand" 공식 런칭</li></ul></div></div>
+                    <div class="timeline-item-hz"><div class="timeline-year-hz">2023</div><div class="timeline-dot-hz"></div><div class="timeline-content-hz"><ul><li>글로벌 브랜드 "TCL RayNeo (NXTWEAR)" 독점 계약</li><li>"Eloam" 독점 계약 체결</li><li>국내 주요 온라인 쇼핑몰 23개사 협력업체 등록</li></ul></div></div>
+                    <div class="timeline-item-hz"><div class="timeline-year-hz">2018</div><div class="timeline-dot-hz"></div><div class="timeline-content-hz"><ul><li>삼성전기 N2 Box Oven 자체 제작 및 납품</li><li>SIC & SISIC 산업용 특수 품목 추가</li></ul></div></div>
+                    <div class="timeline-item-hz"><div class="timeline-year-hz">2017</div><div class="timeline-dot-hz"></div><div class="timeline-content-hz"><ul><li>LG 1차 협력사로서 Titanium(티타늄) 정식 공급 시작</li></ul></div></div>
+                    <div class="timeline-item-hz"><div class="timeline-year-hz">2016</div><div class="timeline-dot-hz"></div><div class="timeline-content-hz"><ul><li>삼성전기 1차 협력사 세라믹 관련 제품 (단열재, Roller, Pipe 등) 공급</li></ul></div></div>
+                    <div class="timeline-item-hz"><div class="timeline-year-hz">2015</div><div class="timeline-dot-hz"></div><div class="timeline-content-hz"><ul><li>주식회사 스카이커머스(SKY Commerce) 공식 설립</li><li>삼성전기 1차 협력사 특수소재 (Inconel Plate, Tube, Pipe, Mesh Belt 등) 공급 시작</li></ul></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>SKY COMMERCE</h3>
+                    <p>미래를 일상으로.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>메뉴</h4>
+                    <ul>
+                        <li><a href="index.html">홈</a></li>
+                        <li><a href="about.html">회사 소개</a></li>
+                        <li><a href="product.html">제품</a></li>
+                        <li><a href="contact.html">문의하기</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>고객지원</h4>
+                    <p>031-205-4133</p>
+                    <p>car2314@naver.com</p>
+                    <p class="address">경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</p>
+                </div>
+                <div class="footer-social">
+                    <h4>커뮤니티</h4>
+                    <div class="social-icons">
+                        <a href="https://cafe.naver.com/skycommerce114" target="_blank"><i class="fas fa-coffee"></i></a>
+                        <a href="https://smartstore.naver.com/nxtwear" target="_blank"><i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

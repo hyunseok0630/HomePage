@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <!-- 깔끔한 회사 홈페이지 배경 -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f9fa" />
+      <stop offset="100%" stop-color="#e9ecef" />
+    </linearGradient>
+    <pattern id="subtle-pattern" width="50" height="50" patternUnits="userSpaceOnUse">
+      <rect width="50" height="50" fill="url(#bg-gradient)" />
+      <path d="M 0 0 L 50 50 M 50 0 L 0 50" stroke="#dee2e6" stroke-width="0.5" />
+    </pattern>
+  </defs>
+  
+  <!-- 배경 -->
+  <rect width="100%" height="100%" fill="url(#subtle-pattern)" />
+  
+  <!-- 상단 장식 -->
+  <path d="M0,0 L1200,0 L1200,100 C900,150 600,50 300,120 L0,80 Z" fill="#4e73df" opacity="0.1" />
+  
+  <!-- 하단 장식 -->
+  <path d="M0,800 L1200,800 L1200,700 C900,650 600,750 300,680 L0,720 Z" fill="#4e73df" opacity="0.1" />
+  
+  <!-- 원형 장식 요소들 -->
+  <circle cx="200" cy="200" r="80" fill="#4e73df" opacity="0.05" />
+  <circle cx="1000" cy="600" r="100" fill="#4e73df" opacity="0.05" />
+  <circle cx="600" cy="400" r="150" fill="#4e73df" opacity="0.03" />
+  
+  <!-- 미묘한 점들 -->
+  <g fill="#4e73df">
+    <circle cx="150" cy="250" r="1" opacity="0.2" />
+    <circle cx="350" cy="150" r="1" opacity="0.2" />
+    <circle cx="550" cy="350" r="1" opacity="0.2" />
+    <circle cx="750" cy="250" r="1" opacity="0.2" />
+    <circle cx="950" cy="450" r="1" opacity="0.2" />
+    <circle cx="250" cy="550" r="1" opacity="0.2" />
+    <circle cx="450" cy="650" r="1" opacity="0.2" />
+    <circle cx="650" cy="550" r="1" opacity="0.2" />
+    <circle cx="850" cy="650" r="1" opacity="0.2" />
+    <circle cx="1050" cy="150" r="1" opacity="0.2" />
+  </g>
+</svg>
