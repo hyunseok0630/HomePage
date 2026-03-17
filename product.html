@@ -146,29 +146,44 @@
 
     <!-- ───── HEADER ───── -->
     <header id="main-header">
-        <div class="header-inner">
-            <div class="header-left logo">
-                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
-            </div>
-            <nav class="header-center">
-                <ul class="nav-menu">
-                    <li><a href="index.html">홈</a></li>
-                    <li><a href="about.html">회사 소개</a></li>
-                    <li><a href="product.html" class="active">제품</a></li>
-                    <li><a href="contact.html">문의하기</a></li>
-                </ul>
-            </nav>
-            <div class="header-right utility-icons">
-                <a href="#"><i class="fas fa-globe"></i></a>
-                <a href="#"><i class="fas fa-search"></i></a>
-                <a href="#" id="adminEditBtn" title="제품 편집 모드" style="display:none;">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
-                <a href="#"><i class="fas fa-shopping-cart"></i></a>
-            </div>
+    <div class="header-inner">
+        <div class="header-left logo">
+            <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
         </div>
-    </header>
+        <nav class="header-center">
+            <ul class="nav-menu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="about.html">회사 소개</a></li>
+                <li><a href="product.html">제품</a></li>
+                <li><a href="contact.html">문의하기</a></li>
+            </ul>
+        </nav>
+        <div class="header-right utility-icons">
+            <a href="#"><i class="fas fa-globe"></i></a>
+            <a href="#"><i class="fas fa-search"></i></a>
+            <a href="#" id="adminEditBtn" style="display:none;"><i class="fas fa-edit"></i></a>
+            <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <!-- ★ 햄버거 버튼 -->
+            <button class="hamburger" id="hamburger" aria-label="메뉴">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ★ 모바일 드롭다운 메뉴 (header 바로 아래) -->
+<nav class="mobile-menu" id="mobileMenu">
+    <ul>
+        <li><a href="index.html">홈</a></li>
+        <li><a href="about.html">회사 소개</a></li>
+        <li><a href="product.html">제품</a></li>
+        <li><a href="contact.html">문의하기</a></li>
+    </ul>
+</nav>
+
 
     <!-- ───── HERO ───── -->
     <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('img/Air4girl.png') center/cover no-repeat;">
