@@ -37,7 +37,16 @@
             border: 2px dashed #007bff !important;
         }
 
-        /* ── 모달 ── */
+        /* 빈 카테고리 안내 */
+        .empty-notice {
+            color: #aaa;
+            font-size: 14px;
+            padding: 30px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* 모달 */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -68,7 +77,6 @@
         }
         .form-group textarea { height: 80px; resize: vertical; }
 
-        /* ── 이미지 업로드 영역 ── */
         .img-upload-area {
             border: 2px dashed #ccc;
             border-radius: 8px;
@@ -91,21 +99,10 @@
             margin-top: 10px;
             border: 1px solid #eee;
         }
-        /* ── 업로드 진행바 ── */
         .upload-progress { display: none; margin-top: 10px; }
-        .upload-progress-bar {
-            height: 8px; background: #e0e0e0;
-            border-radius: 4px; overflow: hidden;
-        }
-        .upload-progress-fill {
-            height: 100%; background: #007bff;
-            width: 0%; transition: width 0.2s;
-        }
-        .upload-progress-text {
-            font-size: 12px; color: #666;
-            margin-top: 4px; text-align: center;
-        }
-        /* ── URL 토글 ── */
+        .upload-progress-bar { height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; }
+        .upload-progress-fill { height: 100%; background: #007bff; width: 0%; transition: width 0.2s; }
+        .upload-progress-text { font-size: 12px; color: #666; margin-top: 4px; text-align: center; }
         .url-toggle {
             font-size: 12px; color: #007bff;
             cursor: pointer; text-decoration: underline;
@@ -113,18 +110,11 @@
         }
 
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
-        .btn-cancel {
-            background: #f0f0f0; color: #333; border: none;
-            padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500;
-        }
-        .btn-save {
-            background: #007bff; color: white; border: none;
-            padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;
-        }
+        .btn-cancel { background: #f0f0f0; color: #333; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; }
+        .btn-save { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; }
         .btn-save:hover { background: #0056d6; }
         .btn-save:disabled { background: #a0c4f1; cursor: not-allowed; }
 
-        /* ── 삭제 버튼 ── */
         .product-card { position: relative; }
         .delete-btn {
             display: none;
@@ -136,7 +126,6 @@
             z-index: 10; line-height: 28px; text-align: center;
         }
 
-        /* ── 토스트 ── */
         #saveToast {
             display: none;
             position: fixed; bottom: 30px; right: 30px;
@@ -198,43 +187,9 @@
                 <h2 class="category-title" data-category="wearable">1. 스마트 웨어러블 및 액세서리</h2>
                 <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
             </div>
-            <div class="product-grid" style="margin-bottom:100px;">
-                <div class="product-card">
-                    <div class="product-card-img"><img src="img/air4pro.png" alt="TCL RayNeo Air 4 Pro"></div>
-                    <div class="product-card-info">
-                        <h3>TCL RayNeo Air 4 Pro</h3>
-                        <div class="desc-text">Micro-OLED HDR10 화질 및 B&O 사운드</div>
-                        <div class="premium-tags"><span class="premium-tag">RayNeo</span></div>
-                        <a href="https://smartstore.naver.com/nxtwear/products/12929663717" target="_blank" class="btn-primary">구매하기</a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img"><img src="img/air3s_pro_cover.png" alt="Air 3s Pro 암막커버"></div>
-                    <div class="product-card-info">
-                        <h3>Air 3s Pro 암막커버</h3>
-                        <div class="desc-text">전용 차광 커버</div>
-                        <div class="premium-tags"><span class="premium-tag">RayNeo</span></div>
-                        <a href="https://smartstore.naver.com/nxtwear/products/12384561114" target="_blank" class="btn-primary">구매하기</a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img"><img src="img/mudra_link.png" alt="Mudra Link"></div>
-                    <div class="product-card-info">
-                        <h3>Mudra Link</h3>
-                        <div class="desc-text">제스처 컨트롤 밴드</div>
-                        <div class="premium-tags"><span class="premium-tag">Mudra</span></div>
-                        <a href="https://smartstore.naver.com/nxtwear/products/12741568780" target="_blank" class="btn-primary">구매하기</a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img"><img src="img/mudra_band.png" alt="Mudra Band"></div>
-                    <div class="product-card-info">
-                        <h3>Mudra Band</h3>
-                        <div class="desc-text">애플워치 제스처 밴드</div>
-                        <div class="premium-tags"><span class="premium-tag">Mudra</span></div>
-                        <a href="https://smartstore.naver.com/nxtwear/products/12741568780" target="_blank" class="btn-primary">구매하기</a>
-                    </div>
-                </div>
+            <!-- ★ 카드는 Firebase에서 동적으로 삽입 -->
+            <div class="product-grid" id="grid-wearable" style="margin-bottom:100px;">
+                <p class="empty-notice">로딩 중...</p>
             </div>
 
             <!-- 카테고리 2 -->
@@ -242,67 +197,8 @@
                 <h2 class="category-title" data-category="industrial">2. 산업용 환경 용품 및 세정제</h2>
                 <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
             </div>
-            <div class="product-grid" style="margin-bottom:100px;">
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/차단봉.jpg" alt="Belt Barrier"></div>
-                    <div class="product-card-info">
-                        <h3>Belt Barrier</h3>
-                        <div class="desc-text">5M 자동 벨트 차단봉</div>
-                        <div class="premium-tags"><span class="premium-tag price">41,000원</span></div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/belt_laser.png" alt="Belt barrier 레이저각인"></div>
-                    <div class="product-card-info">
-                        <h3>Belt barrier_레이저각인</h3>
-                        <div class="desc-text">로고 각인 모델</div>
-                        <div class="premium-tags"><span class="premium-tag price">44,000원</span></div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/tape.png" alt="비점착 안전 롤 테이프"></div>
-                    <div class="product-card-info">
-                        <h3>비점착 안전 롤 테이프</h3>
-                        <div class="desc-text">폭 10cm / 200m</div>
-                        <div class="premium-tags"><span class="premium-tag price">28,000원</span></div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/fire Tube1.png" alt="소화 튜브 소형"></div>
-                    <div class="product-card-info">
-                        <h3>소화 튜브 (소형)</h3>
-                        <div class="desc-text">자동 소화 설비 T20~T100</div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/fire Tube2.png" alt="소화 튜브 대형"></div>
-                    <div class="product-card-info">
-                        <h3>소화 튜브 (대형)</h3>
-                        <div class="desc-text">자동 소화 T200~T2000</div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/InQ.png" alt="단열테이프"></div>
-                    <div class="product-card-info">
-                        <h3>단열테이프</h3>
-                        <div class="desc-text">고온 방지 특수 테이프</div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/XB32A.jpeg" alt="온습도센서"></div>
-                    <div class="product-card-info">
-                        <h3>온습도센서(XB32A)</h3>
-                        <div class="desc-text">정밀 측정 센서</div>
-                        <div class="premium-tags"><span class="premium-tag price">400,000원</span></div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/CMP.jpg" alt="CMP 세정제"></div>
-                    <div class="product-card-info">
-                        <h3>CMP 카파 전용 세정제</h3>
-                        <div class="desc-text">500ml 세정제</div>
-                    </div>
-                </div>
+            <div class="product-grid" id="grid-industrial" style="margin-bottom:100px;">
+                <p class="empty-notice">로딩 중...</p>
             </div>
 
             <!-- 카테고리 3 -->
@@ -310,39 +206,8 @@
                 <h2 class="category-title" data-category="grating">3. Grating SUS 보강판 시리즈</h2>
                 <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
             </div>
-            <div class="product-grid" style="margin-bottom:100px;">
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/Grating Sus2.png" alt="Grating Sus 보강판 중"></div>
-                    <div class="product-card-info">
-                        <h3>Grating Sus 보강판 (중)</h3>
-                        <div class="desc-text">465*305mm</div>
-                        <div class="premium-tags"><span class="premium-tag price">190,000원</span></div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/Grating Sus3.png" alt="Grating Sus 보강판 대"></div>
-                    <div class="product-card-info">
-                        <h3>Grating Sus 보강판 (대)</h3>
-                        <div class="desc-text">800*400mm</div>
-                        <div class="premium-tags"><span class="premium-tag price">220,000원</span></div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/PIN.png" alt="고정 핀"></div>
-                    <div class="product-card-info">
-                        <h3>고정 핀</h3>
-                        <div class="desc-text">SUS304 재질</div>
-                        <div class="premium-tags"><span class="premium-tag price">15,000원</span></div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/Cart.png" alt="이동 캐비넷"></div>
-                    <div class="product-card-info">
-                        <h3>이동 캐비넷</h3>
-                        <div class="desc-text">SUS 전용 카트</div>
-                        <div class="premium-tags"><span class="premium-tag price">3,200,000원</span></div>
-                    </div>
-                </div>
+            <div class="product-grid" id="grid-grating" style="margin-bottom:100px;">
+                <p class="empty-notice">로딩 중...</p>
             </div>
 
             <!-- 카테고리 4 -->
@@ -350,53 +215,17 @@
                 <h2 class="category-title" data-category="parts">4. 산업용 특수 소재 및 정밀 부품</h2>
                 <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
             </div>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-card-img"><img src="img/EyeLinkBelt.jpg" alt="Eye Link Belt"></div>
-                    <div class="product-card-info">
-                        <h3>Eye Link Belt</h3>
-                        <div class="desc-text">산업용 벨트 컨트롤러</div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/roller.jpg" alt="Sic Roller"></div>
-                    <div class="product-card-info">
-                        <h3>Sic Roller</h3>
-                        <div class="desc-text">고온 세라믹 롤러</div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/whiteboard.jpg" alt="세라믹 보드"></div>
-                    <div class="product-card-info">
-                        <h3>세라믹 보드</h3>
-                        <div class="desc-text">산업용 단열 보드</div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/inconel.jpg" alt="Mesh Belt"></div>
-                    <div class="product-card-info">
-                        <h3>Mesh Belt</h3>
-                        <div class="desc-text">고강도 메쉬 벨트</div>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-card-img" style="background:#fff;"><img src="img/Ceramic Rollers.jpg" alt="Ceramic Rollers"></div>
-                    <div class="product-card-info">
-                        <h3>Ceramic Rollers</h3>
-                        <div class="desc-text">세라믹 솔루션</div>
-                    </div>
-                </div>
+            <div class="product-grid" id="grid-parts" style="margin-bottom:100px;">
+                <p class="empty-notice">로딩 중...</p>
             </div>
 
         </div>
     </section>
 
-
     <!-- ───── 제품 추가 모달 ───── -->
     <div id="productModal" class="modal-overlay">
         <div class="modal-content">
             <h3>새 제품 추가</h3>
-
             <div class="form-group">
                 <label>상품 이름 <span style="color:red;">*</span></label>
                 <input type="text" id="prodName" placeholder="예) TCL RayNeo Air 5">
@@ -405,8 +234,6 @@
                 <label>설명</label>
                 <textarea id="prodDesc" placeholder="제품 간단 설명"></textarea>
             </div>
-
-            <!-- ★ 파일 업로드 (기본) -->
             <div class="form-group">
                 <label>제품 이미지 <span style="color:#888; font-weight:400;">(JPG·PNG·WEBP / 최대 5MB)</span></label>
                 <div id="imgUploadArea" class="img-upload-area"
@@ -421,20 +248,17 @@
                            onchange="handleFileSelect(event)">
                 </div>
                 <img id="imgPreview" src="" alt="미리보기">
-                <!-- 진행바 -->
                 <div class="upload-progress" id="uploadProgress">
                     <div class="upload-progress-bar">
                         <div class="upload-progress-fill" id="uploadProgressFill"></div>
                     </div>
                     <div class="upload-progress-text" id="uploadProgressText">업로드 중... 0%</div>
                 </div>
-                <!-- URL 직접 입력 토글 (보조 수단) -->
                 <span class="url-toggle" onclick="toggleUrlInput()">🔗 URL로 직접 입력하기</span>
                 <div id="urlInputArea" style="display:none; margin-top:8px;">
                     <input type="text" id="prodImageUrl" placeholder="https://...">
                 </div>
             </div>
-
             <div class="form-group">
                 <label>구매 링크 (없으면 비워두기)</label>
                 <input type="text" id="prodBuyUrl" placeholder="https://smartstore.naver.com/...">
@@ -447,14 +271,12 @@
                 <label>가격 (없으면 비워두기)</label>
                 <input type="text" id="prodPrice" placeholder="예) 350,000원">
             </div>
-
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeAddModal()">취소</button>
                 <button class="btn-save" id="btnSave" onclick="saveNewProduct()">DB 저장</button>
             </div>
         </div>
     </div>
-
 
     <!-- ───── FOOTER ───── -->
     <footer>
@@ -493,8 +315,6 @@
         </div>
     </footer>
 
-
-    <!-- ───── JS ───── -->
     <script src="js/main.js"></script>
     <script type="module">
         import { initializeApp }
@@ -504,7 +324,7 @@
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut }
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL }
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject }
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
         const firebaseConfig = {
@@ -520,6 +340,14 @@
         const db      = getFirestore(app);
         const auth    = getAuth(app);
         const storage = getStorage(app);
+
+        // 카테고리 → grid id 매핑
+        const GRID_MAP = {
+            wearable:   document.getElementById('grid-wearable'),
+            industrial: document.getElementById('grid-industrial'),
+            grating:    document.getElementById('grid-grating'),
+            parts:      document.getElementById('grid-parts')
+        };
 
         let sortableInstances = [];
         let currentTargetGrid = null;
@@ -574,14 +402,20 @@
         });
 
         // ────────────────────────────────────────────────
-        // 📦 제품 불러오기 (클라이언트 정렬)
+        // 📦 Firebase에서 제품 불러오기
         // ────────────────────────────────────────────────
         async function loadProducts() {
+            // 로딩 중 표시
+            Object.values(GRID_MAP).forEach(grid => {
+                grid.innerHTML = '<p class="empty-notice">로딩 중...</p>';
+            });
+
             try {
                 const snapshot = await getDocs(collection(db, "products"));
                 const docs = [];
                 snapshot.forEach(d => docs.push({ data: d.data(), id: d.id }));
 
+                // 정렬: order → createdAt fallback
                 docs.sort((a, b) => {
                     const aOrder = a.data.order !== undefined ? a.data.order : Infinity;
                     const bOrder = b.data.order !== undefined ? b.data.order : Infinity;
@@ -589,9 +423,21 @@
                     return (a.data.createdAt?.seconds ?? 0) - (b.data.createdAt?.seconds ?? 0);
                 });
 
+                // 그리드 초기화 후 카드 삽입
+                Object.values(GRID_MAP).forEach(grid => { grid.innerHTML = ''; });
                 docs.forEach(({ data, id }) => renderProductCard(data, id));
+
+                // 빈 카테고리 안내
+                Object.values(GRID_MAP).forEach(grid => {
+                    if (grid.children.length === 0) {
+                        grid.innerHTML = '<p class="empty-notice">등록된 제품이 없습니다.</p>';
+                    }
+                });
             } catch (e) {
                 console.error("제품 로드 실패:", e);
+                Object.values(GRID_MAP).forEach(grid => {
+                    grid.innerHTML = '<p class="empty-notice">⚠️ 제품을 불러오지 못했습니다.</p>';
+                });
                 showToast('❌ 제품 로드 실패: ' + e.message, 4000);
             }
         }
@@ -600,12 +446,8 @@
         // 🃏 카드 렌더링
         // ────────────────────────────────────────────────
         function renderProductCard(item, id) {
-            const headers = document.querySelectorAll('.category-title');
-            let targetGrid = null;
-            headers.forEach(h => {
-                if (h.dataset.category === item.category)
-                    targetGrid = h.closest('.category-header').nextElementSibling;
-            });
+            // GRID_MAP에서 직접 찾기 (더 빠르고 안정적)
+            const targetGrid = GRID_MAP[item.category];
             if (!targetGrid) return;
 
             const tagsHTML  = item.tags?.map(t => `<span class="premium-tag">${t}</span>`).join('') ?? '';
@@ -628,14 +470,26 @@
                 </div>
                 <button class="delete-btn" title="삭제">✕</button>`;
 
+            // 삭제: Firestore + Storage 동시 삭제
             card.querySelector('.delete-btn').addEventListener('click', async (e) => {
                 e.stopPropagation();
                 if (!isAdmin) return;
                 if (!confirm(`"${item.name}"을(를) 삭제하시겠습니까?`)) return;
                 try {
                     await deleteDoc(doc(db, "products", id));
+                    if (item.storagePath) {
+                        try {
+                            await deleteObject(ref(storage, item.storagePath));
+                        } catch (storageErr) {
+                            console.warn("Storage 삭제 생략:", storageErr.code);
+                        }
+                    }
                     card.remove();
-                    showToast('🗑️ 삭제되었습니다.');
+                    // 카드 삭제 후 그리드가 비면 안내 문구 표시
+                    if (targetGrid.querySelectorAll('.firebase-item').length === 0) {
+                        targetGrid.innerHTML = '<p class="empty-notice">등록된 제품이 없습니다.</p>';
+                    }
+                    showToast('🗑️ 제품 및 이미지가 삭제되었습니다.');
                 } catch (err) {
                     alert("삭제 실패: " + err.message);
                 }
@@ -644,17 +498,21 @@
             if (document.body.classList.contains('edit-mode'))
                 card.querySelector('.delete-btn').style.display = 'block';
 
+            // 빈 안내 문구 제거 후 카드 삽입
+            const notice = targetGrid.querySelector('.empty-notice');
+            if (notice) notice.remove();
+
             targetGrid.appendChild(card);
         }
 
         // ────────────────────────────────────────────────
-        // 🖼️ Firebase Storage 업로드 → 다운로드 URL 반환
+        // 🖼️ Firebase Storage 업로드 → { imageUrl, storagePath }
         // ────────────────────────────────────────────────
         function uploadImage(file) {
             return new Promise((resolve, reject) => {
-                const fileName   = `products/${Date.now()}_${file.name}`;
-                const storageRef = ref(storage, fileName);
-                const uploadTask = uploadBytesResumable(storageRef, file);
+                const storagePath = `products/${Date.now()}_${file.name}`;
+                const storageRef  = ref(storage, storagePath);
+                const uploadTask  = uploadBytesResumable(storageRef, file);
 
                 const progressWrap = document.getElementById('uploadProgress');
                 const progressFill = document.getElementById('uploadProgressFill');
@@ -674,11 +532,11 @@
                         reject(err);
                     },
                     async () => {
-                        const url = await getDownloadURL(uploadTask.snapshot.ref);
+                        const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
                         progressFill.style.width = '100%';
                         progressText.textContent = '✅ 업로드 완료!';
                         setTimeout(() => { progressWrap.style.display = 'none'; }, 1200);
-                        resolve(url);
+                        resolve({ imageUrl, storagePath });
                     }
                 );
             });
@@ -723,7 +581,7 @@
         };
 
         // ────────────────────────────────────────────────
-        // ➕ 제품 저장 (Storage 업로드 → Firestore 저장)
+        // ➕ 제품 저장
         // ────────────────────────────────────────────────
         window.saveNewProduct = async function () {
             if (!currentTargetGrid || !isAdmin) return;
@@ -731,7 +589,6 @@
             const name = document.getElementById('prodName').value.trim();
             if (!name) return alert('상품명을 입력해주세요.');
 
-            // 이미지: 파일도 URL도 없으면 경고
             const urlInput = document.getElementById('prodImageUrl').value.trim();
             if (!selectedFile && !urlInput) {
                 if (!confirm('이미지 없이 저장하시겠습니까?')) return;
@@ -742,12 +599,12 @@
             btnSave.textContent = '저장 중...';
 
             try {
-                let imageUrl = urlInput;
+                let imageUrl    = urlInput;
+                let storagePath = '';
 
-                // 파일이 선택된 경우 Storage에 업로드
                 if (selectedFile) {
                     showToast('📤 이미지 업로드 중...', 15000);
-                    imageUrl = await uploadImage(selectedFile);
+                    ({ imageUrl, storagePath } = await uploadImage(selectedFile));
                 }
 
                 const categoryEl    = currentTargetGrid
@@ -757,21 +614,21 @@
 
                 const data = {
                     name,
-                    desc:      document.getElementById('prodDesc').value.replace(/\n/g, '<br>'),
+                    desc:        document.getElementById('prodDesc').value.replace(/\n/g, '<br>'),
                     imageUrl,
-                    buyUrl:    document.getElementById('prodBuyUrl').value.trim(),
-                    tags:      document.getElementById('prodTags').value
-                                   .split(',').map(t => t.trim()).filter(Boolean),
-                    price:     document.getElementById('prodPrice').value.trim(),
-                    category:  categoryEl.dataset.category,
-                    order:     existingCount,
-                    createdAt: serverTimestamp()
+                    storagePath,
+                    buyUrl:      document.getElementById('prodBuyUrl').value.trim(),
+                    tags:        document.getElementById('prodTags').value
+                                     .split(',').map(t => t.trim()).filter(Boolean),
+                    price:       document.getElementById('prodPrice').value.trim(),
+                    category:    categoryEl.dataset.category,
+                    order:       existingCount,
+                    createdAt:   serverTimestamp()
                 };
 
                 const docRef = await addDoc(collection(db, "products"), data);
                 renderProductCard(data, docRef.id);
 
-                // 모달 초기화
                 ['prodName','prodDesc','prodImageUrl','prodBuyUrl','prodTags','prodPrice']
                     .forEach(id => document.getElementById(id).value = '');
                 document.getElementById('imgPreview').style.display = 'none';
@@ -792,7 +649,7 @@
         };
 
         // ────────────────────────────────────────────────
-        // 💾 드래그 순서 저장 (writeBatch)
+        // 💾 드래그 순서 저장
         // ────────────────────────────────────────────────
         async function saveOrder(grid) {
             const cards = grid.querySelectorAll('.firebase-item');
