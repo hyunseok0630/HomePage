@@ -1,10 +1,10 @@
 /* CSS 변수 설정 */
 :root {
-    --bg-color: #fbfbfd; 
+    --bg-color: #fbfbfd;
     --surface-color: #ffffff;
     --text-main: #1d1d1f;
     --text-muted: #86868b;
-    --accent-blue: #0071e3; 
+    --accent-blue: #0071e3;
     --nav-height: 64px;
 }
 
@@ -30,7 +30,9 @@ ul { list-style: none; }
 /* 컨테이너 넓이 */
 .container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
 
-/* 1. 글로벌 네비게이션 */
+/* ═══════════════════════════════════════
+   1. 글로벌 네비게이션
+═══════════════════════════════════════ */
 header {
     position: fixed;
     top: 0;
@@ -56,7 +58,6 @@ header.hovered {
     transform: translateY(0);
 }
 
-
 .header-inner {
     display: flex;
     justify-content: space-between;
@@ -71,10 +72,10 @@ header.hovered {
 .header-left, .header-right { flex: 1; }
 .header-center { flex: 2; display: flex; justify-content: center; }
 
-.header-left.logo img { 
-    height: 32px; 
-    width: auto; 
-    border-radius: 4px; 
+.header-left.logo img {
+    height: 32px;
+    width: auto;
+    border-radius: 4px;
 }
 
 .nav-menu { display: flex; gap: 45px; }
@@ -85,7 +86,9 @@ header.hovered {
 .header-right.utility-icons a { color: rgba(255, 255, 255, 0.8); font-size: 18px; transition: color 0.3s, transform 0.3s; }
 .header-right.utility-icons a:hover { color: #ffffff; transform: scale(1.1); }
 
-/* 2. 풀스크린 비디오 히어로 섹션 */
+/* ═══════════════════════════════════════
+   2. 풀스크린 비디오 히어로 섹션
+═══════════════════════════════════════ */
 .video-hero {
     position: relative;
     height: 100vh;
@@ -117,7 +120,9 @@ header.hovered {
 .hero-content h2 { font-size: 64px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
 .hero-content p { font-size: 24px; font-weight: 400; margin-bottom: 35px; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
 
-/* 공통 버튼 스타일 */
+/* ═══════════════════════════════════════
+   공통 버튼 스타일
+═══════════════════════════════════════ */
 .btn-group { display: flex; justify-content: center; gap: 20px; align-items: center; }
 .btn-primary {
     display: inline-flex;
@@ -125,7 +130,7 @@ header.hovered {
     justify-content: center;
     background: #ffffff;
     color: #000000;
-    padding: 14px 24px; 
+    padding: 14px 24px;
     border-radius: 30px;
     font-size: 15px;
     font-weight: 600;
@@ -138,11 +143,15 @@ header.hovered {
 .btn-secondary:hover { opacity: 0.7; }
 .btn-secondary:hover i { transform: translateX(4px); }
 
-/* 3. 섹션 공통 */
+/* ═══════════════════════════════════════
+   3. 섹션 공통
+═══════════════════════════════════════ */
 section.features, section.about-images-only { padding: 140px 0; }
 .section-title { text-align: center; font-size: 40px; font-weight: 600; letter-spacing: -0.04em; margin-bottom: 80px; color: var(--text-main); }
 
-/* 4. 제품 디테일 및 태그 스타일 (제품 페이지용) */
+/* ═══════════════════════════════════════
+   4. 제품 태그 스타일
+═══════════════════════════════════════ */
 .category-title {
     font-size: 28px;
     font-weight: 700;
@@ -177,7 +186,9 @@ section.features, section.about-images-only { padding: 140px 0; }
 }
 .premium-tag.price { background: var(--accent-blue); color: #fff; font-weight: 600; }
 
-/* 5. 파트너 및 특징 그리드 */
+/* ═══════════════════════════════════════
+   5. 파트너 및 특징 그리드
+═══════════════════════════════════════ */
 .images-grid { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 60px; }
 .image-item { width: 150px; height: 50px; display: flex; justify-content: center; align-items: center; }
 .image-item img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(100%) opacity(0.4); transition: all 0.4s ease; }
@@ -190,25 +201,27 @@ section.features, section.about-images-only { padding: 140px 0; }
 .feature-item h3 { font-size: 19px; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.02em; }
 .feature-item p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
 
-/* ========================================================
-   ★ 6. 서브페이지 전용 히어로 (배경 사진 높이 대폭 확장)
-======================================================== */
-.sub-hero { 
-    background: #000; 
-    color: #fff; 
-    /* 기존 160px 80px에서 240px 140px로 늘려 배경 사진이 훨씬 더 많이 보이게 수정함 */
-    padding: 240px 20px 140px; 
-    text-align: center; 
+/* ═══════════════════════════════════════
+   6. 서브페이지 히어로
+═══════════════════════════════════════ */
+.sub-hero {
+    background: #000;
+    color: #fff;
+    padding: 240px 20px 140px;
+    text-align: center;
 }
 .sub-hero h1 { font-size: 48px; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 16px; }
 .sub-hero p { font-size: 18px; color: #e5e5ea; font-weight: 300; }
 
 .sub-content { padding: 100px 0; }
 
+/* ═══════════════════════════════════════
+   7. 제품 그리드 & 카드
+═══════════════════════════════════════ */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 30px; 
+    gap: 30px;
 }
 
 .product-card {
@@ -220,45 +233,59 @@ section.features, section.about-images-only { padding: 140px 0; }
     display: flex;
     flex-direction: column;
 }
-
 .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
 
+/* ★ 이미지 박스 — padding 제거, cover로 꽉 채움 */
 .product-card-img {
     height: 260px;
     background: #f5f5f7;
+    overflow: hidden;
+}
+.product-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.product-card:hover .product-card-img img { transform: scale(1.05); }
+
+/* ★ 투명 배경 PNG 제품은 contain 유지 (.contain 클래스 추가 시) */
+.product-card-img.contain {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    overflow: hidden;
 }
-.product-card-img img { max-width: 85%; max-height: 85%; object-fit: contain; transition: transform 0.4s ease; }
-.product-card:hover .product-card-img img { transform: scale(1.05); }
+.product-card-img.contain img {
+    width: auto;
+    height: auto;
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+}
 
 .product-card-info {
-    padding: 35px 25px; 
+    padding: 35px 25px;
     text-align: center;
     display: flex;
-    flex-direction: column; 
-    flex: 1; 
+    flex-direction: column;
+    flex: 1;
 }
-
 .product-card-info h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
 
-/* 구매하기 버튼 전용 스타일 */
+/* 구매하기 버튼 */
 .product-card-info .btn-primary {
     background: #1d1d1f;
     color: #ffffff;
-    margin-top: auto !important; 
-    width: 85%; 
+    margin-top: auto !important;
+    width: 85%;
     align-self: center;
 }
+.product-card-info .btn-primary:hover { background: #000000; }
 
-.product-card-info .btn-primary:hover {
-    background: #000000;
-}
-
-/* 7. 푸터 및 기타 */
+/* ═══════════════════════════════════════
+   8. 푸터 및 기타
+═══════════════════════════════════════ */
 .info-card { background: var(--surface-color); border-radius: 20px; padding: 50px 40px; margin-bottom: 30px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
 .info-card h3 { font-size: 28px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; letter-spacing: -0.03em; }
 .info-row { display: flex; margin-bottom: 25px; align-items: flex-start; }
@@ -278,7 +305,9 @@ footer { background: #f5f5f7; padding: 60px 0 40px; font-size: 12px; color: var(
 .social-icons a:hover { color: var(--text-main); }
 .footer-bottom { color: #a1a1a6; }
 
-/* 모바일 및 태블릿 최적화 */
+/* ═══════════════════════════════════════
+   9. 반응형
+═══════════════════════════════════════ */
 @media (max-width: 1200px) {
     .product-grid, .feature-grid { grid-template-columns: repeat(2, 1fr); }
     .header-inner { padding: 0 20px; }
@@ -289,10 +318,7 @@ footer { background: #f5f5f7; padding: 60px 0 40px; font-size: 12px; color: var(
     .header-right { flex: 2; }
     .hero-content h2 { font-size: 40px; }
     .hero-content p { font-size: 18px; }
-    
-    /* 모바일에서는 사진 영역 크기 자동 조절 */
     .sub-hero { padding: 180px 20px 100px; }
     .sub-hero h1 { font-size: 36px; }
-    
     .footer-content { grid-template-columns: 1fr; gap: 30px; }
 }
