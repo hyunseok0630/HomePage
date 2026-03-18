@@ -3,351 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>문의 관리 | SKY Commerce (관리자 전용)</title>
+    <title>관리자 페이지 | SKY Commerce</title>
     <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    
-    <script>
-        if (localStorage.getItem('isLoggedIn') !== 'true' || localStorage.getItem('userRole') !== 'admin') {
-            alert('접근 권한이 없습니다. 관리자 로그인이 필요합니다.');
-            window.location.href = 'login.html';
-        }
-    </script>
-
     <style>
-        .admin-section {
-            padding: 140px 0 100px;
-            background: var(--bg-color);
-            min-height: calc(100vh - 250px);
-        }
+        body { background: #f5f5f7; padding-top: 80px; }
+        .admin-wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
         .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #e5e5ea;
-            padding-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px;
         }
-        .admin-header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: -0.03em;
+        .admin-header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; }
+        .admin-actions { display: flex; gap: 10px; }
+        .btn-danger {
+            background: crimson; color: #fff; border: none; border-radius: 8px;
+            padding: 10px 18px; font-size: 13px; font-weight: 600;
+            font-family: inherit; cursor: pointer; transition: background 0.2s;
         }
-        
-        /* 상단 액션 버튼 영역 */
-        .admin-actions {
-            display: flex;
-            gap: 15px;
+        .btn-danger:hover { background: #a00; }
+        .btn-logout {
+            background: #1d1d1f; color: #fff; border: none; border-radius: 8px;
+            padding: 10px 18px; font-size: 13px; font-weight: 600;
+            font-family: inherit; cursor: pointer; transition: background 0.2s;
         }
-        .manage-btn {
-            padding: 10px 24px;
-            background: #1d1d1f;
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
+        .btn-logout:hover { background: #000; }
+
+        .tab-bar { display: flex; gap: 8px; margin-bottom: 24px; }
+        .tab-btn {
+            background: #fff; border: 1.5px solid #ddd; border-radius: 20px;
+            padding: 8px 18px; font-size: 13px; font-weight: 500;
+            font-family: inherit; cursor: pointer; transition: all 0.2s;
         }
-        .manage-btn:hover { background: #000; }
-        .manage-btn.active { background: #86868b; }
-        
-        .delete-all-btn {
-            padding: 10px 24px;
-            background: #ff3b30;
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.3s;
-        }
-        .delete-all-btn:hover { opacity: 0.8; }
-        
-        /* 문의 내역 그리드 및 카드 */
-        .inquiry-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
+        .tab-btn.active { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+
         .inquiry-card {
-            background: var(--surface-color);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-            transition: opacity 0.3s, background 0.3s;
+            background: #fff; border-radius: 14px; padding: 22px 24px;
+            margin-bottom: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            border-left: 4px solid #ddd;
         }
-        /* 확인 완료된 카드 스타일 */
-        .inquiry-card.completed {
-            opacity: 0.6;
-            background: #fbfbfd;
+        .inquiry-card.unread { border-left-color: #0071e3; background: #f0f7ff; }
+        .inquiry-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .inquiry-name { font-size: 16px; font-weight: 700; color: #1d1d1f; }
+        .inquiry-date { font-size: 12px; color: #aaa; }
+        .inquiry-type { display: inline-block; background: #f5f5f7; color: #555; font-size: 11px; padding: 3px 10px; border-radius: 10px; margin-bottom: 8px; }
+        .inquiry-msg { font-size: 14px; color: #444; line-height: 1.7; white-space: pre-wrap; margin-bottom: 10px; }
+        .inquiry-contact { font-size: 12px; color: #888; margin-bottom: 12px; }
+        .inquiry-btns { display: flex; gap: 8px; }
+        .btn-read {
+            background: #e8f4ff; color: #0071e3; border: none; border-radius: 6px;
+            padding: 6px 14px; font-size: 12px; font-weight: 500;
+            cursor: pointer; font-family: inherit;
         }
-        
-        .inquiry-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #f5f5f7;
-            padding-bottom: 15px;
+        .btn-del {
+            background: #fff0f0; color: crimson; border: none; border-radius: 6px;
+            padding: 6px 14px; font-size: 12px; font-weight: 500;
+            cursor: pointer; font-family: inherit;
         }
-        .inquiry-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-main);
+        .empty-msg { text-align: center; padding: 80px 0; color: #bbb; font-size: 16px; }
+        .stats-bar {
+            display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;
         }
-        .inquiry-date {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-        .inquiry-contact {
-            margin-bottom: 15px;
-            font-size: 15px;
-            color: var(--text-muted);
-        }
-        .inquiry-contact span { margin-right: 20px; display: inline-block; margin-bottom: 5px; }
-        .inquiry-contact i { color: var(--accent-blue); margin-right: 6px; }
-        
-        .inquiry-message {
-            background: #f5f5f7;
-            padding: 20px;
-            border-radius: 12px;
-            font-size: 15px;
-            line-height: 1.6;
-            color: var(--text-main);
-            white-space: pre-wrap; 
-        }
-        
-        /* 하단 액션 버튼들 (글씨 겹침 방지용 분리) */
-        .inquiry-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #f5f5f7;
-        }
-        .btn-complete {
-            padding: 10px 20px;
-            background: var(--accent-blue);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .btn-complete:hover { background: #005bb5; }
-        .btn-complete.completed-state {
-            background: #86868b;
-            cursor: default;
-        }
-        .btn-delete {
-            padding: 10px 20px;
-            background: #ff3b30;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.3s;
-        }
-        .btn-delete:hover { opacity: 0.8; }
-        
-        .empty-state {
+        .stat-box {
+            background: #fff; border-radius: 12px; padding: 16px 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05); flex: 1; min-width: 120px;
             text-align: center;
-            padding: 80px 0;
-            color: var(--text-muted);
-            font-size: 18px;
         }
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 20px;
-            opacity: 0.5;
+        .stat-box .num { font-size: 28px; font-weight: 700; color: #1d1d1f; }
+        .stat-box .label { font-size: 12px; color: #aaa; margin-top: 4px; }
+        .stat-box.blue .num { color: #0071e3; }
+
+        /* 접근 차단 오버레이 */
+        #authBlock {
+            display: flex; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: #f5f5f7;
+            z-index: 9999; align-items: center; justify-content: center;
+            flex-direction: column; gap: 12px;
         }
-        
-        @media (max-width: 768px) {
-            .inquiry-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .admin-header { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .admin-actions { width: 100%; justify-content: flex-end; }
+        #authBlock p { font-size: 16px; color: #888; }
+
+        @media (max-width: 600px) {
+            .admin-header { flex-direction: column; align-items: flex-start; gap: 12px; }
         }
     </style>
 </head>
 <body>
-    <header id="main-header">
-    <div class="header-inner">
-        <div class="header-left logo">
-            <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
-        </div>
-        <nav class="header-center">
-            <ul class="nav-menu">
-                <li><a href="index.html">홈</a></li>
-                <li><a href="about.html">회사 소개</a></li>
-                <li><a href="product.html">제품</a></li>
-                <li><a href="contact.html">문의하기</a></li>
-            </ul>
-        </nav>
-        <div class="header-right utility-icons">
-            <a href="#"><i class="fas fa-globe"></i></a>
-            <a href="#"><i class="fas fa-search"></i></a>
-            <a href="#" id="adminEditBtn" style="display:none;"><i class="fas fa-edit"></i></a>
-            <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
-            <a href="#"><i class="fas fa-shopping-cart"></i></a>
-            <!-- ★ 햄버거 버튼 -->
-            <button class="hamburger" id="hamburger" aria-label="메뉴">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+
+    <!-- ★ 비로그인 차단 오버레이 — 인증 확인 전 전체 화면 가림 -->
+    <div id="authBlock">
+        <i class="fas fa-lock" style="font-size:32px; color:#ccc;"></i>
+        <p>접근 권한 확인 중...</p>
     </div>
-</header>
 
-<!-- ★ 모바일 드롭다운 메뉴 (header 바로 아래) -->
-<nav class="mobile-menu" id="mobileMenu">
-    <ul>
-        <li><a href="index.html">홈</a></li>
-        <li><a href="about.html">회사 소개</a></li>
-        <li><a href="product.html">제품</a></li>
-        <li><a href="contact.html">문의하기</a></li>
-    </ul>
-</nav>
-
-
-    <section class="admin-section">
-        <div class="container" style="max-width: 900px;">
-            <div class="admin-header">
-                <h1>고객 문의 접수 내역</h1>
-                <div class="admin-actions">
-                    <button id="deleteAllBtn" class="delete-all-btn manage-item" onclick="deleteAllInquiries()" style="display: none;">전체 삭제</button>
-                    <button id="manageBtn" class="manage-btn" onclick="toggleManageMode()">문의 관리</button>
-                </div>
+    <!-- ───── HEADER ───── -->
+    <header id="main-header">
+        <div class="header-inner">
+            <div class="header-left logo">
+                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
             </div>
-
-            <div id="inquiryContainer" class="inquiry-grid">
-                </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content" style="border-top: 1px solid #e5e5ea; padding-top: 40px;">
-                <div class="footer-logo">
-                    <h3>SKY COMMERCE</h3>
-                    <p>미래를 일상으로.</p>
-                </div>
+            <nav class="header-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="product.html">제품 관리</a></li>
+                    <li><a href="contact.html">문의 확인</a></li>
+                </ul>
+            </nav>
+            <div class="header-right utility-icons">
+                <a href="product.html"><i class="fas fa-box"></i></a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></a>
+                <button class="hamburger" id="hamburger" aria-label="메뉴">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
-            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
         </div>
-    </footer>
+    </header>
+
+    <nav class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">홈</a></li>
+            <li><a href="product.html">제품 관리</a></li>
+            <li><a href="contact.html">문의 확인</a></li>
+        </ul>
+    </nav>
+
+    <!-- ───── ADMIN BODY ───── -->
+    <div class="admin-wrap">
+        <div class="admin-header">
+            <h1>📋 문의 관리</h1>
+            <div class="admin-actions">
+                <button class="btn-danger" onclick="deleteAllRead()">읽은 문의 전체 삭제</button>
+                <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-box blue">
+                <div class="num" id="statUnread">-</div>
+                <div class="label">미확인</div>
+            </div>
+            <div class="stat-box">
+                <div class="num" id="statTotal">-</div>
+                <div class="label">전체</div>
+            </div>
+            <div class="stat-box">
+                <div class="num" id="statRead">-</div>
+                <div class="label">확인됨</div>
+            </div>
+        </div>
+
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="filterList('all', this)">전체</button>
+            <button class="tab-btn"        onclick="filterList('unread', this)">미확인</button>
+            <button class="tab-btn"        onclick="filterList('read', this)">확인됨</button>
+        </div>
+
+        <div id="inquiryList"></div>
+    </div>
 
     <script src="js/main.js"></script>
-    <script>
-        let isManageMode = false;
+    <script type="module">
+        import { initializeApp, getApps, getApp }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, deleteDoc,
+                 doc, updateDoc, query, orderBy, writeBatch }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // 1. 문의 관리 모드 토글 (삭제 버튼들 숨김/표시)
-        function toggleManageMode() {
-            isManageMode = !isManageMode;
-            const manageBtn = document.getElementById('manageBtn');
-            const manageItems = document.querySelectorAll('.manage-item');
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
+            authDomain: "skycommerce-7fec4.firebaseapp.com",
+            projectId: "skycommerce-7fec4",
+            storageBucket: "skycommerce-7fec4.firebasestorage.app",
+            messagingSenderId: "232403511014",
+            appId: "1:232403511014:web:318ebb689d678e998b7d27"
+        };
 
-            if (isManageMode) {
-                manageBtn.textContent = '관리 종료';
-                manageBtn.classList.add('active');
-                manageItems.forEach(item => item.style.display = 'inline-block');
+        const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
+        const db   = getFirestore(app);
+        const auth = getAuth(app);
+
+        let allInquiries = [];
+        let currentFilter = 'all';
+
+        // ★ 보안: 비로그인 시 즉시 차단 후 로그인 페이지로 이동
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.replace('login.html');
             } else {
-                manageBtn.textContent = '문의 관리';
-                manageBtn.classList.remove('active');
-                manageItems.forEach(item => item.style.display = 'none');
+                document.getElementById('authBlock').style.display = 'none';
+                loadInquiries();
+            }
+        });
+
+        // ── XSS 방어용 이스케이프 함수
+        function esc(str = '') {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // ── 문의 불러오기
+        async function loadInquiries() {
+            try {
+                const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+                allInquiries = [];
+                snapshot.forEach(d => allInquiries.push({ id: d.id, ...d.data() }));
+                updateStats();
+                renderList();
+            } catch (e) {
+                document.getElementById('inquiryList').innerHTML =
+                    '<p class="empty-msg">⚠️ 불러오기 실패: ' + esc(e.message) + '</p>';
             }
         }
 
-        // 2. 문의 내역 불러오기 및 렌더링
-        function loadInquiries() {
-            const container = document.getElementById('inquiryContainer');
-            const inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
+        function updateStats() {
+            const unread = allInquiries.filter(i => !i.read).length;
+            document.getElementById('statTotal').textContent  = allInquiries.length;
+            document.getElementById('statUnread').textContent = unread;
+            document.getElementById('statRead').textContent   = allInquiries.length - unread;
+        }
 
-            if (inquiries.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <p>현재 접수된 문의 내역이 없습니다.</p>
-                    </div>
-                `;
+        // ── 목록 렌더링 (★ esc() 적용으로 XSS 방어)
+        function renderList() {
+            const list = document.getElementById('inquiryList');
+            const filtered = allInquiries.filter(i => {
+                if (currentFilter === 'unread') return !i.read;
+                if (currentFilter === 'read')   return i.read;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<p class="empty-msg">📭 문의가 없습니다.</p>';
                 return;
             }
 
-            container.innerHTML = ''; // 초기화
-
-            inquiries.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = `inquiry-card ${item.completed ? 'completed' : ''}`;
-                
-                // 확인 완료 여부에 따른 버튼 상태
-                const completeBtnHTML = item.completed 
-                    ? `<button class="btn-complete completed-state" disabled><i class="fas fa-check-double"></i> 확인됨</button>`
-                    : `<button class="btn-complete" onclick="completeInquiry(${index})"><i class="fas fa-check"></i> 확인 완료</button>`;
-
-                card.innerHTML = `
-                    <div class="inquiry-meta">
-                        <div class="inquiry-name">${item.name}</div>
-                        <div class="inquiry-date">${item.date}</div>
+            list.innerHTML = filtered.map(item => {
+                const date = item.createdAt?.toDate
+                    ? item.createdAt.toDate().toLocaleString('ko-KR')
+                    : '날짜 없음';
+                return `
+                <div class="inquiry-card ${item.read ? 'read' : 'unread'}">
+                    <div class="inquiry-top">
+                        <span class="inquiry-name">${item.read ? '' : '🔵 '}${esc(item.name)}</span>
+                        <span class="inquiry-date">${esc(date)}</span>
                     </div>
+                    <span class="inquiry-type">${esc(item.type)}</span>
+                    <div class="inquiry-msg">${esc(item.message)}</div>
                     <div class="inquiry-contact">
-                        <span><i class="fas fa-envelope"></i> ${item.email}</span>
-                        <span><i class="fas fa-phone"></i> ${item.phone || '번호 미기재'}</span>
+                        📞 ${esc(item.phone)}${item.email ? `　✉️ ${esc(item.email)}` : ''}
                     </div>
-                    <div class="inquiry-message">${item.message}</div>
-                    
-                    <div class="inquiry-actions">
-                        ${completeBtnHTML}
-                        <button class="btn-delete manage-item" onclick="deleteInquiry(${index})" style="display: ${isManageMode ? 'inline-block' : 'none'};"><i class="fas fa-trash-alt"></i> 삭제</button>
+                    <div class="inquiry-btns">
+                        <button class="btn-read" onclick="toggleRead('${esc(item.id)}', ${item.read})">
+                            ${item.read ? '미확인으로 변경' : '✔ 확인됨으로 표시'}
+                        </button>
+                        <button class="btn-del" onclick="deleteOne('${esc(item.id)}')">🗑 삭제</button>
                     </div>
-                `;
-                container.appendChild(card);
-            });
+                </div>`;
+            }).join('');
         }
 
-        // 3. 확인 완료 처리
-        function completeInquiry(index) {
-            let inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
-            inquiries[index].completed = true; // 완료 상태 저장
-            localStorage.setItem('inquiries', JSON.stringify(inquiries));
-            loadInquiries(); // 화면 다시 그리기
-        }
+        window.filterList = function (filter, btn) {
+            currentFilter = filter;
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            renderList();
+        };
 
-        // 4. 개별 문의 내역 삭제
-        function deleteInquiry(index) {
-            if(confirm("정말로 이 문의 내역을 삭제하시겠습니까?")) {
-                let inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
-                inquiries.splice(index, 1); 
-                localStorage.setItem('inquiries', JSON.stringify(inquiries));
-                loadInquiries(); 
-            }
-        }
+        window.toggleRead = async function (id, currentRead) {
+            try {
+                await updateDoc(doc(db, "inquiries", id), { read: !currentRead });
+                const item = allInquiries.find(i => i.id === id);
+                if (item) item.read = !currentRead;
+                updateStats();
+                renderList();
+            } catch (e) { alert('업데이트 실패: ' + e.message); }
+        };
 
-        // 5. 전체 문의 내역 삭제
-        function deleteAllInquiries() {
-            const inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
-            if(inquiries.length === 0) return;
-            
-            if(confirm("모든 문의 내역을 영구적으로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
-                localStorage.setItem('inquiries', JSON.stringify([]));
-                loadInquiries();
-                if(isManageMode) toggleManageMode(); // 삭제 후 관리 모드 자동 종료
-            }
-        }
+        window.deleteOne = async function (id) {
+            if (!confirm('이 문의를 삭제하시겠습니까?')) return;
+            try {
+                await deleteDoc(doc(db, "inquiries", id));
+                allInquiries = allInquiries.filter(i => i.id !== id);
+                updateStats();
+                renderList();
+            } catch (e) { alert('삭제 실패: ' + e.message); }
+        };
 
-        // 페이지 로드 시 실행
-        document.addEventListener("DOMContentLoaded", loadInquiries);
+        window.deleteAllRead = async function () {
+            const readItems = allInquiries.filter(i => i.read);
+            if (readItems.length === 0) { alert('삭제할 읽은 문의가 없습니다.'); return; }
+            if (!confirm(`확인된 문의 ${readItems.length}건을 모두 삭제하시겠습니까?`)) return;
+            try {
+                const batch = writeBatch(db);
+                readItems.forEach(i => batch.delete(doc(db, "inquiries", i.id)));
+                await batch.commit();
+                allInquiries = allInquiries.filter(i => !i.read);
+                updateStats();
+                renderList();
+            } catch (e) { alert('삭제 실패: ' + e.message); }
+        };
+
+        // ★ 보안: Firebase signOut + localStorage 정리
+        window.handleLogout = async function () {
+            if (!confirm('로그아웃 하시겠습니까?')) return;
+            try {
+                await signOut(auth);
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userRole');
+                window.location.replace('login.html');
+            } catch (e) { alert('로그아웃 실패: ' + e.message); }
+        };
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            handleLogout();
+        });
     </script>
 </body>
 </html>

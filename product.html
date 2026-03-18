@@ -31,20 +31,14 @@
         }
         body.edit-mode .admin-add-btn {
             display: inline-block !important;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 15px;
-            font-weight: 600;
+            background-color: #007bff; color: white; border: none;
+            padding: 10px 20px; border-radius: 50px;
+            cursor: pointer; margin-top: 15px; font-weight: 600;
         }
         #adminEditBtn.active { color: #007bff; }
         .sortable-ghost { opacity: 0.4; background: #e3f0ff; border: 2px dashed #007bff !important; }
         .empty-notice { color: #aaa; font-size: 14px; padding: 30px 0; text-align: center; width: 100%; }
 
-        /* ── 모달 ── */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%; background: rgba(0,0,0,0.6);
@@ -63,7 +57,6 @@
         }
         .form-group textarea { height: 80px; resize: vertical; }
 
-        /* 이미지 업로드 영역 */
         .img-upload-area {
             border: 2px dashed #ccc; border-radius: 8px; padding: 24px 16px;
             text-align: center; cursor: pointer; background: #fafafa;
@@ -89,7 +82,6 @@
         .btn-save:hover { background: #0056d6; }
         .btn-save:disabled { background: #a0c4f1; cursor: not-allowed; }
 
-        /* 삭제 버튼 */
         .product-card { position: relative; }
         .delete-btn {
             display: none; position: absolute; top: 8px; right: 8px;
@@ -98,7 +90,6 @@
             z-index: 10; line-height: 28px; text-align: center;
         }
 
-        /* 토스트 */
         #saveToast {
             display: none; position: fixed; bottom: 30px; right: 30px;
             background: #333; color: #fff; padding: 12px 20px; border-radius: 8px;
@@ -106,10 +97,7 @@
         }
         @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-        /* ★ 이미지 타입 선택 토글 */
-        .img-type-toggle {
-            display: flex; gap: 10px; margin-bottom: 12px;
-        }
+        .img-type-toggle { display: flex; gap: 10px; margin-bottom: 12px; }
         .img-type-btn {
             flex: 1; padding: 8px; border: 1.5px solid #ddd; border-radius: 8px;
             background: #fafafa; cursor: pointer; font-size: 13px; font-weight: 500;
@@ -122,7 +110,6 @@
 
     <div id="saveToast"></div>
 
-    <!-- ───── HEADER ───── -->
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
@@ -163,7 +150,6 @@
         </ul>
     </nav>
 
-    <!-- ───── HERO ───── -->
     <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('img/Air4girl.png') center/cover no-repeat;">
         <div class="container">
             <h1 style="position:relative; z-index:2;">제품 라인업</h1>
@@ -171,7 +157,6 @@
         </div>
     </section>
 
-    <!-- ───── 제품 목록 ───── -->
     <section class="sub-content" style="background-color: var(--bg-color);">
         <div class="container">
 
@@ -210,7 +195,6 @@
         </div>
     </section>
 
-    <!-- ───── 제품 추가 모달 ───── -->
     <div id="productModal" class="modal-overlay">
         <div class="modal-content">
             <h3>새 제품 추가</h3>
@@ -222,8 +206,6 @@
                 <label>설명</label>
                 <textarea id="prodDesc" placeholder="제품 간단 설명"></textarea>
             </div>
-
-            <!-- ★ 이미지 타입 선택 -->
             <div class="form-group">
                 <label>이미지 표시 방식</label>
                 <div class="img-type-toggle">
@@ -236,7 +218,6 @@
                 </div>
                 <input type="hidden" id="prodImgType" value="cover">
             </div>
-
             <div class="form-group">
                 <label>제품 이미지 <span style="color:#888; font-weight:400;">(JPG·PNG·WEBP / 최대 5MB)</span></label>
                 <div id="imgUploadArea" class="img-upload-area"
@@ -261,7 +242,6 @@
                     <input type="text" id="prodImageUrl" placeholder="https://...">
                 </div>
             </div>
-
             <div class="form-group">
                 <label>구매 링크 (없으면 비워두기)</label>
                 <input type="text" id="prodBuyUrl" placeholder="https://smartstore.naver.com/...">
@@ -281,7 +261,6 @@
         </div>
     </div>
 
-    <!-- ───── FOOTER ───── -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -352,7 +331,23 @@
         let isAdmin            = false;
         let selectedFile       = null;
 
-        /* ── 토스트 ── */
+        // ★ XSS 방어
+        function escHtml(str = '') {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // ★ javascript: 스킴 차단
+        function safeBuyUrl(url) {
+            if (!url) return '#';
+            const t = String(url).trim();
+            return (t.startsWith('http://') || t.startsWith('https://')) ? t : '#';
+        }
+
         function showToast(msg, duration = 2000) {
             const toast = document.getElementById('saveToast');
             toast.textContent = msg;
@@ -361,38 +356,46 @@
             toast._timer = setTimeout(() => { toast.style.display = 'none'; }, duration);
         }
 
-        /* ── 이미지 타입 토글 ── */
         window.setImgType = function (type) {
             document.getElementById('prodImgType').value = type;
             document.getElementById('btnCover').classList.toggle('active',   type === 'cover');
             document.getElementById('btnContain').classList.toggle('active', type === 'contain');
         };
 
-        /* ── 로그인 상태 ── */
         onAuthStateChanged(auth, (user) => {
             isAdmin = !!user;
-            if (!user && document.body.classList.contains('edit-mode')) {
-                document.body.classList.remove('edit-mode');
-                document.getElementById('adminEditBtn')?.classList.remove('active');
-                sortableInstances.forEach(s => s.destroy());
-                sortableInstances = [];
-                document.querySelectorAll('.delete-btn').forEach(b => b.style.display = 'none');
-                document.querySelectorAll('.admin-add-btn').forEach(b => b.style.display = 'none');
+            const editBtn   = document.getElementById('adminEditBtn');
+            const inboxBtn  = document.getElementById('inboxBtn');
+            const profileBtn = document.getElementById('userProfileBtn');
+            if (user) {
+                if (editBtn)  editBtn.style.display  = 'block';
+                if (inboxBtn) inboxBtn.style.display = 'block';
+                if (profileBtn) {
+                    profileBtn.style.color = '#0071e3';
+                    profileBtn.title = '관리자 로그인 중';
+                    profileBtn.href  = 'admin.html';
+                }
+            } else {
+                if (editBtn)  editBtn.style.display  = 'none';
+                if (inboxBtn) inboxBtn.style.display = 'none';
+                if (document.body.classList.contains('edit-mode')) {
+                    document.body.classList.remove('edit-mode');
+                    sortableInstances.forEach(s => s.destroy());
+                    sortableInstances = [];
+                    document.querySelectorAll('.delete-btn').forEach(b => b.style.display = 'none');
+                    document.querySelectorAll('.admin-add-btn').forEach(b => b.style.display = 'none');
+                }
             }
         });
 
-        /* ── 편집 모드 토글 ── */
         document.getElementById('adminEditBtn').addEventListener('click', function (e) {
             e.preventDefault();
             if (!isAdmin) return;
-
             const isEditMode = document.body.classList.toggle('edit-mode');
             this.classList.toggle('active');
-
             document.querySelectorAll('.firebase-item .delete-btn').forEach(btn => {
                 btn.style.display = isEditMode ? 'block' : 'none';
             });
-
             const grids = document.querySelectorAll('.product-grid');
             if (isEditMode) {
                 grids.forEach(g => {
@@ -410,24 +413,18 @@
             }
         });
 
-        /* ── 순서 저장 ── */
         async function saveOrder(gridEl) {
             const cards = gridEl.querySelectorAll('.firebase-item');
             const batch = writeBatch(db);
             cards.forEach((card, idx) => {
                 batch.update(doc(db, "products", card.dataset.id), { order: idx });
             });
-            try {
-                await batch.commit();
-                showToast('✅ 순서 저장 완료');
-            } catch (e) { showToast('⚠️ 순서 저장 실패'); }
+            try { await batch.commit(); showToast('✅ 순서 저장 완료'); }
+            catch (e) { showToast('⚠️ 순서 저장 실패'); }
         }
 
-        /* ── 제품 불러오기 ── */
         async function loadProducts() {
-            Object.values(GRID_MAP).forEach(grid => {
-                grid.innerHTML = '<p class="empty-notice">로딩 중...</p>';
-            });
+            Object.values(GRID_MAP).forEach(g => { g.innerHTML = '<p class="empty-notice">로딩 중...</p>'; });
             try {
                 const snapshot = await getDocs(collection(db, "products"));
                 const docs = [];
@@ -438,42 +435,47 @@
                     if (aO !== bO) return aO - bO;
                     return (a.data.createdAt?.seconds ?? 0) - (b.data.createdAt?.seconds ?? 0);
                 });
-                Object.values(GRID_MAP).forEach(grid => { grid.innerHTML = ''; });
+                Object.values(GRID_MAP).forEach(g => { g.innerHTML = ''; });
                 docs.forEach(({ data, id }) => renderProductCard(data, id));
-                Object.values(GRID_MAP).forEach(grid => {
-                    if (grid.children.length === 0)
-                        grid.innerHTML = '<p class="empty-notice">등록된 제품이 없습니다.</p>';
+                Object.values(GRID_MAP).forEach(g => {
+                    if (g.children.length === 0)
+                        g.innerHTML = '<p class="empty-notice">등록된 제품이 없습니다.</p>';
                 });
             } catch (e) {
-                Object.values(GRID_MAP).forEach(grid => {
-                    grid.innerHTML = '<p class="empty-notice">⚠️ 제품을 불러오지 못했습니다.</p>';
+                Object.values(GRID_MAP).forEach(g => {
+                    g.innerHTML = '<p class="empty-notice">⚠️ 제품을 불러오지 못했습니다.</p>';
                 });
             }
         }
 
-        /* ── 카드 렌더링 ── */
+        // ★ escHtml + safeBuyUrl 적용
         function renderProductCard(item, id) {
             const targetGrid = GRID_MAP[item.category];
             if (!targetGrid) return;
 
-            const tagsHTML  = item.tags?.map(t => `<span class="premium-tag">${t}</span>`).join('') ?? '';
-            const priceHTML = item.price ? `<span class="premium-tag price">${item.price}</span>` : '';
-            const buyHTML   = item.buyUrl
-                ? `<a href="${item.buyUrl}" target="_blank" class="btn-primary">구매하기</a>` : '';
+            const tagsHTML  = item.tags?.map(t =>
+                `<span class="premium-tag">${escHtml(t)}</span>`).join('') ?? '';
+            const priceHTML = item.price
+                ? `<span class="premium-tag price">${escHtml(item.price)}</span>` : '';
+            const buyURL    = safeBuyUrl(item.buyUrl);
+            const buyHTML   = buyURL !== '#'
+                ? `<a href="${escHtml(buyURL)}" target="_blank" rel="noopener noreferrer" class="btn-primary">구매하기</a>`
+                : '';
 
-            /* ★ imgType에 따라 contain 클래스 적용 */
             const imgTypeClass = item.imgType === 'contain' ? 'contain' : '';
+            const imgSrc = safeBuyUrl(item.imageUrl) !== '#'
+                ? escHtml(item.imageUrl) : 'img/main.jpg';
 
             const card = document.createElement('div');
             card.className = 'product-card firebase-item';
             card.dataset.id = id;
             card.innerHTML = `
-                <div class="product-card-img ${imgTypeClass}">
-                    <img src="${item.imageUrl || 'img/main.jpg'}" alt="${item.name}">
+                <div class="product-card-img ${escHtml(imgTypeClass)}">
+                    <img src="${imgSrc}" alt="${escHtml(item.name)}">
                 </div>
                 <div class="product-card-info">
-                    <h3>${item.name}</h3>
-                    <div class="desc-text">${item.desc || ''}</div>
+                    <h3>${escHtml(item.name)}</h3>
+                    <div class="desc-text">${escHtml(item.desc)}</div>
                     <div class="premium-tags">${tagsHTML}${priceHTML}</div>
                     ${buyHTML}
                 </div>
@@ -482,7 +484,7 @@
             card.querySelector('.delete-btn').addEventListener('click', async (e) => {
                 e.stopPropagation();
                 if (!isAdmin) return;
-                if (!confirm(`"${item.name}"을(를) 삭제하시겠습니까?`)) return;
+                if (!confirm(`"${escHtml(item.name)}"을(를) 삭제하시겠습니까?`)) return;
                 try {
                     await deleteDoc(doc(db, "products", id));
                     if (item.storagePath) {
@@ -504,7 +506,6 @@
             targetGrid.appendChild(card);
         }
 
-        /* ── Storage 업로드 ── */
         function uploadImage(file) {
             return new Promise((resolve, reject) => {
                 const storagePath = `products/${Date.now()}_${file.name}`;
@@ -531,7 +532,6 @@
             });
         }
 
-        /* ── 파일 선택 / 드래그앤드롭 ── */
         window.handleFileSelect = (e) => { const f = e.target.files[0]; if (f) applySelectedFile(f); };
         window.handleDragOver   = (e) => { e.preventDefault(); document.getElementById('imgUploadArea').classList.add('dragover'); };
         window.handleDragLeave  = ()  => { document.getElementById('imgUploadArea').classList.remove('dragover'); };
@@ -555,7 +555,6 @@
             area.style.display = area.style.display === 'none' ? 'block' : 'none';
         };
 
-        /* ── 모달 열기/닫기 ── */
         window.openAddModal = function (btn) {
             const categoryTitle = btn.closest('.category-header')?.querySelector('.category-title');
             currentTargetGrid   = categoryTitle?.dataset.category || null;
@@ -569,6 +568,7 @@
         document.getElementById('productModal').addEventListener('click', function (e) {
             if (e.target === this) closeAddModal();
         });
+
         function resetModal() {
             ['prodName','prodDesc','prodImageUrl','prodBuyUrl','prodTags','prodPrice']
                 .forEach(id => { document.getElementById(id).value = ''; });
@@ -582,7 +582,6 @@
             setImgType('cover');
         }
 
-        /* ── 제품 저장 ── */
         window.saveNewProduct = async function () {
             const name    = document.getElementById('prodName').value.trim();
             const desc    = document.getElementById('prodDesc').value.trim();
@@ -595,6 +594,11 @@
 
             if (!name) { alert('상품 이름은 필수입니다.'); return; }
             if (!currentTargetGrid) { alert('카테고리를 확인해주세요.'); return; }
+            // ★ buyUrl 검증
+            if (buyUrl && safeBuyUrl(buyUrl) === '#') {
+                alert('구매 링크는 http:// 또는 https:// 로 시작해야 합니다.');
+                return;
+            }
 
             btnSave.disabled    = true;
             btnSave.textContent = '저장 중...';
@@ -605,14 +609,12 @@
 
                 if (selectedFile) {
                     const result = await uploadImage(selectedFile);
-                    imageUrl    = result.imageUrl;
-                    storagePath = result.storagePath;
+                    imageUrl     = result.imageUrl;
+                    storagePath  = result.storagePath;
                 }
 
-                const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
-
-                const existing = GRID_MAP[currentTargetGrid].querySelectorAll('.firebase-item');
-                const order    = existing.length;
+                const tags  = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+                const order = GRID_MAP[currentTargetGrid].querySelectorAll('.firebase-item').length;
 
                 const docRef = await addDoc(collection(db, "products"), {
                     name, desc, imageUrl, storagePath,
