@@ -124,7 +124,8 @@
             display: inline-flex; align-items: center; gap: 6px;
             background: #f0f7ff; color: var(--accent-blue); border: 1.5px solid #c0dcf8;
             border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500;
-            text-decoration: none; transition: background 0.2s; margin-top: 6px;
+            text-decoration: none; cursor: pointer; font-family: inherit;
+            transition: background 0.2s; margin-top: 6px;
         }
         .inbox-file-btn:hover { background: #dbeeff; }
         .inbox-actions { display: flex; gap: 8px; margin-top: 12px; }
@@ -354,11 +355,8 @@
 
     <script>
         function getTodayStr() {
-            const d    = new Date();
-            const yyyy = d.getFullYear();
-            const mm   = String(d.getMonth() + 1).padStart(2, '0');
-            const dd   = String(d.getDate()).padStart(2, '0');
-            return `${yyyy}${mm}${dd}`;
+            const d = new Date();
+            return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
         }
 
         window.downloadTemplate = function () {
@@ -446,6 +444,7 @@
                 .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
+        // ✅ getDownloadURL 제거 — storagePath만 반환
         function uploadOrderFile(file) {
             return new Promise((resolve, reject) => {
                 const storagePath  = `orders/${Date.now()}_${file.name}`;
@@ -462,16 +461,32 @@
                         progressText.textContent = `업로드 중... ${pct}%`;
                     },
                     (err) => { progressWrap.style.display = 'none'; reject(err); },
-                    async () => {
-                        const fileUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                    () => {
+                        // ✅ URL 조회 없이 바로 완료 처리
                         progressFill.style.width = '100%';
                         progressText.textContent = '✅ 업로드 완료!';
                         setTimeout(() => { progressWrap.style.display = 'none'; }, 1200);
-                        resolve({ fileUrl, storagePath, fileName: file.name });
+                        resolve({ storagePath, fileName: file.name });
                     }
                 );
             });
         }
+
+        // ✅ 관리자가 클릭할 때만 URL 생성 (로그인 상태라 권한 있음)
+        window.downloadOrderFile = async function (storagePath, fileName) {
+            try {
+                const url = await getDownloadURL(ref(storage, storagePath));
+                const a   = document.createElement('a');
+                a.href    = url;
+                a.target  = '_blank';
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch (e) {
+                alert('파일 다운로드 실패: ' + e.message);
+            }
+        };
 
         window.submitOrder = async function () {
             const agreed  = document.getElementById('privacyAgree').checked;
@@ -479,24 +494,31 @@
             const success = document.getElementById('successMsg');
             const file    = window.selectedFile ?? null;
 
-            if (!file)    { alert('발주서 엑셀 파일을 업로드해주세요.'); return; }
-            if (!agreed)  { alert('개인정보 수집·이용에 동의해주세요.'); document.getElementById('privacyAgree').focus(); return; }
+            if (!file)   { alert('발주서 엑셀 파일을 업로드해주세요.'); return; }
+            if (!agreed) { alert('개인정보 수집·이용에 동의해주세요.'); document.getElementById('privacyAgree').focus(); return; }
 
             btn.disabled  = true;
             btn.innerHTML = '<span class="spinner"></span>제출 중...';
 
             try {
-                const { fileUrl, storagePath, fileName } = await uploadOrderFile(file);
+                const { storagePath, fileName } = await uploadOrderFile(file);
+
+                // ✅ fileUrl 없이 storagePath + fileName만 저장
                 await addDoc(collection(db, "inquiries"), {
-                    fileUrl, storagePath, fileName,
+                    storagePath, fileName,
                     type: '발주', privacyAgreed: true, read: false,
                     createdAt: serverTimestamp()
                 });
+
                 success.classList.add('show');
                 document.getElementById('privacyAgree').checked = false;
                 window.removeFile();
                 btn.innerHTML = '✅ 제출 완료';
-                setTimeout(() => { btn.disabled = false; btn.innerHTML = '발주서 제출'; success.classList.remove('show'); }, 5000);
+                setTimeout(() => {
+                    btn.disabled  = false;
+                    btn.innerHTML = '발주서 제출';
+                    success.classList.remove('show');
+                }, 5000);
             } catch (e) {
                 alert('제출 실패: ' + e.message);
                 btn.disabled  = false;
@@ -525,16 +547,28 @@
                 if (currentFilter === 'read')   return  i.read;
                 return true;
             });
+
             if (filtered.length === 0) {
-                list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>'; return;
+                list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>';
+                return;
             }
+
             list.innerHTML = filtered.map(item => {
-                const date = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
-                const fileBtn = item.fileUrl
-                    ? `<a href="${esc(item.fileUrl)}" target="_blank" rel="noopener noreferrer" class="inbox-file-btn">
+                const date = item.createdAt?.toDate
+                    ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
+
+                // ✅ storagePath 방식 우선, 구버전 fileUrl 방식 fallback
+                const fileBtn = item.storagePath
+                    ? `<button class="inbox-file-btn"
+                           onclick="downloadOrderFile('${esc(item.storagePath)}','${esc(item.fileName || '발주서.xlsx')}')">
                            <i class="fas fa-file-excel"></i> ${esc(item.fileName || '발주서.xlsx')} 다운로드
-                       </a>`
-                    : '<span style="font-size:12px;color:#bbb;">파일 없음</span>';
+                       </button>`
+                    : item.fileUrl
+                        ? `<a href="${esc(item.fileUrl)}" target="_blank" rel="noopener noreferrer" class="inbox-file-btn">
+                               <i class="fas fa-file-excel"></i> ${esc(item.fileName || '발주서.xlsx')} 다운로드
+                           </a>`
+                        : '<span style="font-size:12px;color:#bbb;">파일 없음</span>';
+
                 return `
                 <div class="inbox-item ${item.read ? 'read' : 'unread'}">
                     <div class="inbox-item-header">
