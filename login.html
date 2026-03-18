@@ -13,192 +13,84 @@
     <link rel="stylesheet" href="css/style.css">
 
     <style>
-        body {
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
+        body { background: #000; display: flex; flex-direction: column; min-height: 100vh; }
         .login-wrapper {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 100px 20px 60px;
+            flex: 1; display: flex; align-items: center;
+            justify-content: center; padding: 100px 20px 60px;
         }
-
         .login-box {
-            background: #1a1a1a;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px;
-            padding: 50px 45px;
-            width: 100%;
-            max-width: 420px;
+            background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px; padding: 50px 45px;
+            width: 100%; max-width: 420px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
+        .login-logo { text-align: center; margin-bottom: 36px; }
+        .login-logo img { height: 48px; width: auto; border-radius: 8px; }
+        .login-logo h2 { color: #fff; font-size: 22px; font-weight: 700; margin-top: 14px; letter-spacing: -0.02em; }
+        .login-logo p  { color: rgba(255,255,255,0.4); font-size: 13px; margin-top: 6px; }
 
-        .login-logo {
-            text-align: center;
-            margin-bottom: 36px;
-        }
-        .login-logo img {
-            height: 48px;
-            width: auto;
-            border-radius: 8px;
-        }
-        .login-logo h2 {
-            color: #fff;
-            font-size: 22px;
-            font-weight: 700;
-            margin-top: 14px;
-            letter-spacing: -0.02em;
-        }
-        .login-logo p {
-            color: rgba(255,255,255,0.4);
-            font-size: 13px;
-            margin-top: 6px;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-        .form-group label {
-            display: block;
-            color: rgba(255,255,255,0.6);
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 500; margin-bottom: 8px; }
         .form-group input {
-            width: 100%;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 13px 16px;
-            font-size: 15px;
-            color: #fff;
-            font-family: inherit;
-            box-sizing: border-box;
+            width: 100%; background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            padding: 13px 16px; font-size: 15px; color: #fff;
+            font-family: inherit; box-sizing: border-box; outline: none;
             transition: border-color 0.2s, background 0.2s;
-            outline: none;
         }
         .form-group input::placeholder { color: rgba(255,255,255,0.25); }
-        .form-group input:focus {
-            border-color: #0071e3;
-            background: rgba(0,113,227,0.08);
-        }
+        .form-group input:focus { border-color: #0071e3; background: rgba(0,113,227,0.08); }
 
         .error-msg {
-            display: none;
-            background: rgba(220,38,38,0.12);
-            border: 1px solid rgba(220,38,38,0.3);
-            border-radius: 8px;
-            color: #f87171;
-            font-size: 13px;
-            padding: 10px 14px;
-            margin-bottom: 18px;
-            text-align: center;
+            display: none; background: rgba(220,38,38,0.12);
+            border: 1px solid rgba(220,38,38,0.3); border-radius: 8px;
+            color: #f87171; font-size: 13px; padding: 10px 14px;
+            margin-bottom: 18px; text-align: center;
         }
         .error-msg.show { display: block; }
 
         .btn-login {
-            width: 100%;
-            background: #0071e3;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-            margin-top: 6px;
+            width: 100%; background: #0071e3; color: #fff;
+            border: none; border-radius: 10px; padding: 14px;
+            font-size: 15px; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.2s, transform 0.2s; margin-top: 6px;
         }
         .btn-login:hover { background: #0056d6; transform: translateY(-1px); }
-        .btn-login:active { transform: translateY(0); }
-        .btn-login:disabled {
-            background: rgba(255,255,255,0.15);
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-login:disabled { background: rgba(255,255,255,0.15); cursor: not-allowed; transform: none; }
 
-        /* ── 이미 로그인된 상태 화면 ── */
+        /* 로그인 된 상태 화면 */
         #loggedInView { display: none; text-align: center; }
         #loggedInView .user-icon {
-            width: 72px; height: 72px;
-            background: rgba(0,113,227,0.15);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 20px;
+            width: 72px; height: 72px; background: rgba(0,113,227,0.15);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 20px;
         }
-        #loggedInView .user-icon i {
-            font-size: 32px;
-            color: #0071e3;
-        }
-        #loggedInView h3 {
-            color: #fff;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        #loggedInView p {
-            color: rgba(255,255,255,0.4);
-            font-size: 13px;
-            margin-bottom: 30px;
-        }
+        #loggedInView .user-icon i { font-size: 32px; color: #0071e3; }
+        #loggedInView h3 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        #loggedInView p  { color: rgba(255,255,255,0.4); font-size: 13px; margin-bottom: 30px; }
         .btn-logout {
-            width: 100%;
-            background: crimson;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-            margin-bottom: 12px;
+            width: 100%; background: crimson; color: #fff; border: none;
+            border-radius: 10px; padding: 14px; font-size: 15px;
+            font-weight: 600; font-family: inherit; cursor: pointer;
+            transition: background 0.2s, transform 0.2s; margin-bottom: 12px;
         }
         .btn-logout:hover { background: #a00; transform: translateY(-1px); }
         .btn-home {
-            width: 100%;
-            background: rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.7);
-            border: none;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 500;
-            font-family: inherit;
-            cursor: pointer;
-            transition: background 0.2s;
+            width: 100%; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+            border: none; border-radius: 10px; padding: 14px; font-size: 15px;
+            font-weight: 500; font-family: inherit; cursor: pointer; transition: background 0.2s;
         }
         .btn-home:hover { background: rgba(255,255,255,0.14); }
 
-        .login-footer {
-            text-align: center;
-            margin-top: 28px;
-            color: rgba(255,255,255,0.3);
-            font-size: 12px;
-        }
-        .login-footer a {
-            color: rgba(255,255,255,0.5);
-            text-decoration: underline;
-        }
+        .login-footer { text-align: center; margin-top: 28px; color: rgba(255,255,255,0.3); font-size: 12px; }
+        .login-footer a { color: rgba(255,255,255,0.5); text-decoration: underline; }
         .login-footer a:hover { color: #fff; }
 
         .spinner {
-            display: inline-block;
-            width: 16px; height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            vertical-align: middle;
-            margin-right: 6px;
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+            border-radius: 50%; animation: spin 0.7s linear infinite;
+            vertical-align: middle; margin-right: 6px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
@@ -222,18 +114,21 @@
             <div class="header-right utility-icons">
                 <a href="#"><i class="fas fa-globe"></i></a>
                 <a href="#"><i class="fas fa-search"></i></a>
+                <a href="contact.html" id="inboxBtn" title="문의 확인" style="display:none;">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="product.html" id="adminEditBtn" title="제품 관리" style="display:none;">
+                    <i class="fas fa-edit"></i>
+                </a>
                 <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
                 <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 <button class="hamburger" id="hamburger" aria-label="메뉴">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- 모바일 메뉴 -->
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
             <li><a href="index.html">홈</a></li>
@@ -243,7 +138,7 @@
         </ul>
     </nav>
 
-    <!-- ───── LOGIN / LOGOUT FORM ───── -->
+    <!-- ───── LOGIN BOX ───── -->
     <div class="login-wrapper">
         <div class="login-box">
             <div class="login-logo">
@@ -252,7 +147,7 @@
                 <p id="boxSubtitle">SKY Commerce 관리자 전용 페이지입니다.</p>
             </div>
 
-            <!-- ★ 로그인 폼 -->
+            <!-- 로그인 폼 -->
             <div id="loginView">
                 <div id="errorMsg" class="error-msg">
                     아이디 또는 비밀번호가 일치하지 않습니다.
@@ -271,7 +166,7 @@
                 </div>
             </div>
 
-            <!-- ★ 이미 로그인된 상태 -->
+            <!-- 이미 로그인 된 상태 -->
             <div id="loggedInView">
                 <div class="user-icon"><i class="fas fa-user-check"></i></div>
                 <h3>관리자로 로그인 중</h3>
@@ -283,13 +178,13 @@
                     홈으로 돌아가기
                 </button>
             </div>
-
         </div>
     </div>
 
     <script src="js/main.js"></script>
+    <!-- login.html은 auth.js 대신 직접 처리 (로그아웃 화면 전환 필요) -->
     <script type="module">
-        import { initializeApp }
+        import { initializeApp, getApps, getApp }
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword,
                  signOut, onAuthStateChanged }
@@ -304,28 +199,30 @@
             appId: "1:232403511014:web:318ebb689d678e998b7d27"
         };
 
-        const app  = initializeApp(firebaseConfig);
+        const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
         // ★ 로그인 상태에 따라 화면 전환 (리다이렉트 없음)
         onAuthStateChanged(auth, (user) => {
+            const userProfileBtn = document.getElementById('userProfileBtn');
             if (user) {
-                // 이미 로그인 → 로그아웃 화면 표시
                 document.getElementById('loginView').style.display    = 'none';
                 document.getElementById('loggedInView').style.display = 'block';
                 document.getElementById('boxTitle').textContent       = '로그인 중';
                 document.getElementById('boxSubtitle').textContent    = '';
                 document.getElementById('loggedInEmail').textContent  = user.email;
+                // ★ 아이콘 파란색
+                if (userProfileBtn) userProfileBtn.style.color = '#0071e3';
             } else {
-                // 비로그인 → 로그인 폼 표시
                 document.getElementById('loginView').style.display    = 'block';
                 document.getElementById('loggedInView').style.display = 'none';
                 document.getElementById('boxTitle').textContent       = '관리자 로그인';
                 document.getElementById('boxSubtitle').textContent    = 'SKY Commerce 관리자 전용 페이지입니다.';
+                if (userProfileBtn) userProfileBtn.style.color = 'rgba(255,255,255,0.8)';
             }
         });
 
-        // ── 로그인 처리 ──
+        // ── 로그인 ──
         window.handleLogin = async function () {
             const email    = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
@@ -337,26 +234,23 @@
                 errorMsg.classList.add('show');
                 return;
             }
-
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<span class="spinner"></span>로그인 중...';
             errorMsg.classList.remove('show');
-
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // ★ 로그인 시각 저장 → 자동 로그아웃 기준
-                localStorage.setItem('loginTime', Date.now().toString());
+                localStorage.setItem('loginTime',  Date.now().toString());
                 localStorage.setItem('isLoggedIn', 'true');
                 window.location.href = 'index.html';
             } catch (error) {
                 errorMsg.textContent = '아이디 또는 비밀번호가 일치하지 않습니다.';
                 errorMsg.classList.add('show');
-                loginBtn.disabled = false;
+                loginBtn.disabled  = false;
                 loginBtn.innerHTML = '로그인';
             }
         };
 
-        // ── 로그아웃 처리 ──
+        // ── 로그아웃 ──
         window.handleLogout = async function () {
             if (!confirm('로그아웃 하시겠습니까?')) return;
             localStorage.removeItem('loginTime');

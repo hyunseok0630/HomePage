@@ -5,98 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SKY Commerce | 미래를 일상으로</title>
     <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
-    
+
+    <meta name="description" content="스마트 웨어러블부터 고품질 산업용 소재까지, SKY Commerce가 혁신을 제공합니다.">
+    <meta property="og:type"         content="website">
+    <meta property="og:site_name"    content="SKY Commerce">
+    <meta property="og:title"        content="SKY Commerce | 미래를 일상으로">
+    <meta property="og:description"  content="스마트 웨어러블부터 고품질 산업용 소재까지, SKY Commerce가 혁신을 제공합니다.">
+    <meta property="og:url"          content="https://skycommerce.co.kr/">
+    <meta property="og:image"        content="https://skycommerce.co.kr/img/og_image.png">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale"       content="ko_KR">
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="SKY Commerce | 미래를 일상으로">
+    <meta name="twitter:image"       content="https://skycommerce.co.kr/img/og_image.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+    <!-- ───── HEADER ───── -->
     <header id="main-header">
-    <div class="header-inner">
-        <div class="header-left logo">
-            <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+        <div class="header-inner">
+            <div class="header-left logo">
+                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+            </div>
+            <nav class="header-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="active">홈</a></li>
+                    <li><a href="about.html">회사 소개</a></li>
+                    <li><a href="product.html">제품</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+            <div class="header-right utility-icons">
+                <a href="#"><i class="fas fa-globe"></i></a>
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="contact.html" id="inboxBtn" title="문의 확인" style="display:none;">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="product.html" id="adminEditBtn" title="제품 관리" style="display:none;">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <button class="hamburger" id="hamburger" aria-label="메뉴">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
-        <nav class="header-center">
-            <ul class="nav-menu">
-                <li><a href="index.html">홈</a></li>
-                <li><a href="about.html">회사 소개</a></li>
-                <li><a href="product.html">제품</a></li>
-                <li><a href="contact.html">문의하기</a></li>
-            </ul>
-        </nav>
-        <div class="header-right utility-icons">
-            <a href="#"><i class="fas fa-globe"></i></a>
-            <a href="#"><i class="fas fa-search"></i></a>
-            <a href="#" id="adminEditBtn" style="display:none;"><i class="fas fa-edit"></i></a>
-            <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
-            <a href="#"><i class="fas fa-shopping-cart"></i></a>
-            <!-- ★ 햄버거 버튼 -->
-            <button class="hamburger" id="hamburger" aria-label="메뉴">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </div>
-</header>
+    </header>
 
-<!-- ★ 모바일 드롭다운 메뉴 (header 바로 아래) -->
-<nav class="mobile-menu" id="mobileMenu">
-    <ul>
-        <li><a href="index.html">홈</a></li>
-        <li><a href="about.html">회사 소개</a></li>
-        <li><a href="product.html">제품</a></li>
-        <li><a href="contact.html">문의하기</a></li>
-    </ul>
-</nav>
+    <nav class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html" class="active">홈</a></li>
+            <li><a href="about.html">회사 소개</a></li>
+            <li><a href="product.html">제품</a></li>
+            <li><a href="contact.html">문의하기</a></li>
+        </ul>
+    </nav>
 
-
+    <!-- ───── VIDEO HERO ───── -->
     <section class="video-hero">
-        <video class="hero-video" autoplay loop muted playsinline>
-            <source src="img/hero_video.mp4" type="video/mp4">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="img/hero.mp4" type="video/mp4">
         </video>
         <div class="video-overlay" id="video-overlay"></div>
-        
         <div class="hero-content" id="hero-content">
-            <h2>미래를 일상으로 만드는 혁신</h2>
-            <p>스마트 웨어러블의 새로운 기준, TCL RayNeo 시리즈.</p>
+            <h2>스마트 웨어러블의<br>새로운 기준</h2>
+            <p>TCL RayNeo 시리즈</p>
             <div class="btn-group">
-                <a href="product.html" class="btn-primary">제품 살펴보기</a>
-                <a href="about.html" class="btn-secondary">회사 소개 <i class="fas fa-chevron-right"></i></a>
+                <a href="product.html" class="btn-primary">제품 보기</a>
+                <a href="about.html" class="btn-secondary">회사 소개 <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
 
+    <!-- ───── FEATURES ───── -->
     <section class="features">
         <div class="container">
-            <h2 class="section-title">스카이커머스와 함께하는 이유</h2>
+            <h2 class="section-title">왜 SKY Commerce인가</h2>
             <div class="feature-grid">
                 <div class="feature-item">
-                    <i class="fas fa-award"></i>
-                    <h3>TCL RayNeo 공식 파트너</h3>
+                    <i class="fas fa-certificate"></i>
+                    <h3>공식 판매처</h3>
                     <p>글로벌 스마트 글래스 브랜드 TCL RayNeo의 국내 공식 판매처로 100% 정품을 보증합니다.</p>
                 </div>
                 <div class="feature-item">
                     <i class="fas fa-headset"></i>
-                    <h3>확실한 A/S 및 고객 지원</h3>
+                    <h3>전문 고객지원</h3>
                     <p>공식 스토어 구매 고객을 위한 철저한 사후 관리와 신속한 고객 지원 서비스를 제공합니다.</p>
                 </div>
                 <div class="feature-item">
-                    <i class="fas fa-handshake"></i>
-                    <h3>10년 이상의 B2B 노하우</h3>
+                    <i class="fas fa-industry"></i>
+                    <h3>B2B 파트너</h3>
                     <p>삼성전기, LG 등 주요 대기업 1차 벤더 파트너사로서 검증된 품질과 안정적인 공급망을 갖추고 있습니다.</p>
                 </div>
                 <div class="feature-item">
-                    <i class="fas fa-cubes"></i>
-                    <h3>고품질 산업용 특수소재</h3>
+                    <i class="fas fa-cogs"></i>
+                    <h3>산업용 소재</h3>
                     <p>Inconel, Titanium, 세라믹 등 극한 환경을 견디는 최고급 산업용 소재를 맞춤 공급합니다.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ───── PARTNERS ───── -->
+    <!-- ───── PARTNERS ───── -->
+<section class="about-images-only" style="background:#f5f5f7;">
+    <div class="container">
+        <h2 class="section-title">브랜드 파트너</h2>
+        <div class="images-grid">
+            <div class="image-item">
+                <img src="img/rayneo.png" alt="TCL RayNeo">
+            </div>
+            <div class="image-item">
+                <img src="img/mudra.png" alt="Mudra">
+            </div>
+            <div class="image-item">
+                <img src="img/keheal.png" alt="Keheal">
+            </div>
+            <div class="image-item">
+                <img src="img/eloam.png" alt="Eloam">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- ───── FOOTER ───── -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -127,10 +168,13 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SKY Commerce. All Rights Reserved.</p>
+            </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
+    <script type="module" src="js/auth.js"></script>
 </body>
 </html>
