@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 페이지 | SKY Commerce</title>
-    <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
+    <link rel="icon" type="image/png" sizes="any" href="../img/logo_blue.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <style>
         body { background: #f5f5f7; padding-top: 80px; }
         .admin-wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
@@ -64,9 +64,7 @@
             cursor: pointer; font-family: inherit;
         }
         .empty-msg { text-align: center; padding: 80px 0; color: #bbb; font-size: 16px; }
-        .stats-bar {
-            display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;
-        }
+        .stats-bar { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
         .stat-box {
             background: #fff; border-radius: 12px; padding: 16px 24px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.05); flex: 1; min-width: 120px;
@@ -76,7 +74,6 @@
         .stat-box .label { font-size: 12px; color: #aaa; margin-top: 4px; }
         .stat-box.blue .num { color: #0071e3; }
 
-        /* 접근 차단 오버레이 */
         #authBlock {
             display: flex; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%; background: #f5f5f7;
@@ -92,27 +89,25 @@
 </head>
 <body>
 
-    <!-- ★ 비로그인 차단 오버레이 — 인증 확인 전 전체 화면 가림 -->
     <div id="authBlock">
         <i class="fas fa-lock" style="font-size:32px; color:#ccc;"></i>
         <p>접근 권한 확인 중...</p>
     </div>
 
-    <!-- ───── HEADER ───── -->
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
-                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+                <a href="../"><img src="../img/main.jpg" alt="SKY Commerce"></a>
             </div>
             <nav class="header-center">
                 <ul class="nav-menu">
-                    <li><a href="index.html">홈</a></li>
-                    <li><a href="product.html">제품 관리</a></li>
-                    <li><a href="contact.html">문의 확인</a></li>
+                    <li><a href="../">홈</a></li>
+                    <li><a href="../product/">제품 관리</a></li>
+                    <li><a href="../contact/">문의 확인</a></li>
                 </ul>
             </nav>
             <div class="header-right utility-icons">
-                <a href="product.html"><i class="fas fa-box"></i></a>
+                <a href="../product/"><i class="fas fa-box"></i></a>
                 <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></a>
                 <button class="hamburger" id="hamburger" aria-label="메뉴">
                     <span></span><span></span><span></span>
@@ -123,13 +118,12 @@
 
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
-            <li><a href="index.html">홈</a></li>
-            <li><a href="product.html">제품 관리</a></li>
-            <li><a href="contact.html">문의 확인</a></li>
+            <li><a href="../">홈</a></li>
+            <li><a href="../product/">제품 관리</a></li>
+            <li><a href="../contact/">문의 확인</a></li>
         </ul>
     </nav>
 
-    <!-- ───── ADMIN BODY ───── -->
     <div class="admin-wrap">
         <div class="admin-header">
             <h1>📋 문의 관리</h1>
@@ -163,7 +157,7 @@
         <div id="inquiryList"></div>
     </div>
 
-    <script src="js/main.js"></script>
+    <script src="../js/main.js"></script>
     <script type="module">
         import { initializeApp, getApps, getApp }
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -186,20 +180,18 @@
         const db   = getFirestore(app);
         const auth = getAuth(app);
 
-        let allInquiries = [];
+        let allInquiries  = [];
         let currentFilter = 'all';
 
-        // ★ 보안: 비로그인 시 즉시 차단 후 로그인 페이지로 이동
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                window.location.replace('login.html');
+                window.location.replace('../login/');
             } else {
                 document.getElementById('authBlock').style.display = 'none';
                 loadInquiries();
             }
         });
 
-        // ── XSS 방어용 이스케이프 함수
         function esc(str = '') {
             return String(str)
                 .replace(/&/g, '&amp;')
@@ -209,7 +201,6 @@
                 .replace(/'/g, '&#39;');
         }
 
-        // ── 문의 불러오기
         async function loadInquiries() {
             try {
                 const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
@@ -231,7 +222,6 @@
             document.getElementById('statRead').textContent   = allInquiries.length - unread;
         }
 
-        // ── 목록 렌더링 (★ esc() 적용으로 XSS 방어)
         function renderList() {
             const list = document.getElementById('inquiryList');
             const filtered = allInquiries.filter(i => {
@@ -311,7 +301,6 @@
             } catch (e) { alert('삭제 실패: ' + e.message); }
         };
 
-        // ★ 보안: Firebase signOut + localStorage 정리
         window.handleLogout = async function () {
             if (!confirm('로그아웃 하시겠습니까?')) return;
             try {
@@ -319,7 +308,7 @@
                 localStorage.removeItem('loginTime');
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('userRole');
-                window.location.replace('login.html');
+                window.location.replace('../login/');
             } catch (e) { alert('로그아웃 실패: ' + e.message); }
         };
 

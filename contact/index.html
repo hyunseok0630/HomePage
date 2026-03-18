@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>발주하기 | SKY Commerce</title>
-    <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
+    <link rel="icon" type="image/png" sizes="any" href="../img/logo_blue.png">
 
     <meta property="og:type"         content="website">
     <meta property="og:site_name"    content="SKY Commerce">
     <meta property="og:title"        content="발주하기 | SKY Commerce">
     <meta property="og:description"  content="SKY Commerce 제품 발주 및 거래 문의를 남겨주세요.">
-    <meta property="og:url"          content="https://skycommerce.co.kr/contact.html">
+    <meta property="og:url"          content="https://skycommerce.co.kr/contact/">
     <meta property="og:image"        content="https://skycommerce.co.kr/img/og_image.png">
     <meta property="og:locale"       content="ko_KR">
 
@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
     <style>
         .contact-section { padding: 100px 0; background: var(--bg-color); }
@@ -51,7 +51,6 @@
         .btn-download-template:hover { background: #dbeeff; border-color: var(--accent-blue); transform: translateY(-1px); }
         .btn-download-template i { font-size: 14px; }
 
-        /* 파일 업로드 */
         .file-upload-area {
             border: 2px dashed #d0d0d7; border-radius: 14px;
             padding: 48px 24px; text-align: center; cursor: pointer;
@@ -110,7 +109,6 @@
         .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* 관리자 inbox */
         #inboxBadge { display: none; position: absolute; top: -4px; right: -4px; background: crimson; color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; line-height: 16px; text-align: center; }
         #inboxBtn { position: relative; }
         .inbox-tab { background: #f5f5f7; border: none; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; font-family: inherit; transition: background 0.2s; }
@@ -146,14 +144,14 @@
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
-                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+                <a href="../"><img src="../img/main.jpg" alt="SKY Commerce"></a>
             </div>
             <nav class="header-center">
                 <ul class="nav-menu">
-                    <li><a href="index.html">홈</a></li>
-                    <li><a href="about.html">회사 소개</a></li>
-                    <li><a href="product.html">제품</a></li>
-                    <li><a href="contact.html" class="active">발주하기</a></li>
+                    <li><a href="../">홈</a></li>
+                    <li><a href="../about/">회사 소개</a></li>
+                    <li><a href="../product/">제품</a></li>
+                    <li><a href="../contact/" class="active">발주하기</a></li>
                 </ul>
             </nav>
             <div class="header-right utility-icons">
@@ -163,10 +161,10 @@
                     <i class="fas fa-envelope"></i>
                     <span id="inboxBadge">0</span>
                 </a>
-                <a href="product.html" id="adminEditBtn" title="제품 관리" style="display:none;">
+                <a href="../product/" id="adminEditBtn" title="제품 관리" style="display:none;">
                     <i class="fas fa-edit"></i>
                 </a>
-                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
                 <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 <button class="hamburger" id="hamburger" aria-label="메뉴">
                     <span></span><span></span><span></span>
@@ -177,14 +175,14 @@
 
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
-            <li><a href="index.html">홈</a></li>
-            <li><a href="about.html">회사 소개</a></li>
-            <li><a href="product.html">제품</a></li>
-            <li><a href="contact.html" class="active">발주하기</a></li>
+            <li><a href="../">홈</a></li>
+            <li><a href="../about/">회사 소개</a></li>
+            <li><a href="../product/">제품</a></li>
+            <li><a href="../contact/" class="active">발주하기</a></li>
         </ul>
     </nav>
 
-    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('img/Air4girl.png') center/cover no-repeat;">
+    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat;">
         <div class="container">
             <h1 style="position:relative; z-index:2;">발주하기</h1>
             <p style="position:relative; z-index:2;">발주서 양식을 다운로드 후 작성하여 업로드해주세요.</p>
@@ -195,7 +193,6 @@
         <div class="container">
             <div class="contact-grid">
 
-                <!-- 왼쪽 -->
                 <div class="info-card">
                     <h3>연락처 정보</h3>
                     <div class="info-row">
@@ -231,7 +228,6 @@
                     </div>
                 </div>
 
-                <!-- 오른쪽 -->
                 <div class="contact-form-card">
                     <div class="form-card-top">
                         <div>
@@ -244,7 +240,6 @@
                         </button>
                     </div>
 
-                    <!-- 파일 업로드 -->
                     <div class="file-upload-area" id="fileUploadArea"
                          onclick="document.getElementById('orderFile').click()"
                          ondragover="handleDragOver(event)"
@@ -276,7 +271,6 @@
                         <div class="upload-progress-text" id="uploadProgressText">업로드 중... 0%</div>
                     </div>
 
-                    <!-- 개인정보 동의 -->
                     <label class="privacy-agree">
                         <input type="checkbox" id="privacyAgree">
                         <span class="privacy-agree-text">
@@ -331,10 +325,10 @@
                 <div class="footer-links">
                     <h4>메뉴</h4>
                     <ul>
-                        <li><a href="index.html">홈</a></li>
-                        <li><a href="about.html">회사 소개</a></li>
-                        <li><a href="product.html">제품</a></li>
-                        <li><a href="contact.html">발주하기</a></li>
+                        <li><a href="../">홈</a></li>
+                        <li><a href="../about/">회사 소개</a></li>
+                        <li><a href="../product/">제품</a></li>
+                        <li><a href="../contact/">발주하기</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
@@ -355,10 +349,9 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
-    <script type="module" src="js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script type="module" src="../js/auth.js"></script>
 
-    <!-- 날짜 파일명 다운로드 + 파일 선택 처리 -->
     <script>
         function getTodayStr() {
             const d    = new Date();
@@ -370,7 +363,7 @@
 
         window.downloadTemplate = function () {
             const a    = document.createElement('a');
-            a.href     = 'files/order-form.xlsx';
+            a.href     = '../files/order-form.xlsx';
             a.download = `${getTodayStr()}_스카이커머스_발주서양식.xlsx`;
             document.body.appendChild(a);
             a.click();
@@ -481,42 +474,29 @@
         }
 
         window.submitOrder = async function () {
-            const agreed = document.getElementById('privacyAgree').checked;
-            const btn    = document.getElementById('submitBtn');
+            const agreed  = document.getElementById('privacyAgree').checked;
+            const btn     = document.getElementById('submitBtn');
             const success = document.getElementById('successMsg');
-            const file   = window.selectedFile ?? null;
+            const file    = window.selectedFile ?? null;
 
-            if (!file) {
-                alert('발주서 엑셀 파일을 업로드해주세요.'); return;
-            }
-            if (!agreed) {
-                alert('개인정보 수집·이용에 동의해주세요.');
-                document.getElementById('privacyAgree').focus(); return;
-            }
+            if (!file)    { alert('발주서 엑셀 파일을 업로드해주세요.'); return; }
+            if (!agreed)  { alert('개인정보 수집·이용에 동의해주세요.'); document.getElementById('privacyAgree').focus(); return; }
 
             btn.disabled  = true;
             btn.innerHTML = '<span class="spinner"></span>제출 중...';
 
             try {
                 const { fileUrl, storagePath, fileName } = await uploadOrderFile(file);
-
                 await addDoc(collection(db, "inquiries"), {
                     fileUrl, storagePath, fileName,
-                    type: '발주',
-                    privacyAgreed: true,
-                    read: false,
+                    type: '발주', privacyAgreed: true, read: false,
                     createdAt: serverTimestamp()
                 });
-
                 success.classList.add('show');
                 document.getElementById('privacyAgree').checked = false;
                 window.removeFile();
                 btn.innerHTML = '✅ 제출 완료';
-                setTimeout(() => {
-                    btn.disabled  = false;
-                    btn.innerHTML = '발주서 제출';
-                    success.classList.remove('show');
-                }, 5000);
+                setTimeout(() => { btn.disabled = false; btn.innerHTML = '발주서 제출'; success.classList.remove('show'); }, 5000);
             } catch (e) {
                 alert('제출 실패: ' + e.message);
                 btn.disabled  = false;
@@ -530,7 +510,6 @@
                 const snapshot = await getDocs(q);
                 allOrders      = [];
                 snapshot.forEach(d => allOrders.push({ id: d.id, ...d.data() }));
-
                 const unread = allOrders.filter(i => !i.read).length;
                 const badge  = document.getElementById('inboxBadge');
                 if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'block' : 'none'; }
@@ -546,22 +525,16 @@
                 if (currentFilter === 'read')   return  i.read;
                 return true;
             });
-
             if (filtered.length === 0) {
-                list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>';
-                return;
+                list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>'; return;
             }
-
             list.innerHTML = filtered.map(item => {
-                const date = item.createdAt?.toDate
-                    ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
-
+                const date = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
                 const fileBtn = item.fileUrl
                     ? `<a href="${esc(item.fileUrl)}" target="_blank" rel="noopener noreferrer" class="inbox-file-btn">
                            <i class="fas fa-file-excel"></i> ${esc(item.fileName || '발주서.xlsx')} 다운로드
                        </a>`
                     : '<span style="font-size:12px;color:#bbb;">파일 없음</span>';
-
                 return `
                 <div class="inbox-item ${item.read ? 'read' : 'unread'}">
                     <div class="inbox-item-header">
@@ -574,9 +547,7 @@
                         <button class="btn-read-toggle" onclick="toggleRead('${esc(item.id)}',${item.read})">
                             ${item.read ? '미확인으로 변경' : '✔ 확인됨으로 표시'}
                         </button>
-                        <button class="btn-delete-inquiry" onclick="deleteOrder('${esc(item.id)}')">
-                            🗑 삭제
-                        </button>
+                        <button class="btn-delete-inquiry" onclick="deleteOrder('${esc(item.id)}')">🗑 삭제</button>
                     </div>
                 </div>`;
             }).join('');

@@ -28,30 +28,29 @@
 </head>
 <body>
 
-    <!-- ───── HEADER ───── -->
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
-                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+                <a href="/"><img src="img/main.jpg" alt="SKY Commerce"></a>  <!-- ✅ 수정 -->
             </div>
             <nav class="header-center">
                 <ul class="nav-menu">
-                    <li><a href="index.html" class="active">홈</a></li>
-                    <li><a href="about.html">회사 소개</a></li>
-                    <li><a href="product.html">제품</a></li>
-                    <li><a href="contact.html">문의하기</a></li>
+                    <li><a href="/" class="active">홈</a></li>               <!-- ✅ 수정 -->
+                    <li><a href="about/">회사 소개</a></li>
+                    <li><a href="product/">제품</a></li>
+                    <li><a href="contact/">발주하기</a></li>
                 </ul>
             </nav>
             <div class="header-right utility-icons">
                 <a href="#"><i class="fas fa-globe"></i></a>
                 <a href="#"><i class="fas fa-search"></i></a>
-                <a href="contact.html" id="inboxBtn" title="문의 확인" style="display:none;">
+                <a href="contact/" id="inboxBtn" title="발주 확인" style="display:none;">
                     <i class="fas fa-envelope"></i>
                 </a>
-                <a href="product.html" id="adminEditBtn" title="제품 관리" style="display:none;">
+                <a href="product/" id="adminEditBtn" title="제품 관리" style="display:none;">
                     <i class="fas fa-edit"></i>
                 </a>
-                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
                 <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 <button class="hamburger" id="hamburger" aria-label="메뉴">
                     <span></span><span></span><span></span>
@@ -62,14 +61,13 @@
 
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
-            <li><a href="index.html" class="active">홈</a></li>
-            <li><a href="about.html">회사 소개</a></li>
-            <li><a href="product.html">제품</a></li>
-            <li><a href="contact.html">문의하기</a></li>
+            <li><a href="/" class="active">홈</a></li>                       <!-- ✅ 수정 -->
+            <li><a href="about/">회사 소개</a></li>
+            <li><a href="product/">제품</a></li>
+            <li><a href="contact/">발주하기</a></li>
         </ul>
     </nav>
 
-    <!-- ───── VIDEO HERO ───── -->
     <section class="video-hero">
         <video class="hero-video" autoplay muted loop playsinline>
             <source src="img/hero.mp4" type="video/mp4">
@@ -79,13 +77,12 @@
             <h2>스마트 웨어러블의<br>새로운 기준</h2>
             <p>TCL RayNeo 시리즈</p>
             <div class="btn-group">
-                <a href="product.html" class="btn-primary">제품 보기</a>
-                <a href="about.html" class="btn-secondary">회사 소개 <i class="fas fa-arrow-right"></i></a>
+                <a href="product/" class="btn-primary">제품 보기</a>
+                <a href="about/" class="btn-secondary">회사 소개 <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
 
-    <!-- ───── FEATURES ───── -->
     <section class="features">
         <div class="container">
             <h2 class="section-title">왜 SKY Commerce인가</h2>
@@ -114,30 +111,18 @@
         </div>
     </section>
 
-    <!-- ───── PARTNERS ───── -->
-    <!-- ───── PARTNERS ───── -->
-<section class="about-images-only" style="background:#f5f5f7;">
-    <div class="container">
-        <h2 class="section-title">브랜드 파트너</h2>
-        <div class="images-grid">
-            <div class="image-item">
-                <img src="img/rayneo.png" alt="TCL RayNeo">
-            </div>
-            <div class="image-item">
-                <img src="img/mudra.png" alt="Mudra">
-            </div>
-            <div class="image-item">
-                <img src="img/keheal.png" alt="Keheal">
-            </div>
-            <div class="image-item">
-                <img src="img/eloam.png" alt="Eloam">
+    <section class="about-images-only" style="background:#f5f5f7;">
+        <div class="container">
+            <h2 class="section-title">브랜드 파트너</h2>
+            <div class="images-grid">
+                <div class="image-item"><img src="img/rayneo.png" alt="TCL RayNeo"></div>
+                <div class="image-item"><img src="img/mudra.png" alt="Mudra"></div>
+                <div class="image-item"><img src="img/keheal.png" alt="Keheal"></div>
+                <div class="image-item"><img src="img/eloam.png" alt="Eloam"></div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-
-    <!-- ───── FOOTER ───── -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -148,10 +133,10 @@
                 <div class="footer-links">
                     <h4>메뉴</h4>
                     <ul>
-                        <li><a href="index.html">홈</a></li>
-                        <li><a href="about.html">회사 소개</a></li>
-                        <li><a href="product.html">제품</a></li>
-                        <li><a href="contact.html">문의하기</a></li>
+                        <li><a href="/">홈</a></li>                          <!-- ✅ 수정 -->
+                        <li><a href="about/">회사 소개</a></li>
+                        <li><a href="product/">제품</a></li>
+                        <li><a href="contact/">발주하기</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">

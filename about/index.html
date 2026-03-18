@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회사 소개 | SKY Commerce</title>
-    <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
+    <link rel="icon" type="image/png" sizes="any" href="../img/logo_blue.png">
 
     <meta property="og:type"         content="website">
     <meta property="og:site_name"    content="SKY Commerce">
     <meta property="og:title"        content="회사 소개 | SKY Commerce">
     <meta property="og:description"  content="TCL RayNeo 국내 공식 판매처, SKY Commerce를 소개합니다.">
-    <meta property="og:url"          content="https://skycommerce.co.kr/about.html">
+    <meta property="og:url"          content="https://skycommerce.co.kr/about/">
     <meta property="og:image"        content="https://skycommerce.co.kr/img/og_image.png">
     <meta property="og:image:width"  content="1200">
     <meta property="og:image:height" content="630">
@@ -20,10 +20,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
     <style>
-        /* ── 회사 소개 텍스트 ── */
         .intro-text-section {
             text-align: center;
             max-width: 800px;
@@ -39,7 +38,6 @@
             line-height: 1.7; margin-bottom: 20px; word-break: keep-all;
         }
 
-        /* ── 사업 영역 카드 ── */
         .business-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -58,7 +56,6 @@
         }
         .business-card p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
 
-        /* ── 가로 스크롤 타임라인 ── */
         .timeline-wrapper {
             position: relative;
             margin: 40px auto 0;
@@ -142,30 +139,29 @@
 </head>
 <body>
 
-    <!-- ───── HEADER ───── -->
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
-                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+                <a href="../"><img src="../img/main.jpg" alt="SKY Commerce"></a>
             </div>
             <nav class="header-center">
                 <ul class="nav-menu">
-                    <li><a href="index.html">홈</a></li>
-                    <li><a href="about.html" class="active">회사 소개</a></li>
-                    <li><a href="product.html">제품</a></li>
-                    <li><a href="contact.html">문의하기</a></li>
+                    <li><a href="../">홈</a></li>
+                    <li><a href="../about/" class="active">회사 소개</a></li>
+                    <li><a href="../product/">제품</a></li>
+                    <li><a href="../contact/">발주하기</a></li>
                 </ul>
             </nav>
             <div class="header-right utility-icons">
                 <a href="#"><i class="fas fa-globe"></i></a>
                 <a href="#"><i class="fas fa-search"></i></a>
-                <a href="contact.html" id="inboxBtn" title="문의 확인" style="display:none;">
+                <a href="../contact/" id="inboxBtn" title="발주 확인" style="display:none;">
                     <i class="fas fa-envelope"></i>
                 </a>
-                <a href="product.html" id="adminEditBtn" title="제품 관리" style="display:none;">
+                <a href="../product/" id="adminEditBtn" title="제품 관리" style="display:none;">
                     <i class="fas fa-edit"></i>
                 </a>
-                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
                 <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 <button class="hamburger" id="hamburger" aria-label="메뉴">
                     <span></span><span></span><span></span>
@@ -176,22 +172,20 @@
 
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
-            <li><a href="index.html">홈</a></li>
-            <li><a href="about.html" class="active">회사 소개</a></li>
-            <li><a href="product.html">제품</a></li>
-            <li><a href="contact.html">문의하기</a></li>
+            <li><a href="../">홈</a></li>
+            <li><a href="../about/" class="active">회사 소개</a></li>
+            <li><a href="../product/">제품</a></li>
+            <li><a href="../contact/">발주하기</a></li>
         </ul>
     </nav>
 
-    <!-- ───── HERO ───── -->
-    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('img/bird.png') center/cover no-repeat;">
+    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('../img/bird.png') center/cover no-repeat;">
         <div class="container">
             <h1 style="position:relative; z-index:2;">회사 소개</h1>
             <p style="position:relative; z-index:2;">미래를 일상으로 만드는 기업, SKY Commerce</p>
         </div>
     </section>
 
-    <!-- ───── 회사 소개 텍스트 ───── -->
     <section class="sub-content" style="background-color: var(--bg-color); padding-top: 80px;">
         <div class="container">
             <div class="intro-text-section">
@@ -212,7 +206,6 @@
         </div>
     </section>
 
-    <!-- ───── 핵심 가치 ───── -->
     <section class="sub-content" style="background-color: #ffffff; padding-bottom: 80px;">
         <div class="container">
             <div style="text-align:center; margin-bottom:60px;">
@@ -243,7 +236,6 @@
         </div>
     </section>
 
-    <!-- ───── 회사 연혁 (가로 스크롤 타임라인) ───── -->
     <section class="sub-content" style="background-color: var(--bg-color);">
         <div class="container" style="max-width:1400px; padding:0 40px;">
             <div style="text-align:center; margin-bottom:20px;">
@@ -334,7 +326,6 @@
         </div>
     </section>
 
-    <!-- ───── FOOTER ───── -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -345,10 +336,10 @@
                 <div class="footer-links">
                     <h4>메뉴</h4>
                     <ul>
-                        <li><a href="index.html">홈</a></li>
-                        <li><a href="about.html">회사 소개</a></li>
-                        <li><a href="product.html">제품</a></li>
-                        <li><a href="contact.html">문의하기</a></li>
+                        <li><a href="../">홈</a></li>
+                        <li><a href="../about/">회사 소개</a></li>
+                        <li><a href="../product/">제품</a></li>
+                        <li><a href="../contact/">발주하기</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
@@ -371,7 +362,7 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
-    <script type="module" src="js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script type="module" src="../js/auth.js"></script>
 </body>
 </html>
