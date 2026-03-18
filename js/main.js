@@ -1,8 +1,5 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
 
-    // ═══════════════════════════════════════
-    // 1. 스크롤 제어 (헤더 / 히어로)
-    // ═══════════════════════════════════════
     const header      = document.getElementById('main-header');
     const heroContent = document.getElementById('hero-content');
     const videoOverlay = document.getElementById('video-overlay');
@@ -10,88 +7,61 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleScroll() {
         const isMainPage = document.querySelector('.video-hero') !== null;
         if (isMainPage) {
-            const scrolled = window.scrollY > 10;
-            header?.classList.toggle('scrolled', scrolled);
-            heroContent?.classList.toggle('scrolled', scrolled);
-            videoOverlay?.classList.toggle('scrolled', scrolled);
+            if (window.scrollY > 10) {
+                if (header)      header.classList.add('scrolled');
+                if (heroContent) heroContent.classList.add('scrolled');
+                if (videoOverlay) videoOverlay.classList.add('scrolled');
+            } else {
+                if (header)      header.classList.remove('scrolled');
+                if (heroContent) heroContent.classList.remove('scrolled');
+                if (videoOverlay) videoOverlay.classList.remove('scrolled');
+            }
         } else {
-            header?.classList.add('scrolled');
+            if (header) header.classList.add('scrolled');
         }
     }
+
     window.addEventListener('scroll', handleScroll);
     handleScroll();
 
-    // ═══════════════════════════════════════
-    // 2. 햄버거 메뉴
-    // ═══════════════════════════════════════
+    // 햄버거 메뉴
     const hamburger  = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
-
     if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('open');
+        hamburger.addEventListener('click', function() {
             mobileMenu.classList.toggle('open');
+            hamburger.classList.toggle('open');
         });
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', function(e) {
             if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-                hamburger.classList.remove('open');
                 mobileMenu.classList.remove('open');
+                hamburger.classList.remove('open');
             }
         });
     }
-
-    // ═══════════════════════════════════════
-    // 3. 자동 로그아웃 (Firebase signOut 포함)
-    // ═══════════════════════════════════════
-    const AUTO_LOGOUT_MS = 2 * 60 * 60 * 1000; // 2시간 (밀리초)
-
-    async function firebaseSignOut() {
-        try {
-            // Firebase가 로드된 경우에만 signOut 호출
-            const { getAuth, signOut } = await import(
-                "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"
-            );
-            const { initializeApp, getApps, getApp } = await import(
-                "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"
-            );
-            const firebaseConfig = {
-                apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
-                authDomain: "skycommerce-7fec4.firebaseapp.com",
-                projectId: "skycommerce-7fec4",
-                storageBucket: "skycommerce-7fec4.firebasestorage.app",
-                messagingSenderId: "232403511014",
-                appId: "1:232403511014:web:318ebb689d678e998b7d27"
-            };
-            const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            await signOut(auth); // ★ 실제 Firebase 로그아웃
-        } catch (e) {
-            console.warn("Firebase signOut 실패:", e);
-        }
-    }
-
-    async function performAutoLogout(reason = '자동') {
-        localStorage.removeItem('loginTime');
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userRole');
-        await firebaseSignOut(); // ★ 반드시 Firebase도 로그아웃
-        alert(`⏱ 시간이 오래되어 로그아웃됩니다.`);
-        window.location.href = 'login.html';
-    }
-
-    function checkAutoLogout() {
-        const loginTime = localStorage.getItem('loginTime');
-        if (!loginTime) return;
-        const elapsed = Date.now() - parseInt(loginTime, 10);
-        if (elapsed >= AUTO_LOGOUT_MS) {
-            performAutoLogout();
-        }
-    }
-
-    // 페이지 로드 시 즉시 확인
-    checkAutoLogout();
-
-    // 1분마다 주기적으로 확인
-    setInterval(checkAutoLogout, 60 * 1000);
-
 });
+
+function checkLoginStatus() {
+    const isLoggedIn    = localStorage.getItem('isLoggedIn') === 'true';
+    const userProfileBtn = document.getElementById('userProfileBtn');
+
+    if (userProfileBtn) {
+        if (isLoggedIn) {
+            userProfileBtn.style.color = '#0071e3';
+            userProfileBtn.title = '로그아웃';
+            userProfileBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('로그아웃 하시겠습니까?')) {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userRole');
+                    alert('로그아웃 되었습니다.');
+                    window.location.reload();
+                }
+            });
+        } else {
+            userProfileBtn.style.color = 'rgba(255,255,255,0.8)';
+            userProfileBtn.title = '로그인';
+            userProfileBtn.href  = '/login/';   // ✅ 절대경로로 수정
+        }
+    }
+}

@@ -1,7 +1,7 @@
 // ────────────────────────────────────────────────
 // auth.js — 모든 페이지 공통 로그인 상태 관리
 // ────────────────────────────────────────────────
-import { initializeApp }
+import { initializeApp, getApps, getApp }
     from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut }
     from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -15,7 +15,7 @@ const firebaseConfig = {
     appId: "1:232403511014:web:318ebb689d678e998b7d27"
 };
 
-const app  = initializeApp(firebaseConfig);
+const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 onAuthStateChanged(auth, (user) => {
@@ -24,7 +24,6 @@ onAuthStateChanged(auth, (user) => {
     const inboxBtn       = document.getElementById('inboxBtn');
 
     if (user) {
-        // ★ 아이콘 파란색
         if (userProfileBtn) {
             userProfileBtn.style.color = '#0071e3';
             userProfileBtn.title       = '로그아웃';
@@ -39,19 +38,16 @@ onAuthStateChanged(auth, (user) => {
                 window.location.reload();
             };
         }
-        // 관리자 전용 버튼 표시
         if (adminEditBtn) adminEditBtn.style.display = 'inline-block';
         if (inboxBtn)     inboxBtn.style.display     = 'inline-block';
 
     } else {
-        // ★ 아이콘 기본색
         if (userProfileBtn) {
             userProfileBtn.style.color = 'rgba(255,255,255,0.8)';
             userProfileBtn.title       = '로그인';
-            userProfileBtn.href        = 'login.html';
+            userProfileBtn.href        = '/login/';   // ✅ 수정
             userProfileBtn.onclick     = null;
         }
-        // 관리자 전용 버튼 숨김
         if (adminEditBtn) adminEditBtn.style.display = 'none';
         if (inboxBtn)     inboxBtn.style.display     = 'none';
     }
