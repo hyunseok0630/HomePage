@@ -1,7 +1,42 @@
-const header = document.getElementById('main-header');
-const isIndexPage = document.querySelector('.video-hero') !== null;
+// ────────────────────────────────────────────────
+// main.js — 헤더 + 햄버거 메뉴 + 자동 로그아웃
+// ────────────────────────────────────────────────
 
-// ── 햄버거 메뉴 토글 ──
+const LOGOUT_TIMEOUT = 60 * 60 * 1000; // 1시간
+
+// ────────────────────────────────────────────────
+// ⏱ 자동 로그아웃 체크 (페이지 로드마다 실행)
+// ────────────────────────────────────────────────
+(function checkAutoLogout() {
+    const loginTime = parseInt(localStorage.getItem('loginTime') || '0', 10);
+    if (!loginTime) return;
+
+    const elapsed = Date.now() - loginTime;
+
+    if (elapsed >= LOGOUT_TIMEOUT) {
+        // 즉시 로그아웃
+        localStorage.removeItem('loginTime');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userRole');
+        alert('⏰ 로그인 세션이 만료되었습니다.\n다시 로그인해 주세요.');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // 남은 시간 후 자동 로그아웃
+    const remaining = LOGOUT_TIMEOUT - elapsed;
+    setTimeout(() => {
+        localStorage.removeItem('loginTime');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userRole');
+        alert('⏰ 로그인 세션이 만료되었습니다.\n다시 로그인해 주세요.');
+        window.location.href = 'login.html';
+    }, remaining);
+})();
+
+// ────────────────────────────────────────────────
+// 🍔 햄버거 메뉴 토글
+// ────────────────────────────────────────────────
 const hamburger  = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 
@@ -10,7 +45,6 @@ if (hamburger && mobileMenu) {
         const isOpen = mobileMenu.classList.toggle('open');
         hamburger.classList.toggle('open', isOpen);
     });
-    // 메뉴 링크 클릭 시 닫기
     mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             mobileMenu.classList.remove('open');
@@ -19,15 +53,21 @@ if (hamburger && mobileMenu) {
     });
 }
 
-// ── 서브 페이지: 헤더 항상 표시 ──
+// ────────────────────────────────────────────────
+// 📌 헤더 표시 처리
+// ────────────────────────────────────────────────
+const header      = document.getElementById('main-header');
+const isIndexPage = document.querySelector('.video-hero') !== null;
+
+// 서브 페이지 → 항상 표시
 if (!isIndexPage && header) {
     header.classList.add('scrolled');
 }
 
-// ── index.html 전용 ──
+// index.html 전용
 if (isIndexPage && header) {
 
-    // 상단 호버 트리거
+    // 상단 호버 트리거 영역
     const hoverTrigger = document.createElement('div');
     hoverTrigger.id = 'header-hover-trigger';
     hoverTrigger.style.cssText = `

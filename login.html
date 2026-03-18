@@ -5,221 +5,371 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 | SKY Commerce</title>
     <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+
     <style>
-        .login-section {
-            padding: 160px 0 100px;
-            background: var(--bg-color);
-            min-height: calc(100vh - 250px);
+        body {
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .login-wrapper {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 100px 20px 60px;
         }
-        .login-container {
-            background: var(--surface-color);
-            padding: 50px 40px;
+
+        .login-box {
+            background: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            padding: 50px 45px;
             width: 100%;
-            max-width: 450px;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .login-logo {
             text-align: center;
+            margin-bottom: 36px;
         }
-        .login-title {
-            margin-bottom: 30px;
-            color: var(--text-main);
-            font-size: 28px;
+        .login-logo img {
+            height: 48px;
+            width: auto;
+            border-radius: 8px;
+        }
+        .login-logo h2 {
+            color: #fff;
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: -0.03em;
+            margin-top: 14px;
+            letter-spacing: -0.02em;
         }
+        .login-logo p {
+            color: rgba(255,255,255,0.4);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
         .form-group {
-            margin-bottom: 20px;
-            text-align: left;
+            margin-bottom: 18px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: var(--text-muted);
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
             font-weight: 500;
+            margin-bottom: 8px;
         }
-        .form-control {
+        .form-group input {
             width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #d2d2d7;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 10px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
+            padding: 13px 16px;
+            font-size: 15px;
+            color: #fff;
             font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.2s, background 0.2s;
+            outline: none;
         }
-        .form-control:focus {
-            border-color: var(--accent-blue);
+        .form-group input::placeholder { color: rgba(255,255,255,0.25); }
+        .form-group input:focus {
+            border-color: #0071e3;
+            background: rgba(0,113,227,0.08);
         }
-        .login-btn {
+
+        .error-msg {
+            display: none;
+            background: rgba(220,38,38,0.12);
+            border: 1px solid rgba(220,38,38,0.3);
+            border-radius: 8px;
+            color: #f87171;
+            font-size: 13px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .error-msg.show { display: block; }
+
+        .btn-login {
             width: 100%;
-            padding: 16px;
-            background: var(--text-main);
+            background: #0071e3;
             color: #fff;
             border: none;
-            border-radius: 30px;
-            font-size: 16px;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 15px;
             font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
             font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 6px;
         }
-        .login-btn:hover {
-            background: #000;
+        .btn-login:hover { background: #0056d6; transform: translateY(-1px); }
+        .btn-login:active { transform: translateY(0); }
+        .btn-login:disabled {
+            background: rgba(255,255,255,0.15);
+            cursor: not-allowed;
+            transform: none;
         }
-        #errorMessage {
-            color: #e74a3b;
-            font-size: 14px;
-            margin-top: 15px;
-            display: none;
+
+        /* ── 이미 로그인된 상태 화면 ── */
+        #loggedInView { display: none; text-align: center; }
+        #loggedInView .user-icon {
+            width: 72px; height: 72px;
+            background: rgba(0,113,227,0.15);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
         }
+        #loggedInView .user-icon i {
+            font-size: 32px;
+            color: #0071e3;
+        }
+        #loggedInView h3 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        #loggedInView p {
+            color: rgba(255,255,255,0.4);
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+        .btn-logout {
+            width: 100%;
+            background: crimson;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-bottom: 12px;
+        }
+        .btn-logout:hover { background: #a00; transform: translateY(-1px); }
+        .btn-home {
+            width: 100%;
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-home:hover { background: rgba(255,255,255,0.14); }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 28px;
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+        }
+        .login-footer a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: underline;
+        }
+        .login-footer a:hover { color: #fff; }
+
+        .spinner {
+            display: inline-block;
+            width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+
+    <!-- ───── HEADER ───── -->
     <header id="main-header">
-    <div class="header-inner">
-        <div class="header-left logo">
-            <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+        <div class="header-inner">
+            <div class="header-left logo">
+                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+            </div>
+            <nav class="header-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="about.html">회사 소개</a></li>
+                    <li><a href="product.html">제품</a></li>
+                    <li><a href="contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+            <div class="header-right utility-icons">
+                <a href="#"><i class="fas fa-globe"></i></a>
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <button class="hamburger" id="hamburger" aria-label="메뉴">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
-        <nav class="header-center">
-            <ul class="nav-menu">
-                <li><a href="index.html">홈</a></li>
-                <li><a href="about.html">회사 소개</a></li>
-                <li><a href="product.html">제품</a></li>
-                <li><a href="contact.html">문의하기</a></li>
-            </ul>
-        </nav>
-        <div class="header-right utility-icons">
-            <a href="#"><i class="fas fa-globe"></i></a>
-            <a href="#"><i class="fas fa-search"></i></a>
-            <a href="#" id="adminEditBtn" style="display:none;"><i class="fas fa-edit"></i></a>
-            <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
-            <a href="#"><i class="fas fa-shopping-cart"></i></a>
-            <!-- ★ 햄버거 버튼 -->
-            <button class="hamburger" id="hamburger" aria-label="메뉴">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </div>
-</header>
+    </header>
 
-<!-- ★ 모바일 드롭다운 메뉴 (header 바로 아래) -->
-<nav class="mobile-menu" id="mobileMenu">
-    <ul>
-        <li><a href="index.html">홈</a></li>
-        <li><a href="about.html">회사 소개</a></li>
-        <li><a href="product.html">제품</a></li>
-        <li><a href="contact.html">문의하기</a></li>
-    </ul>
-</nav>
+    <!-- 모바일 메뉴 -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">홈</a></li>
+            <li><a href="about.html">회사 소개</a></li>
+            <li><a href="product.html">제품</a></li>
+            <li><a href="contact.html">문의하기</a></li>
+        </ul>
+    </nav>
 
+    <!-- ───── LOGIN / LOGOUT FORM ───── -->
+    <div class="login-wrapper">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="img/main.jpg" alt="SKY Commerce">
+                <h2 id="boxTitle">관리자 로그인</h2>
+                <p id="boxSubtitle">SKY Commerce 관리자 전용 페이지입니다.</p>
+            </div>
 
-    <section class="login-section">
-        <div class="login-container">
-            <h2 class="login-title">관리자 로그인</h2>
-            <form id="loginForm">
+            <!-- ★ 로그인 폼 -->
+            <div id="loginView">
+                <div id="errorMsg" class="error-msg">
+                    아이디 또는 비밀번호가 일치하지 않습니다.
+                </div>
                 <div class="form-group">
-                    <label for="username">아이디</label>
-                    <input type="text" id="username" class="form-control" placeholder="아이디를 입력하세요" required>
+                    <label for="email">아이디 (이메일)</label>
+                    <input type="email" id="email" placeholder="admin@example.com" autocomplete="email">
                 </div>
                 <div class="form-group">
                     <label for="password">비밀번호</label>
-                    <input type="password" id="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
+                    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
                 </div>
-                <button type="submit" class="login-btn">로그인</button>
-                <p id="errorMessage">아이디 또는 비밀번호가 일치하지 않습니다.</p>
-            </form>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <h3>SKY COMMERCE</h3>
-                    <p>미래를 일상으로.</p>
-                </div>
-                <div class="footer-links">
-                    <h4>메뉴</h4>
-                    <ul>
-                        <li><a href="index.html">홈</a></li>
-                        <li><a href="about.html">회사 소개</a></li>
-                        <li><a href="product.html">제품</a></li>
-                        <li><a href="contact.html">문의하기</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h4>고객지원</h4>
-                    <p>031-205-4133</p>
-                    <p>car2314@naver.com</p>
-                    <p class="address">경기도 화성시 동탄대로 677-12<br>620 ~ 621호</p>
-                </div>
-                <div class="footer-social">
-                    <h4>커뮤니티</h4>
-                    <div class="social-icons">
-                        <a href="https://cafe.naver.com/skycommerce114" target="_blank"><i class="fas fa-coffee"></i></a>
-                        <a href="https://smartstore.naver.com/nxtwear" target="_blank"><i class="fas fa-shopping-cart"></i></a>
-                    </div>
+                <button class="btn-login" id="loginBtn" onclick="handleLogin()">로그인</button>
+                <div class="login-footer">
+                    <a href="index.html">← 홈으로 돌아가기</a>
                 </div>
             </div>
-            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+
+            <!-- ★ 이미 로그인된 상태 -->
+            <div id="loggedInView">
+                <div class="user-icon"><i class="fas fa-user-check"></i></div>
+                <h3>관리자로 로그인 중</h3>
+                <p id="loggedInEmail">로그인 상태입니다.</p>
+                <button class="btn-logout" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> 로그아웃
+                </button>
+                <button class="btn-home" onclick="location.href='index.html'">
+                    홈으로 돌아가기
+                </button>
+            </div>
+
         </div>
-    </footer>
+    </div>
 
     <script src="js/main.js"></script>
-    <!-- 기존 <script src="js/main.js"> 아래에 추가 -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged }
-        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    <script type="module">
+        import { initializeApp }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword,
+                 signOut, onAuthStateChanged }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
-        authDomain: "skycommerce-7fec4.firebaseapp.com",
-        projectId: "skycommerce-7fec4",
-        storageBucket: "skycommerce-7fec4.firebasestorage.app",
-        messagingSenderId: "232403511014",
-        appId: "1:232403511014:web:318ebb689d678e998b7d27"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
+            authDomain: "skycommerce-7fec4.firebaseapp.com",
+            projectId: "skycommerce-7fec4",
+            storageBucket: "skycommerce-7fec4.firebasestorage.app",
+            messagingSenderId: "232403511014",
+            appId: "1:232403511014:web:318ebb689d678e998b7d27"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+        const app  = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-    // 이미 로그인된 상태면 바로 이동
-    onAuthStateChanged(auth, (user) => {
-        if (user) window.location.href = 'index.html';
-    });
+        // ★ 로그인 상태에 따라 화면 전환 (리다이렉트 없음)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // 이미 로그인 → 로그아웃 화면 표시
+                document.getElementById('loginView').style.display    = 'none';
+                document.getElementById('loggedInView').style.display = 'block';
+                document.getElementById('boxTitle').textContent       = '로그인 중';
+                document.getElementById('boxSubtitle').textContent    = '';
+                document.getElementById('loggedInEmail').textContent  = user.email;
+            } else {
+                // 비로그인 → 로그인 폼 표시
+                document.getElementById('loginView').style.display    = 'block';
+                document.getElementById('loggedInView').style.display = 'none';
+                document.getElementById('boxTitle').textContent       = '관리자 로그인';
+                document.getElementById('boxSubtitle').textContent    = 'SKY Commerce 관리자 전용 페이지입니다.';
+            }
+        });
 
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const email = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-        const errMsg = document.getElementById('errorMessage');
+        // ── 로그인 처리 ──
+        window.handleLogin = async function () {
+            const email    = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMsg = document.getElementById('errorMsg');
 
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            // main.js의 localStorage 체크와의 호환성 유지
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userRole', 'admin');
-            window.location.href = 'index.html';
-        } catch (err) {
-            errMsg.style.display = 'block';
-            errMsg.textContent = '이메일 또는 비밀번호가 일치하지 않습니다.';
-        }
-    });
-</script>
+            if (!email || !password) {
+                errorMsg.textContent = '이메일과 비밀번호를 입력해주세요.';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="spinner"></span>로그인 중...';
+            errorMsg.classList.remove('show');
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // ★ 로그인 시각 저장 → 자동 로그아웃 기준
+                localStorage.setItem('loginTime', Date.now().toString());
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = 'index.html';
+            } catch (error) {
+                errorMsg.textContent = '아이디 또는 비밀번호가 일치하지 않습니다.';
+                errorMsg.classList.add('show');
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '로그인';
+            }
+        };
+
+        // ── 로그아웃 처리 ──
+        window.handleLogout = async function () {
+            if (!confirm('로그아웃 하시겠습니까?')) return;
+            localStorage.removeItem('loginTime');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userRole');
+            await signOut(auth);
+        };
+
+        // 엔터키 로그인
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') window.handleLogin();
+        });
+    </script>
 
 </body>
 </html>
