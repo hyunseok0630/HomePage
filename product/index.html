@@ -12,8 +12,6 @@
     <meta property="og:description"  content="스마트 웨어러블부터 고품질 산업용 소재까지, 혁신을 제공합니다.">
     <meta property="og:url"          content="https://skycommerce.co.kr/product/">
     <meta property="og:image"        content="https://skycommerce.co.kr/img/og_image.png">
-    <meta property="og:image:width"  content="1200">
-    <meta property="og:image:height" content="630">
     <meta property="og:locale"       content="ko_KR">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,15 +27,36 @@
             border: 2px dashed #007bff;
             box-shadow: 0 4px 15px rgba(0,123,255,0.2);
         }
-        body.edit-mode .admin-add-btn {
-            display: inline-block !important;
-            background-color: #007bff; color: white; border: none;
-            padding: 10px 20px; border-radius: 50px;
-            cursor: pointer; margin-top: 15px; font-weight: 600;
-        }
+        body.edit-mode .admin-add-btn { display: inline-flex !important; }
         #adminEditBtn.active { color: #007bff; }
         .sortable-ghost { opacity: 0.4; background: #e3f0ff; border: 2px dashed #007bff !important; }
-        .empty-notice { color: #aaa; font-size: 14px; padding: 30px 0; text-align: center; width: 100%; }
+        .empty-notice { color: #aaa; font-size: 14px; padding: 30px 0; text-align: center; }
+
+        /* ✅ 4열 고정 그리드 */
+        .sortable-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        @media (max-width: 1200px) { .sortable-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px)  { .sortable-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px)  { .sortable-grid { grid-template-columns: repeat(1, 1fr); } }
+
+        /* ✅ 카드 */
+        .product-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--surface-color);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
 
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
@@ -51,7 +70,7 @@
         .modal-content h3 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;
             font-size: 14px; font-family: inherit; box-sizing: border-box;
         }
@@ -59,8 +78,7 @@
 
         .img-upload-area {
             border: 2px dashed #ccc; border-radius: 8px; padding: 24px 16px;
-            text-align: center; cursor: pointer; background: #fafafa;
-            transition: border-color 0.2s, background 0.2s;
+            text-align: center; cursor: pointer; background: #fafafa; transition: all 0.2s;
         }
         .img-upload-area:hover, .img-upload-area.dragover { border-color: #007bff; background: #f0f7ff; }
         .img-upload-area i { font-size: 32px; color: #aaa; display: block; margin-bottom: 8px; }
@@ -74,31 +92,45 @@
         .upload-progress-bar { height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; }
         .upload-progress-fill { height: 100%; background: #007bff; width: 0%; transition: width 0.2s; }
         .upload-progress-text { font-size: 12px; color: #666; margin-top: 4px; text-align: center; }
-        .url-toggle { font-size: 12px; color: #007bff; cursor: pointer; text-decoration: underline; margin-top: 8px; display: inline-block; }
 
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
-        .btn-cancel { background: #f0f0f0; color: #333; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; }
-        .btn-save { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .btn-cancel { background: #f0f0f0; color: #333; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; font-family: inherit; }
+        .btn-save   { background: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-family: inherit; }
         .btn-save:hover { background: #0056d6; }
         .btn-save:disabled { background: #a0c4f1; cursor: not-allowed; }
 
-        /* ── 카드 오버레이 버튼 ── */
-        .product-card { position: relative; }
         .card-admin-btns {
-            display: none;
-            position: absolute; top: 8px; right: 8px;
+            display: none; position: absolute; top: 8px; right: 8px;
             flex-direction: column; gap: 6px; z-index: 10;
         }
         body.edit-mode .card-admin-btns { display: flex; }
         .delete-btn, .edit-btn {
-            border: none; border-radius: 50%;
-            width: 30px; height: 30px; cursor: pointer; font-size: 13px;
-            line-height: 30px; text-align: center; transition: opacity 0.2s;
+            border: none; border-radius: 50%; width: 32px; height: 32px;
+            cursor: pointer; font-size: 13px; line-height: 32px;
+            text-align: center; transition: opacity 0.2s;
         }
         .delete-btn { background: crimson; color: #fff; }
         .edit-btn   { background: #007bff; color: #fff; }
-        .delete-btn:hover { opacity: 0.8; }
-        .edit-btn:hover   { opacity: 0.8; }
+        .delete-btn:hover, .edit-btn:hover { opacity: 0.8; }
+
+        /* ✅ 제품 추가 버튼 — 제목 옆 배치 */
+        .admin-add-btn {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 7px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            font-size: 13px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .admin-add-btn:hover { background: #0056d6; }
 
         #saveToast {
             display: none; position: fixed; bottom: 30px; right: 30px;
@@ -115,20 +147,10 @@
         }
         .img-type-btn.active { border-color: #007bff; background: #e8f4ff; color: #007bff; }
 
-        /* 편집 모달 현재 이미지 미리보기 */
-        .current-img-preview {
-            display: none; width: 100%; max-height: 140px; object-fit: contain;
-            border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee;
-            background: #fafafa;
-        }
-        .current-img-label {
-            font-size: 11px; color: #aaa; margin-bottom: 6px; display: none;
-        }
+        .product-desc { white-space: pre-line; word-break: break-word; }
     </style>
 </head>
 <body>
-
-    <div id="saveToast"></div>
 
     <header id="main-header">
         <div class="header-inner">
@@ -146,10 +168,7 @@
             <div class="header-right utility-icons">
                 <a href="#"><i class="fas fa-globe"></i></a>
                 <a href="#"><i class="fas fa-search"></i></a>
-                <a href="../contact/" id="inboxBtn" title="발주 확인" style="display:none;">
-                    <i class="fas fa-envelope"></i>
-                </a>
-                <a href="#" id="adminEditBtn" title="제품 편집 모드" style="display:none;">
+                <a href="#" id="adminEditBtn" title="제품 편집 모드" style="display:none;" onclick="toggleEditMode(event)">
                     <i class="fas fa-edit"></i>
                 </a>
                 <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
@@ -170,121 +189,96 @@
         </ul>
     </nav>
 
-    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat;">
+    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat;">
         <div class="container">
-            <h1 style="position:relative; z-index:2;">제품 라인업</h1>
-            <p style="position:relative; z-index:2;">스마트 웨어러블부터 고품질 산업용 소재까지, 혁신을 제공합니다.</p>
+            <h1 style="position:relative;z-index:2;">제품 라인업</h1>
+            <p style="position:relative;z-index:2;">스마트 웨어러블부터 고품질 산업용 소재까지, 혁신을 제공합니다.</p>
         </div>
     </section>
 
-    <section class="sub-content" style="background-color: var(--bg-color);">
-        <div class="container">
-
-            <div class="category-header">
-                <h2 class="category-title" data-category="wearable">1. 스마트 웨어러블 및 액세서리</h2>
-                <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
-            </div>
-            <div class="product-grid" id="grid-wearable" style="margin-bottom:100px;">
-                <p class="empty-notice">로딩 중...</p>
-            </div>
-
-            <div class="category-header">
-                <h2 class="category-title" data-category="industrial">2. 산업용 환경 용품 및 세정제</h2>
-                <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
-            </div>
-            <div class="product-grid" id="grid-industrial" style="margin-bottom:100px;">
-                <p class="empty-notice">로딩 중...</p>
-            </div>
-
-            <div class="category-header">
-                <h2 class="category-title" data-category="grating">3. Grating SUS 보강판 시리즈</h2>
-                <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
-            </div>
-            <div class="product-grid" id="grid-grating" style="margin-bottom:100px;">
-                <p class="empty-notice">로딩 중...</p>
-            </div>
-
-            <div class="category-header">
-                <h2 class="category-title" data-category="parts">4. 산업용 특수 소재 및 정밀 부품</h2>
-                <button class="admin-add-btn" style="display:none;" onclick="openAddModal(this)">+ 제품 추가</button>
-            </div>
-            <div class="product-grid" id="grid-parts" style="margin-bottom:100px;">
-                <p class="empty-notice">로딩 중...</p>
-            </div>
-
-        </div>
+    <section class="products-section" style="padding: 80px 0; background: var(--bg-color);">
+        <div class="container" id="productRoot"></div>
     </section>
 
-    <!-- ── 추가 / 편집 공용 모달 ── -->
-    <div id="productModal" class="modal-overlay">
+    <div id="saveToast">✅ 저장되었습니다.</div>
+
+    <!-- 추가/수정 모달 -->
+    <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <h3 id="modalTitle">새 제품 추가</h3>
-            <input type="hidden" id="editProductId" value="">
 
             <div class="form-group">
-                <label>상품 이름 <span style="color:red;">*</span></label>
-                <input type="text" id="prodName" placeholder="예) TCL RayNeo Air 5">
+                <label>카테고리</label>
+                <select id="modalCategory">
+                    <option value="wearable">스마트 웨어러블 및 액세서리</option>
+                    <option value="industrial">산업용 환경 용품 및 세정제</option>
+                    <option value="grating">Grating SUS 보강판 시리즈</option>
+                    <option value="parts">산업용 특수 소재 및 정밀 부품</option>
+                </select>
             </div>
+
+            <div class="form-group">
+                <label>상품 이름</label>
+                <input type="text" id="modalName" placeholder="예) TCL RayNeo Air 4 Pro">
+            </div>
+
             <div class="form-group">
                 <label>설명</label>
-                <textarea id="prodDesc" placeholder="제품 간단 설명"></textarea>
+                <textarea id="modalDesc" placeholder="설명을 입력하세요 (엔터로 줄바꿈 가능)"></textarea>
             </div>
+
             <div class="form-group">
-                <label>이미지 표시 방식</label>
+                <label>이미지</label>
                 <div class="img-type-toggle">
-                    <button class="img-type-btn active" id="btnCover"   onclick="setImgType('cover')">
-                        🖼 Cover <small style="display:block; font-weight:400; color:#888;">실제 제품 사진</small>
+                    <button class="img-type-btn active" id="tabUpload" onclick="switchImgTab('upload')">
+                        <i class="fas fa-upload"></i> 파일 업로드
                     </button>
-                    <button class="img-type-btn" id="btnContain" onclick="setImgType('contain')">
-                        📦 Contain <small style="display:block; font-weight:400; color:#888;">흰 배경 컷아웃</small>
+                    <button class="img-type-btn" id="tabUrl" onclick="switchImgTab('url')">
+                        <i class="fas fa-link"></i> URL 입력
                     </button>
                 </div>
-                <input type="hidden" id="prodImgType" value="cover">
-            </div>
-            <div class="form-group">
-                <label>제품 이미지 <span style="color:#888; font-weight:400;">(JPG·PNG·WEBP / 최대 5MB)</span></label>
-
-                <!-- 편집 모드일 때만 보이는 현재 이미지 -->
-                <p class="current-img-label" id="currentImgLabel">📌 현재 이미지 (새 파일 선택 시 교체됩니다)</p>
-                <img id="currentImgPreview" class="current-img-preview" src="" alt="현재 이미지">
-
-                <div id="imgUploadArea" class="img-upload-area"
-                     onclick="document.getElementById('prodImageFile').click()"
-                     ondragover="handleDragOver(event)"
-                     ondragleave="handleDragLeave(event)"
-                     ondrop="handleDrop(event)">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p><strong>클릭</strong>하거나 이미지를 여기로 드래그</p>
-                    <p>JPG, PNG, WEBP 지원 / 최대 5MB</p>
-                    <input type="file" id="prodImageFile" accept="image/*" onchange="handleFileSelect(event)">
-                </div>
-                <img id="imgPreview" src="" alt="미리보기">
-                <div class="upload-progress" id="uploadProgress">
-                    <div class="upload-progress-bar">
-                        <div class="upload-progress-fill" id="uploadProgressFill"></div>
+                <div id="imgUploadSection">
+                    <div class="img-upload-area" id="imgUploadArea"
+                         onclick="document.getElementById('modalImgFile').click()"
+                         ondragover="onImgDragOver(event)"
+                         ondragleave="onImgDragLeave(event)"
+                         ondrop="onImgDrop(event)">
+                        <i class="fas fa-image"></i>
+                        <p>클릭하거나 이미지를 드래그하여 업로드</p>
+                        <p style="font-size:11px;color:#bbb;">JPG, PNG, WEBP · 최대 5MB</p>
+                        <input type="file" id="modalImgFile" accept="image/*" onchange="onImgFileSelect(event)">
                     </div>
-                    <div class="upload-progress-text" id="uploadProgressText">업로드 중... 0%</div>
+                    <img id="imgPreview" src="" alt="미리보기">
+                    <div class="upload-progress" id="imgUploadProgress">
+                        <div class="upload-progress-bar">
+                            <div class="upload-progress-fill" id="imgUploadFill"></div>
+                        </div>
+                        <div class="upload-progress-text" id="imgUploadText">업로드 중... 0%</div>
+                    </div>
                 </div>
-                <span class="url-toggle" onclick="toggleUrlInput()">🔗 URL로 직접 입력하기</span>
-                <div id="urlInputArea" style="display:none; margin-top:8px;">
-                    <input type="text" id="prodImageUrl" placeholder="https://...">
+                <div id="imgUrlSection" style="display:none;">
+                    <input type="text" id="modalImg" placeholder="https://example.com/image.jpg">
                 </div>
             </div>
+
             <div class="form-group">
-                <label>구매 링크 (없으면 비워두기)</label>
-                <input type="text" id="prodBuyUrl" placeholder="https://smartstore.naver.com/...">
+                <label>태그 <span style="color:#aaa;font-size:12px;">(쉼표로 구분)</span></label>
+                <input type="text" id="modalTag" placeholder="예) RayNeo, AR글래스">
             </div>
+
             <div class="form-group">
-                <label>태그 (쉼표로 구분)</label>
-                <input type="text" id="prodTags" placeholder="예) RayNeo, 신제품">
+                <label>가격 <span style="color:#aaa;font-size:12px;">(선택)</span></label>
+                <input type="text" id="modalPrice" placeholder="예) 41,000원">
             </div>
+
             <div class="form-group">
-                <label>가격 (없으면 비워두기)</label>
-                <input type="text" id="prodPrice" placeholder="예) 350,000원">
+                <label>구매 링크 <span style="color:#aaa;font-size:12px;">(선택)</span></label>
+                <input type="text" id="modalBuyUrl" placeholder="https://smartstore.naver.com/...">
             </div>
+
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeAddModal()">취소</button>
-                <button class="btn-save" id="btnSave" onclick="saveProduct()">DB 저장</button>
+                <button class="btn-cancel" onclick="closeModal()">취소</button>
+                <button class="btn-save" id="modalSaveBtn" onclick="saveProduct()">DB 저장</button>
             </div>
         </div>
     </div>
@@ -322,16 +316,18 @@
 
     <script src="../js/main.js"></script>
     <script type="module" src="../js/auth.js"></script>
+
     <script type="module">
         import { initializeApp, getApps, getApp }
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc,
-                 doc, updateDoc, serverTimestamp, writeBatch }
+        import { getFirestore, collection, doc, getDocs, addDoc,
+                 updateDoc, deleteDoc, writeBatch, serverTimestamp }
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytesResumable,
+                 getDownloadURL, deleteObject }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
         import { getAuth, onAuthStateChanged }
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
@@ -347,398 +343,369 @@
         const auth    = getAuth(app);
         const storage = getStorage(app);
 
-        const GRID_MAP = {
-            wearable:   document.getElementById('grid-wearable'),
-            industrial: document.getElementById('grid-industrial'),
-            grating:    document.getElementById('grid-grating'),
-            parts:      document.getElementById('grid-parts')
-        };
+        const CATEGORIES = [
+            { cat: 'wearable',   label: '스마트 웨어러블 및 액세서리' },
+            { cat: 'industrial', label: '산업용 환경 안전 용품 및 세정제'   },
+            { cat: 'grating',    label: 'Grating SUS 보강판 시리즈'    },
+            { cat: 'parts',      label: '산업용 특수 소재 및 정밀 부품'},
+        ];
 
-        let sortableInstances = [];
-        let currentTargetGrid = null;
-        let isAdmin           = false;
-        let selectedFile      = null;
+        let isEditMode  = false;
+        let allProducts = {};
+        let editingId   = null;
+        let addingCat   = null;
+        let uploadedImgUrl      = '';
+        let uploadedStoragePath = '';
+        let imgTabMode  = 'upload';
 
-        function escHtml(str = '') {
-            return String(str)
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-        }
-        function safeBuyUrl(url) {
-            if (!url) return '#';
-            const t = String(url).trim();
-            return (t.startsWith('http://') || t.startsWith('https://')) ? t : '#';
-        }
-        function showToast(msg, duration = 2000) {
-            const toast = document.getElementById('saveToast');
-            toast.textContent = msg;
-            toast.style.display = 'block';
-            clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => { toast.style.display = 'none'; }, duration);
+        function esc(s = '') {
+            return String(s)
+                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
         }
 
-        window.setImgType = function (type) {
-            document.getElementById('prodImgType').value = type;
-            document.getElementById('btnCover').classList.toggle('active',   type === 'cover');
-            document.getElementById('btnContain').classList.toggle('active', type === 'contain');
-        };
+        // ── 전체 로드 ──
+        async function loadAndRender() {
+            const root = document.getElementById('productRoot');
+            root.innerHTML = '<p style="text-align:center;color:#aaa;padding:60px 0;">불러오는 중...</p>';
+            allProducts = {};
 
-        onAuthStateChanged(auth, (user) => {
-            isAdmin = !!user;
-            const editBtn    = document.getElementById('adminEditBtn');
-            const inboxBtn   = document.getElementById('inboxBtn');
-            const profileBtn = document.getElementById('userProfileBtn');
-            if (user) {
-                if (editBtn)  editBtn.style.display  = 'block';
-                if (inboxBtn) inboxBtn.style.display = 'block';
-                if (profileBtn) {
-                    profileBtn.style.color = '#0071e3';
-                    profileBtn.title = '관리자 로그인 중';
-                    profileBtn.href  = '../admin/';
-                }
-            } else {
-                if (editBtn)  editBtn.style.display  = 'none';
-                if (inboxBtn) inboxBtn.style.display = 'none';
-                if (document.body.classList.contains('edit-mode')) {
-                    document.body.classList.remove('edit-mode');
-                    sortableInstances.forEach(s => s.destroy());
-                    sortableInstances = [];
-                }
-            }
-        });
-
-        document.getElementById('adminEditBtn').addEventListener('click', function (e) {
-            e.preventDefault();
-            if (!isAdmin) return;
-            const isEditMode = document.body.classList.toggle('edit-mode');
-            this.classList.toggle('active');
-            const grids = document.querySelectorAll('.product-grid');
-            if (isEditMode) {
-                grids.forEach(g => {
-                    sortableInstances.push(new Sortable(g, {
-                        animation: 150,
-                        ghostClass: 'sortable-ghost',
-                        onEnd: (evt) => saveOrder(evt.from)
-                    }));
-                });
-                showToast('✏️ 편집 모드 ON — 카드의 🖊️ 버튼으로 수정', 2500);
-            } else {
-                sortableInstances.forEach(s => s.destroy());
-                sortableInstances = [];
-                showToast('편집 모드 OFF');
-            }
-        });
-
-        async function saveOrder(gridEl) {
-            const cards = gridEl.querySelectorAll('.firebase-item');
-            const batch = writeBatch(db);
-            cards.forEach((card, idx) => {
-                batch.update(doc(db, "products", card.dataset.id), { order: idx });
-            });
-            try { await batch.commit(); showToast('✅ 순서 저장 완료'); }
-            catch (e) { showToast('⚠️ 순서 저장 실패'); }
-        }
-
-        async function loadProducts() {
-            Object.values(GRID_MAP).forEach(g => { g.innerHTML = '<p class="empty-notice">로딩 중...</p>'; });
             try {
-                const snapshot = await getDocs(collection(db, "products"));
-                const docs = [];
-                snapshot.forEach(d => docs.push({ data: d.data(), id: d.id }));
-                docs.sort((a, b) => {
-                    const aO = a.data.order !== undefined ? a.data.order : Infinity;
-                    const bO = b.data.order !== undefined ? b.data.order : Infinity;
-                    if (aO !== bO) return aO - bO;
-                    return (a.data.createdAt?.seconds ?? 0) - (b.data.createdAt?.seconds ?? 0);
+                const snap = await getDocs(collection(db, 'products'));
+                snap.forEach(d => {
+                    const data = { id: d.id, ...d.data() };
+                    const cat  = data.category || 'etc';
+                    if (!allProducts[cat]) allProducts[cat] = [];
+                    allProducts[cat].push(data);
                 });
-                Object.values(GRID_MAP).forEach(g => { g.innerHTML = ''; });
-                docs.forEach(({ data, id }) => renderProductCard(data, id));
-                Object.values(GRID_MAP).forEach(g => {
-                    if (g.children.length === 0)
-                        g.innerHTML = '<p class="empty-notice">등록된 제품이 없습니다.</p>';
+
+                Object.keys(allProducts).forEach(cat => {
+                    allProducts[cat].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
                 });
+
+                root.innerHTML = CATEGORIES.map((c, idx) => {
+                    const items = allProducts[c.cat] || [];
+                    return `
+                    <div class="category-section" style="margin-bottom:60px;">
+                        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:10px;border-bottom:2px solid #eee;">
+                            <h2 style="font-size:22px;font-weight:700;margin:0;">
+                                ${idx + 1}. ${esc(c.label)}
+                            </h2>
+                            <button class="admin-add-btn" onclick="openAddModal('${esc(c.cat)}')">
+                                <i class="fas fa-plus"></i> 제품 추가
+                            </button>
+                        </div>
+                        <div class="sortable-grid" data-cat="${esc(c.cat)}">
+                            ${items.length
+                                ? items.map(p => cardHTML(p)).join('')
+                                : '<p class="empty-notice">등록된 제품이 없습니다.</p>'}
+                        </div>
+                    </div>`;
+                }).join('');
+
+                if (isEditMode) initSortable();
+
             } catch (e) {
-                Object.values(GRID_MAP).forEach(g => {
-                    g.innerHTML = '<p class="empty-notice">⚠️ 제품을 불러오지 못했습니다.</p>';
-                });
+                console.error('로드 실패:', e);
+                root.innerHTML = `
+                    <div style="text-align:center;padding:80px 0;color:#e00;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:40px;margin-bottom:16px;display:block;"></i>
+                        <p style="font-size:16px;font-weight:600;">제품을 불러오지 못했습니다.</p>
+                        <p style="font-size:13px;color:#aaa;margin-top:8px;">${esc(e.message)}</p>
+                        <button onclick="loadAndRender()" style="
+                            margin-top:20px;padding:10px 24px;background:#1d1d1f;
+                            color:#fff;border:none;border-radius:20px;cursor:pointer;font-size:14px;">
+                            다시 시도
+                        </button>
+                    </div>`;
             }
         }
 
-        function renderProductCard(item, id) {
-            const targetGrid = GRID_MAP[item.category];
-            if (!targetGrid) return;
+        // ── 카드 HTML ──
+        function cardHTML(p) {
+            const imgUrl = p.imageUrl || p.img || '';
+            const buyUrl = p.buyUrl  || p.link || '';
+            const tagStr = Array.isArray(p.tags)
+                ? p.tags.join(', ')
+                : (p.tag || p.tags || '');
 
-            const tagsHTML  = item.tags?.map(t =>
-                `<span class="premium-tag">${escHtml(t)}</span>`).join('') ?? '';
-            const priceHTML = item.price
-                ? `<span class="premium-tag price">${escHtml(item.price)}</span>` : '';
-            const buyURL    = safeBuyUrl(item.buyUrl);
-            const buyHTML   = buyURL !== '#'
-                ? `<a href="${escHtml(buyURL)}" target="_blank" rel="noopener noreferrer" class="btn-primary">구매하기</a>`
+            const buyBtn = buyUrl
+                ? `<a href="${esc(buyUrl)}" target="_blank" rel="noopener noreferrer"
+                      style="display:block;margin-top:14px;padding:12px;
+                             background:#1d1d1f;color:#fff;border-radius:12px;
+                             font-size:14px;font-weight:600;text-decoration:none;
+                             text-align:center;">구매하기</a>`
                 : '';
-            const imgTypeClass = item.imgType === 'contain' ? 'contain' : '';
-            const imgSrc = safeBuyUrl(item.imageUrl) !== '#'
-                ? escHtml(item.imageUrl) : '../img/main.jpg';
 
-            const card = document.createElement('div');
-            card.className = 'product-card firebase-item';
-            card.dataset.id = id;
-            card.innerHTML = `
-                <div class="product-card-img ${escHtml(imgTypeClass)}">
-                    <img src="${imgSrc}" alt="${escHtml(item.name)}">
+            return `
+            <div class="product-card" data-id="${esc(p.id)}">
+                <div style="width:100%;height:220px;overflow:hidden;background:#f5f5f7;flex-shrink:0;">
+                    ${imgUrl
+                        ? `<img src="${esc(imgUrl)}" alt="${esc(p.name)}"
+                                style="width:100%;height:100%;object-fit:cover;display:block;">`
+                        : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+                               <i class="fas fa-image" style="font-size:40px;color:#ddd;"></i>
+                           </div>`}
                 </div>
-                <div class="product-card-info">
-                    <h3>${escHtml(item.name)}</h3>
-                    <div class="desc-text">${escHtml(item.desc)}</div>
-                    <div class="premium-tags">${tagsHTML}${priceHTML}</div>
-                    ${buyHTML}
+                <div style="padding:20px;flex:1;display:flex;flex-direction:column;">
+                    <div style="font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-0.02em;">${esc(p.name || '')}</div>
+                    <div class="product-desc" style="font-size:13px;color:#666;line-height:1.6;margin-bottom:10px;flex:1;">${esc(p.desc || '')}</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+                        ${tagStr
+                            ? tagStr.split(',').map(t =>
+                                `<span style="font-size:11px;background:#f0f0f5;padding:3px 10px;border-radius:20px;color:#555;">${esc(t.trim())}</span>`
+                              ).join('')
+                            : ''}
+                    </div>
+                    ${p.price ? `<div style="font-size:16px;font-weight:700;color:#1d1d1f;margin-top:4px;">${esc(p.price)}</div>` : ''}
+                    ${buyBtn}
                 </div>
                 <div class="card-admin-btns">
-                    <button class="edit-btn"   title="수정">✏️</button>
-                    <button class="delete-btn" title="삭제">✕</button>
-                </div>`;
-
-            /* ── 수정 버튼 ── */
-            card.querySelector('.edit-btn').addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (!isAdmin) return;
-                openEditModal(id, item);
-            });
-
-            /* ── 삭제 버튼 ── */
-            card.querySelector('.delete-btn').addEventListener('click', async (e) => {
-                e.stopPropagation();
-                if (!isAdmin) return;
-                if (!confirm(`"${escHtml(item.name)}"을(를) 삭제하시겠습니까?`)) return;
-                try {
-                    await deleteDoc(doc(db, "products", id));
-                    if (item.storagePath) {
-                        try { await deleteObject(ref(storage, item.storagePath)); }
-                        catch (se) { console.warn("Storage 삭제 생략:", se.code); }
-                    }
-                    card.remove();
-                    if (targetGrid.querySelectorAll('.firebase-item').length === 0)
-                        targetGrid.innerHTML = '<p class="empty-notice">등록된 제품이 없습니다.</p>';
-                    showToast('🗑️ 제품 삭제 완료');
-                } catch (err) { alert("삭제 실패: " + err.message); }
-            });
-
-            const notice = targetGrid.querySelector('.empty-notice');
-            if (notice) notice.remove();
-            targetGrid.appendChild(card);
+                    <button class="edit-btn"   onclick="openEditModal('${esc(p.id)}')">✏️</button>
+                    <button class="delete-btn" onclick="deleteProduct('${esc(p.id)}','${esc(p.storagePath||'')}')">🗑</button>
+                </div>
+            </div>`;
         }
 
-        /* ───────────────────────────────
-           모달 열기 — 추가 모드
-        ─────────────────────────────── */
-        window.openAddModal = function (btn) {
-            const categoryTitle = btn.closest('.category-header')?.querySelector('.category-title');
-            currentTargetGrid   = categoryTitle?.dataset.category || null;
-            document.getElementById('modalTitle').textContent = '새 제품 추가';
-            document.getElementById('editProductId').value    = '';
-            document.getElementById('btnSave').textContent    = 'DB 저장';
-            document.getElementById('currentImgLabel').style.display   = 'none';
-            document.getElementById('currentImgPreview').style.display = 'none';
-            document.getElementById('productModal').style.display = 'flex';
-            resetModal();
+        // ── Sortable ──
+        function initSortable() {
+            document.querySelectorAll('.sortable-grid').forEach(grid => {
+                Sortable.create(grid, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    filter: '.admin-add-btn',
+                    onEnd: () => saveOrder(grid)
+                });
+            });
+        }
+
+        async function saveOrder(grid) {
+            const cards = [...grid.querySelectorAll('.product-card')];
+            const batch = writeBatch(db);
+            cards.forEach((card, i) => {
+                batch.update(doc(db, 'products', card.dataset.id), { order: i });
+            });
+            await batch.commit();
+            showToast();
+        }
+
+        // ── 편집 모드 ──
+        window.toggleEditMode = function(e) {
+            e.preventDefault();
+            isEditMode = !isEditMode;
+            document.body.classList.toggle('edit-mode', isEditMode);
+            document.getElementById('adminEditBtn').classList.toggle('active', isEditMode);
+            if (isEditMode) initSortable();
         };
 
-        /* ───────────────────────────────
-           모달 열기 — 편집 모드
-        ─────────────────────────────── */
-        window.openEditModal = function (id, item) {
-            currentTargetGrid = item.category;
-            document.getElementById('modalTitle').textContent    = '제품 수정';
-            document.getElementById('editProductId').value       = id;
-            document.getElementById('btnSave').textContent       = '수정 저장';
+        // ── 모달 열기 (추가) ──
+        window.openAddModal = function(cat) {
+            editingId   = null;
+            addingCat   = cat;
+            uploadedImgUrl      = '';
+            uploadedStoragePath = '';
+            document.getElementById('modalTitle').textContent    = '새 제품 추가';
+            document.getElementById('modalCategory').value       = cat;
+            document.getElementById('modalName').value           = '';
+            document.getElementById('modalDesc').value           = '';
+            document.getElementById('modalTag').value            = '';
+            document.getElementById('modalPrice').value          = '';
+            document.getElementById('modalBuyUrl').value         = '';
+            document.getElementById('modalImg').value            = '';
+            document.getElementById('imgPreview').style.display  = 'none';
+            document.getElementById('imgPreview').src            = '';
+            document.getElementById('imgUploadProgress').style.display = 'none';
+            document.getElementById('imgUploadFill').style.width = '0%';
+            switchImgTab('upload');
+            document.getElementById('productModal').style.display = 'flex';
+        };
 
-            /* 기존 값 채우기 */
-            document.getElementById('prodName').value    = item.name    || '';
-            document.getElementById('prodDesc').value    = item.desc    || '';
-            document.getElementById('prodBuyUrl').value  = item.buyUrl  || '';
-            document.getElementById('prodTags').value    = (item.tags || []).join(', ');
-            document.getElementById('prodPrice').value   = item.price   || '';
-            document.getElementById('prodImageUrl').value = '';
-            setImgType(item.imgType || 'cover');
+        // ── 모달 열기 (수정) ──
+        window.openEditModal = function(id) {
+            let product = null;
+            Object.values(allProducts).forEach(arr => {
+                const found = arr.find(p => p.id === id);
+                if (found) product = found;
+            });
+            if (!product) return;
 
-            /* 현재 이미지 표시 */
-            if (item.imageUrl) {
-                const prev = document.getElementById('currentImgPreview');
-                prev.src = item.imageUrl;
-                prev.style.display = 'block';
-                document.getElementById('currentImgLabel').style.display = 'block';
+            editingId   = id;
+            addingCat   = null;
+            uploadedImgUrl      = product.imageUrl || product.img || '';
+            uploadedStoragePath = product.storagePath || '';
+
+            document.getElementById('modalTitle').textContent = '제품 수정';
+            document.getElementById('modalCategory').value    = product.category || 'wearable';
+            document.getElementById('modalName').value        = product.name   || '';
+            document.getElementById('modalDesc').value        = product.desc   || '';
+            document.getElementById('modalPrice').value       = product.price  || '';
+            document.getElementById('modalBuyUrl').value      = product.buyUrl || product.link || '';
+
+            const tagStr = Array.isArray(product.tags)
+                ? product.tags.join(', ')
+                : (product.tag || product.tags || '');
+            document.getElementById('modalTag').value = tagStr;
+
+            const preview = document.getElementById('imgPreview');
+            if (uploadedImgUrl) {
+                preview.src = uploadedImgUrl;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
             }
 
-            document.getElementById('imgPreview').style.display    = 'none';
-            document.getElementById('uploadProgress').style.display = 'none';
-            document.getElementById('urlInputArea').style.display   = 'none';
-            document.getElementById('uploadProgressFill').style.width = '0%';
-            document.getElementById('btnSave').disabled = false;
-            selectedFile = null;
+            if (product.storagePath) {
+                switchImgTab('upload');
+            } else if (uploadedImgUrl) {
+                switchImgTab('url');
+                document.getElementById('modalImg').value = uploadedImgUrl;
+            } else {
+                switchImgTab('upload');
+            }
 
+            document.getElementById('imgUploadProgress').style.display = 'none';
             document.getElementById('productModal').style.display = 'flex';
         };
 
-        window.closeAddModal = function () {
+        window.closeModal = function() {
             document.getElementById('productModal').style.display = 'none';
-            resetModal();
-        };
-        document.getElementById('productModal').addEventListener('click', function (e) {
-            if (e.target === this) closeAddModal();
-        });
-
-        function resetModal() {
-            ['prodName','prodDesc','prodImageUrl','prodBuyUrl','prodTags','prodPrice']
-                .forEach(id => { document.getElementById(id).value = ''; });
-            document.getElementById('imgPreview').style.display          = 'none';
-            document.getElementById('uploadProgress').style.display      = 'none';
-            document.getElementById('urlInputArea').style.display        = 'none';
-            document.getElementById('currentImgLabel').style.display     = 'none';
-            document.getElementById('currentImgPreview').style.display   = 'none';
-            document.getElementById('uploadProgressFill').style.width    = '0%';
-            document.getElementById('btnSave').disabled    = false;
-            document.getElementById('btnSave').textContent = 'DB 저장';
-            selectedFile = null;
-            setImgType('cover');
-        }
-
-        /* ───────────────────────────────
-           저장 — 추가 / 수정 공용
-        ─────────────────────────────── */
-        window.saveProduct = async function () {
-            const editId  = document.getElementById('editProductId').value;
-            const isEdit  = !!editId;
-
-            const name    = document.getElementById('prodName').value.trim();
-            const desc    = document.getElementById('prodDesc').value.trim();
-            const buyUrl  = document.getElementById('prodBuyUrl').value.trim();
-            const tagsRaw = document.getElementById('prodTags').value.trim();
-            const price   = document.getElementById('prodPrice').value.trim();
-            const imgType = document.getElementById('prodImgType').value;
-            const urlVal  = document.getElementById('prodImageUrl').value.trim();
-            const btnSave = document.getElementById('btnSave');
-
-            if (!name) { alert('상품 이름은 필수입니다.'); return; }
-            if (buyUrl && safeBuyUrl(buyUrl) === '#') {
-                alert('구매 링크는 http:// 또는 https:// 로 시작해야 합니다.'); return;
-            }
-
-            btnSave.disabled    = true;
-            btnSave.textContent = isEdit ? '수정 중...' : '저장 중...';
-
-            try {
-                let imageUrl    = urlVal || null;
-                let storagePath = null;
-
-                if (selectedFile) {
-                    const result = await uploadImage(selectedFile);
-                    imageUrl     = result.imageUrl;
-                    storagePath  = result.storagePath;
-                }
-
-                const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
-
-                if (isEdit) {
-                    /* ── 수정 ── */
-                    const updateData = { name, desc, buyUrl, tags, price, imgType };
-                    if (imageUrl)    updateData.imageUrl    = imageUrl;
-                    if (storagePath) updateData.storagePath = storagePath;
-
-                    await updateDoc(doc(db, "products", editId), updateData);
-
-                    /* 카드 새로고침 */
-                    const card = document.querySelector(`.firebase-item[data-id="${editId}"]`);
-                    if (card) {
-                        const oldItem = { ...updateData, category: currentTargetGrid };
-                        if (!imageUrl) {
-                            /* 이미지 변경 없으면 기존 src 유지 */
-                            oldItem.imageUrl = card.querySelector('img').src;
-                        }
-                        const newCard = document.createElement('div');
-                        newCard.style.display = 'none';
-                        card.parentNode.insertBefore(newCard, card);
-                        card.remove();
-                        renderProductCard(oldItem, editId);
-                    }
-                    showToast('✅ 제품 수정 완료');
-
-                } else {
-                    /* ── 추가 ── */
-                    if (!imageUrl) imageUrl = '../img/main.jpg';
-                    const order  = GRID_MAP[currentTargetGrid].querySelectorAll('.firebase-item').length;
-                    const docRef = await addDoc(collection(db, "products"), {
-                        name, desc, imageUrl, storagePath,
-                        buyUrl, tags, price, imgType,
-                        category: currentTargetGrid,
-                        order,
-                        createdAt: serverTimestamp()
-                    });
-                    renderProductCard({
-                        name, desc, imageUrl, storagePath,
-                        buyUrl, tags, price, imgType,
-                        category: currentTargetGrid, order
-                    }, docRef.id);
-                    showToast('✅ 제품이 추가되었습니다!');
-                }
-
-                closeAddModal();
-            } catch (err) {
-                alert('저장 실패: ' + err.message);
-                btnSave.disabled    = false;
-                btnSave.textContent = isEdit ? '수정 저장' : 'DB 저장';
-            }
         };
 
-        function uploadImage(file) {
-            return new Promise((resolve, reject) => {
-                const storagePath  = `products/${Date.now()}_${file.name}`;
-                const uploadTask   = uploadBytesResumable(ref(storage, storagePath), file);
-                const progressWrap = document.getElementById('uploadProgress');
-                const progressFill = document.getElementById('uploadProgressFill');
-                const progressText = document.getElementById('uploadProgressText');
-                progressWrap.style.display = 'block';
-                uploadTask.on('state_changed',
-                    (snap) => {
-                        const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-                        progressFill.style.width = pct + '%';
-                        progressText.textContent = `업로드 중... ${pct}%`;
-                    },
-                    (err) => { progressWrap.style.display = 'none'; reject(err); },
-                    async () => {
-                        const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                        progressFill.style.width = '100%';
-                        progressText.textContent = '✅ 업로드 완료!';
-                        setTimeout(() => { progressWrap.style.display = 'none'; }, 1200);
-                        resolve({ imageUrl, storagePath });
-                    }
-                );
-            });
-        }
+        // ── 이미지 탭 전환 ──
+        window.switchImgTab = function(mode) {
+            imgTabMode = mode;
+            document.getElementById('tabUpload').classList.toggle('active', mode === 'upload');
+            document.getElementById('tabUrl').classList.toggle('active',    mode === 'url');
+            document.getElementById('imgUploadSection').style.display = mode === 'upload' ? 'block' : 'none';
+            document.getElementById('imgUrlSection').style.display    = mode === 'url'    ? 'block' : 'none';
+        };
 
-        window.handleFileSelect = (e) => { const f = e.target.files[0]; if (f) applySelectedFile(f); };
-        window.handleDragOver   = (e) => { e.preventDefault(); document.getElementById('imgUploadArea').classList.add('dragover'); };
-        window.handleDragLeave  = ()  => { document.getElementById('imgUploadArea').classList.remove('dragover'); };
-        window.handleDrop       = (e) => {
+        window.onImgDragOver  = (e) => { e.preventDefault(); document.getElementById('imgUploadArea').classList.add('dragover'); };
+        window.onImgDragLeave = ()  => { document.getElementById('imgUploadArea').classList.remove('dragover'); };
+        window.onImgDrop      = (e) => {
             e.preventDefault();
             document.getElementById('imgUploadArea').classList.remove('dragover');
             const f = e.dataTransfer.files[0];
-            if (f && f.type.startsWith('image/')) applySelectedFile(f);
+            if (f && f.type.startsWith('image/')) uploadImage(f);
         };
-        function applySelectedFile(file) {
-            if (file.size > 5 * 1024 * 1024) { alert('5MB 이하만 가능합니다.'); return; }
-            selectedFile = file;
-            const preview = document.getElementById('imgPreview');
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-            document.getElementById('prodImageUrl').value = '';
+        window.onImgFileSelect = (e) => { const f = e.target.files[0]; if (f) uploadImage(f); };
+
+        function uploadImage(file) {
+            if (file.size > 5 * 1024 * 1024) { alert('5MB 이하 이미지만 가능합니다.'); return; }
+            const path = `products/${Date.now()}_${file.name}`;
+            const task = uploadBytesResumable(ref(storage, path), file);
+            const bar  = document.getElementById('imgUploadFill');
+            const text = document.getElementById('imgUploadText');
+            const prog = document.getElementById('imgUploadProgress');
+            const prev = document.getElementById('imgPreview');
+            prog.style.display = 'block';
+
+            task.on('state_changed',
+                snap => {
+                    const pct = Math.round(snap.bytesTransferred / snap.totalBytes * 100);
+                    bar.style.width  = pct + '%';
+                    text.textContent = `업로드 중... ${pct}%`;
+                },
+                err => { alert('이미지 업로드 실패: ' + err.message); prog.style.display = 'none'; },
+                async () => {
+                    uploadedImgUrl      = await getDownloadURL(task.snapshot.ref);
+                    uploadedStoragePath = path;
+                    bar.style.width  = '100%';
+                    text.textContent = '✅ 업로드 완료!';
+                    prev.src = uploadedImgUrl;
+                    prev.style.display = 'block';
+                }
+            );
         }
 
-        window.toggleUrlInput = function () {
-            const area = document.getElementById('urlInputArea');
-            area.style.display = area.style.display === 'none' ? 'block' : 'none';
+        // ── 저장 ──
+        window.saveProduct = async function() {
+            const name     = document.getElementById('modalName').value.trim();
+            const desc     = document.getElementById('modalDesc').value.trim();
+            const tagRaw   = document.getElementById('modalTag').value.trim();
+            const price    = document.getElementById('modalPrice').value.trim();
+            const buyUrl   = document.getElementById('modalBuyUrl').value.trim();
+            const category = document.getElementById('modalCategory').value;
+            const btn      = document.getElementById('modalSaveBtn');
+
+            const tags = tagRaw ? tagRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+            let finalImg  = uploadedImgUrl;
+            let finalPath = uploadedStoragePath;
+            if (imgTabMode === 'url') {
+                finalImg  = document.getElementById('modalImg').value.trim();
+                finalPath = '';
+            }
+            if (!name) { alert('상품 이름을 입력해주세요.'); return; }
+
+            btn.disabled    = true;
+            btn.textContent = '저장 중...';
+
+            try {
+                if (editingId) {
+                    let oldPath = '';
+                    Object.values(allProducts).forEach(arr => {
+                        const f = arr.find(p => p.id === editingId);
+                        if (f) oldPath = f.storagePath || '';
+                    });
+                    if (oldPath && finalPath && oldPath !== finalPath) {
+                        try { await deleteObject(ref(storage, oldPath)); } catch(_) {}
+                    }
+                    await updateDoc(doc(db, 'products', editingId), {
+                        name, desc, tags, price, buyUrl, category,
+                        imageUrl: finalImg, storagePath: finalPath
+                    });
+                } else {
+                    const catItems = allProducts[category] || [];
+                    await addDoc(collection(db, 'products'), {
+                        name, desc, tags, price, buyUrl, category,
+                        imageUrl: finalImg, storagePath: finalPath,
+                        order: catItems.length,
+                        createdAt: serverTimestamp()
+                    });
+                }
+
+                closeModal();
+                await loadAndRender();
+                showToast();
+            } catch(e) {
+                alert('저장 실패: ' + e.message);
+            } finally {
+                btn.disabled    = false;
+                btn.textContent = 'DB 저장';
+            }
         };
 
-        loadProducts();
+        // ── 삭제 ──
+        window.deleteProduct = async function(id, storagePath) {
+            if (!confirm('이 제품을 삭제하시겠습니까?')) return;
+            try {
+                if (storagePath) {
+                    try { await deleteObject(ref(storage, storagePath)); } catch(_) {}
+                }
+                await deleteDoc(doc(db, 'products', id));
+                await loadAndRender();
+                showToast('🗑 삭제되었습니다.');
+            } catch(e) { alert('삭제 실패: ' + e.message); }
+        };
+
+        function showToast(msg = '✅ 저장되었습니다.') {
+            const t = document.getElementById('saveToast');
+            t.textContent   = msg;
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2500);
+        }
+
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        onAuthStateChanged(auth, user => {
+            const btn = document.getElementById('adminEditBtn');
+            if (btn) btn.style.display = user ? 'inline-block' : 'none';
+        });
+
+        loadAndRender();
     </script>
 </body>
 </html>
