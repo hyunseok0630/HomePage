@@ -5,109 +5,244 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>문의하기 | SKY Commerce</title>
     <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+
     <style>
-        .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; max-width: 1100px; margin: 0 auto; }
-        .contact-info-card { background: var(--surface-color); padding: 50px 40px; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04); }
-        .contact-info-card h3 { font-size: 28px; font-weight: 700; margin-bottom: 30px; letter-spacing: -0.03em; }
-        .info-row { display: flex; align-items: flex-start; margin-bottom: 25px; }
-        .info-row i { color: var(--accent-blue); font-size: 24px; width: 40px; margin-top: 2px; }
-        .info-row div h4 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: var(--text-main); }
-        .info-row div p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
-        .contact-form { background: var(--surface-color); padding: 50px 40px; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04); }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--text-main); }
-        .form-control { width: 100%; padding: 14px 16px; border: 1px solid #d2d2d7; border-radius: 10px; font-size: 15px; font-family: inherit; transition: border-color 0.3s; }
-        .form-control:focus { outline: none; border-color: var(--accent-blue); }
-        textarea.form-control { resize: vertical; min-height: 120px; }
-        .submit-btn { width: 100%; padding: 16px; background: #1d1d1f; color: #fff; border: none; border-radius: 30px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; margin-top: 10px; }
-        .submit-btn:hover { background: #000; }
-        @media (max-width: 768px) { .contact-wrap { grid-template-columns: 1fr; } }
+        /* ── 문의 폼 스타일 ── */
+        .contact-section { padding: 100px 0; background: var(--bg-color); }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 60px;
+            align-items: start;
+        }
+        .info-card { background: var(--surface-color); border-radius: 20px; padding: 50px 40px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
+        .info-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #eee; letter-spacing: -0.03em; }
+        .info-row { display: flex; margin-bottom: 24px; align-items: flex-start; gap: 16px; }
+        .info-row i { width: 20px; color: var(--accent-blue); font-size: 18px; margin-top: 2px; flex-shrink: 0; }
+        .info-row span { color: var(--text-main); font-size: 15px; line-height: 1.6; }
+
+        .contact-form-card { background: var(--surface-color); border-radius: 20px; padding: 50px 40px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
+        .contact-form-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 30px; letter-spacing: -0.03em; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%; padding: 13px 16px;
+            border: 1.5px solid #e5e5ea; border-radius: 10px;
+            font-size: 15px; font-family: inherit;
+            color: var(--text-main); background: #fafafa;
+            box-sizing: border-box; outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus { border-color: var(--accent-blue); background: #fff; }
+        .form-group textarea { height: 140px; resize: vertical; }
+
+        .btn-submit {
+            width: 100%; background: #1d1d1f; color: #fff;
+            border: none; border-radius: 10px;
+            padding: 15px; font-size: 15px; font-weight: 600;
+            font-family: inherit; cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 8px;
+        }
+        .btn-submit:hover { background: #000; transform: translateY(-1px); }
+        .btn-submit:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+
+        .success-msg {
+            display: none;
+            background: #ecfdf5; border: 1px solid #6ee7b7;
+            border-radius: 10px; color: #065f46;
+            font-size: 14px; padding: 14px 18px;
+            margin-top: 16px; text-align: center;
+        }
+        .success-msg.show { display: block; }
+
+        .spinner {
+            display: inline-block; width: 15px; height: 15px;
+            border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+            border-radius: 50%; animation: spin 0.7s linear infinite;
+            vertical-align: middle; margin-right: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .contact-grid { grid-template-columns: 1fr; gap: 30px; }
+            .form-row { grid-template-columns: 1fr; }
+            .contact-form-card, .info-card { padding: 30px 24px; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- ───── HEADER ───── -->
     <header id="main-header">
-    <div class="header-inner">
-        <div class="header-left logo">
-            <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+        <div class="header-inner">
+            <div class="header-left logo">
+                <a href="index.html"><img src="img/main.jpg" alt="SKY Commerce"></a>
+            </div>
+            <nav class="header-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="about.html">회사 소개</a></li>
+                    <li><a href="product.html">제품</a></li>
+                    <li><a href="contact.html" class="active">문의하기</a></li>
+                </ul>
+            </nav>
+            <div class="header-right utility-icons">
+                <a href="#"><i class="fas fa-globe"></i></a>
+                <a href="#"><i class="fas fa-search"></i></a>
+                <!-- ★ 문의 확인 버튼 (관리자 로그인 시 표시) -->
+                <a href="#" id="inboxBtn" title="문의 확인" style="display:none;" onclick="openInbox(event)">
+                    <i class="fas fa-envelope"></i>
+                    <span id="inboxBadge" style="
+                        display:none; position:absolute;
+                        top:-4px; right:-4px;
+                        background:crimson; color:#fff;
+                        font-size:10px; font-weight:700;
+                        width:16px; height:16px;
+                        border-radius:50%; line-height:16px;
+                        text-align:center;">0</span>
+                </a>
+                <a href="#" id="adminEditBtn" title="제품 편집 모드" style="display:none;">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <button class="hamburger" id="hamburger" aria-label="메뉴">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
-        <nav class="header-center">
-            <ul class="nav-menu">
-                <li><a href="index.html">홈</a></li>
-                <li><a href="about.html">회사 소개</a></li>
-                <li><a href="product.html">제품</a></li>
-                <li><a href="contact.html">문의하기</a></li>
-            </ul>
-        </nav>
-        <div class="header-right utility-icons">
-            <a href="#"><i class="fas fa-globe"></i></a>
-            <a href="#"><i class="fas fa-search"></i></a>
-            <a href="#" id="adminEditBtn" style="display:none;"><i class="fas fa-edit"></i></a>
-            <a href="login.html" id="userProfileBtn"><i class="fas fa-user"></i></a>
-            <a href="#"><i class="fas fa-shopping-cart"></i></a>
-            <!-- ★ 햄버거 버튼 -->
-            <button class="hamburger" id="hamburger" aria-label="메뉴">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </div>
-</header>
+    </header>
 
-<!-- ★ 모바일 드롭다운 메뉴 (header 바로 아래) -->
-<nav class="mobile-menu" id="mobileMenu">
-    <ul>
-        <li><a href="index.html">홈</a></li>
-        <li><a href="about.html">회사 소개</a></li>
-        <li><a href="product.html">제품</a></li>
-        <li><a href="contact.html">문의하기</a></li>
-    </ul>
-</nav>
+    <!-- 모바일 메뉴 -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">홈</a></li>
+            <li><a href="about.html">회사 소개</a></li>
+            <li><a href="product.html">제품</a></li>
+            <li><a href="contact.html" class="active">문의하기</a></li>
+        </ul>
+    </nav>
 
-
-    <section class="sub-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('img/watch.png') center/cover no-repeat;">
+    <!-- ───── HERO ───── -->
+    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('img/Air4girl.png') center/cover no-repeat;">
         <div class="container">
-            <h1 style="position: relative; z-index: 2;">문의하기</h1>
-            <p style="position: relative; z-index: 2;">궁금하신 점이나 제휴 문의를 남겨주시면 빠르게 답변해 드리겠습니다.</p>
+            <h1 style="position:relative; z-index:2;">문의하기</h1>
+            <p style="position:relative; z-index:2;">궁금하신 점이나 제휴 문의를 남겨주시면 빠르게 답변해 드리겠습니다.</p>
         </div>
     </section>
 
-    <section class="sub-content" style="background-color: var(--bg-color);">
+    <!-- ───── CONTACT ───── -->
+    <section class="contact-section">
         <div class="container">
-            <div class="contact-wrap">
-                <div class="contact-info-card">
-                    <h3>오시는 길 & 연락처</h3>
+            <div class="contact-grid">
+
+                <!-- 연락처 정보 -->
+                <div class="info-card">
+                    <h3>연락처 정보</h3>
                     <div class="info-row">
                         <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h4>본사 주소</h4>
-                            <p>경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</p>
-                        </div>
+                        <span>경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</span>
                     </div>
-                    <div class="info-row"><i class="fas fa-phone"></i><div><h4>고객 센터</h4><p>031-205-4133</p></div></div>
-                    <div class="info-row"><i class="fas fa-envelope"></i><div><h4>이메일 문의</h4><p>car2314@naver.com</p></div></div>
-                    <div class="info-row"><i class="fas fa-clock"></i><div><h4>운영 시간</h4><p>평일 09:00 - 17:00<br>(주말 및 공휴일 휴무)</p></div></div>
+                    <div class="info-row">
+                        <i class="fas fa-phone"></i>
+                        <span>031-205-4133</span>
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-envelope"></i>
+                        <span>car2314@naver.com</span>
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-clock"></i>
+                        <span>평일 09:00 - 17:00<br><small style="color:#aaa;">(주말 및 공휴일 휴무)</small></span>
+                    </div>
                 </div>
 
-                <div class="contact-form">
-                    <form id="inquiryForm">
-                        <div class="form-group"><label>성함 / 기업명</label><input type="text" id="name" class="form-control" placeholder="이름이나 회사명을 입력해주세요" required></div>
-                        <div class="form-group"><label>이메일 주소</label><input type="email" id="email" class="form-control" placeholder="답변 받으실 이메일을 입력해주세요" required></div>
-                        <div class="form-group"><label>연락처</label><input type="tel" id="phone" class="form-control" placeholder="연락 가능한 전화번호를 입력해주세요"></div>
-                        <div class="form-group"><label>문의 내용</label><textarea id="message" class="form-control" placeholder="견적 문의, 제품 문의 등 상세한 내용을 적어주세요" required></textarea></div>
-                        <button type="submit" class="submit-btn">문의 접수하기</button>
-                    </form>
+                <!-- 문의 폼 -->
+                <div class="contact-form-card">
+                    <h3>문의 남기기</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>이름 *</label>
+                            <input type="text" id="cName" placeholder="홍길동">
+                        </div>
+                        <div class="form-group">
+                            <label>연락처 *</label>
+                            <input type="tel" id="cPhone" placeholder="010-0000-0000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="email" id="cEmail" placeholder="example@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>문의 유형</label>
+                        <select id="cType">
+                            <option value="제품 문의">제품 문의</option>
+                            <option value="제휴 문의">제휴 문의</option>
+                            <option value="A/S 문의">A/S 문의</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>문의 내용 *</label>
+                        <textarea id="cMessage" placeholder="문의 내용을 입력해주세요."></textarea>
+                    </div>
+                    <button class="btn-submit" id="submitBtn" onclick="submitInquiry()">문의 보내기</button>
+                    <div class="success-msg" id="successMsg">
+                        ✅ 문의가 성공적으로 접수되었습니다. 빠른 시일 내에 답변해 드리겠습니다.
+                    </div>
                 </div>
+
             </div>
         </div>
     </section>
 
+    <!-- ───── 문의 확인 모달 (관리자 전용) ───── -->
+    <div id="inboxModal" style="
+        display:none; position:fixed; top:0; left:0;
+        width:100%; height:100%; background:rgba(0,0,0,0.6);
+        z-index:9999; align-items:center; justify-content:center;">
+        <div style="
+            background:#fff; border-radius:16px;
+            width:90%; max-width:720px; max-height:85vh;
+            display:flex; flex-direction:column; overflow:hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);">
+
+            <!-- 모달 헤더 -->
+            <div style="padding:24px 28px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+                <div>
+                    <h3 style="font-size:18px; font-weight:700; margin:0;">📋 문의 목록</h3>
+                    <p style="font-size:12px; color:#aaa; margin:4px 0 0;">최신순으로 표시됩니다</p>
+                </div>
+                <button onclick="closeInbox()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#888; line-height:1;">✕</button>
+            </div>
+
+            <!-- 필터 탭 -->
+            <div style="padding:14px 28px; border-bottom:1px solid #f0f0f0; display:flex; gap:8px; flex-shrink:0;">
+                <button class="inbox-tab active" data-filter="all"     onclick="filterInbox('all',this)">전체</button>
+                <button class="inbox-tab"         data-filter="unread" onclick="filterInbox('unread',this)">미확인 <span id="unreadCount"></span></button>
+                <button class="inbox-tab"         data-filter="read"   onclick="filterInbox('read',this)">확인됨</button>
+            </div>
+
+            <!-- 문의 리스트 -->
+            <div id="inboxList" style="overflow-y:auto; flex:1; padding:16px 28px;"></div>
+        </div>
+    </div>
+
+    <!-- ───── FOOTER ───── -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -138,38 +273,252 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SKY Commerce. All Rights Reserved.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- 인박스 탭 스타일 -->
+    <style>
+        #inboxBtn { position: relative; }
+        .inbox-tab {
+            background: #f5f5f7; border: none; border-radius: 20px;
+            padding: 6px 14px; font-size: 13px; font-weight: 500;
+            cursor: pointer; color: #555; font-family: inherit;
+            transition: background 0.2s, color 0.2s;
+        }
+        .inbox-tab.active { background: #1d1d1f; color: #fff; }
+        .inbox-item {
+            border: 1px solid #eee; border-radius: 12px;
+            padding: 18px 20px; margin-bottom: 10px;
+            transition: box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .inbox-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .inbox-item.unread { border-left: 4px solid #0071e3; background: #f0f7ff; }
+        .inbox-item.read   { border-left: 4px solid #ddd; }
+        .inbox-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .inbox-name  { font-size: 15px; font-weight: 700; color: #1d1d1f; }
+        .inbox-date  { font-size: 12px; color: #aaa; }
+        .inbox-type  { display: inline-block; background: #f5f5f7; color: #555; font-size: 11px; padding: 2px 10px; border-radius: 10px; margin-bottom: 6px; }
+        .inbox-msg   { font-size: 14px; color: #444; line-height: 1.6; margin-bottom: 10px; white-space: pre-wrap; }
+        .inbox-contact { font-size: 12px; color: #888; }
+        .inbox-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .btn-read-toggle {
+            background: #e8f4ff; color: #0071e3; border: none;
+            border-radius: 6px; padding: 5px 12px; font-size: 12px;
+            cursor: pointer; font-family: inherit; font-weight: 500;
+        }
+        .btn-delete-inquiry {
+            background: #fff0f0; color: crimson; border: none;
+            border-radius: 6px; padding: 5px 12px; font-size: 12px;
+            cursor: pointer; font-family: inherit; font-weight: 500;
+        }
+        .empty-inbox { text-align: center; padding: 60px 0; color: #bbb; font-size: 15px; }
+    </style>
+
     <script src="js/main.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const adminMenuBtn = document.getElementById('adminMenuBtn');
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const userRole = localStorage.getItem('userRole');
-            if (adminMenuBtn && isLoggedIn === 'true' && userRole === 'admin') {
-                adminMenuBtn.style.display = 'inline-block';
+    <script type="module">
+        import { initializeApp }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs,
+                 deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
+            authDomain: "skycommerce-7fec4.firebaseapp.com",
+            projectId: "skycommerce-7fec4",
+            storageBucket: "skycommerce-7fec4.firebasestorage.app",
+            messagingSenderId: "232403511014",
+            appId: "1:232403511014:web:318ebb689d678e998b7d27"
+        };
+
+        const app  = initializeApp(firebaseConfig);
+        const db   = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentFilter = 'all';
+        let allInquiries  = [];
+
+        // ── 로그인 상태 감지 ──
+        onAuthStateChanged(auth, (user) => {
+            const inboxBtn   = document.getElementById('inboxBtn');
+            const profileBtn = document.getElementById('userProfileBtn');
+
+            if (user) {
+                inboxBtn.style.display = 'inline-block';
+                profileBtn.style.color = '#0071e3';
+                profileBtn.title = '로그아웃';
+                profileBtn.href  = '#';
+                profileBtn.onclick = async (e) => {
+                    e.preventDefault();
+                    if (!confirm('로그아웃 하시겠습니까?')) return;
+                    localStorage.removeItem('loginTime');
+                    localStorage.removeItem('isLoggedIn');
+                    await signOut(auth);
+                    window.location.reload();
+                };
+                loadInquiries(); // 배지 업데이트용
+            } else {
+                inboxBtn.style.display = 'none';
+            }
+        });
+
+        // ── 문의 제출 ──
+        window.submitInquiry = async function () {
+            const name    = document.getElementById('cName').value.trim();
+            const phone   = document.getElementById('cPhone').value.trim();
+            const email   = document.getElementById('cEmail').value.trim();
+            const type    = document.getElementById('cType').value;
+            const message = document.getElementById('cMessage').value.trim();
+            const btn     = document.getElementById('submitBtn');
+            const success = document.getElementById('successMsg');
+
+            if (!name || !phone || !message) {
+                alert('이름, 연락처, 문의 내용은 필수입니다.');
+                return;
             }
 
-            document.getElementById('inquiryForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const message = document.getElementById('message').value;
-                
-                const now = new Date();
-                const dateString = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>전송 중...';
 
-                const newInquiry = { name, email, phone, message, date: dateString };
-                let inquiries = JSON.parse(localStorage.getItem('inquiries')) || [];
-                inquiries.unshift(newInquiry);
-                localStorage.setItem('inquiries', JSON.stringify(inquiries));
-                alert('문의가 성공적으로 접수되었습니다. 담당자가 확인 후 연락드리겠습니다.');
-                this.reset();
+            try {
+                await addDoc(collection(db, "inquiries"), {
+                    name, phone, email, type, message,
+                    read: false,
+                    createdAt: serverTimestamp()
+                });
+
+                success.classList.add('show');
+                ['cName','cPhone','cEmail','cMessage'].forEach(id => {
+                    document.getElementById(id).value = '';
+                });
+                document.getElementById('cType').selectedIndex = 0;
+                btn.innerHTML = '✅ 전송 완료';
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '문의 보내기';
+                    success.classList.remove('show');
+                }, 4000);
+            } catch (e) {
+                alert('전송 실패: ' + e.message);
+                btn.disabled = false;
+                btn.innerHTML = '문의 보내기';
+            }
+        };
+
+        // ── 문의 불러오기 ──
+        async function loadInquiries() {
+            try {
+                const q        = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+                allInquiries   = [];
+                snapshot.forEach(d => allInquiries.push({ id: d.id, ...d.data() }));
+
+                // 미확인 배지 업데이트
+                const unread = allInquiries.filter(i => !i.read).length;
+                const badge  = document.getElementById('inboxBadge');
+                if (unread > 0) {
+                    badge.textContent   = unread;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+                document.getElementById('unreadCount').textContent = unread > 0 ? `(${unread})` : '';
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // ── 목록 렌더링 ──
+        function renderInquiries() {
+            const list = document.getElementById('inboxList');
+            const filtered = allInquiries.filter(i => {
+                if (currentFilter === 'unread') return !i.read;
+                if (currentFilter === 'read')   return i.read;
+                return true;
             });
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-inbox">📭 문의가 없습니다.</div>';
+                return;
+            }
+
+            list.innerHTML = filtered.map(item => {
+                const date = item.createdAt?.toDate
+                    ? item.createdAt.toDate().toLocaleString('ko-KR')
+                    : '날짜 없음';
+                return `
+                <div class="inbox-item ${item.read ? 'read' : 'unread'}" id="item-${item.id}">
+                    <div class="inbox-item-header">
+                        <span class="inbox-name">${item.read ? '' : '🔵 '}${item.name}</span>
+                        <span class="inbox-date">${date}</span>
+                    </div>
+                    <span class="inbox-type">${item.type}</span>
+                    <div class="inbox-msg">${item.message}</div>
+                    <div class="inbox-contact">
+                        📞 ${item.phone}${item.email ? `　✉️ ${item.email}` : ''}
+                    </div>
+                    <div class="inbox-actions">
+                        <button class="btn-read-toggle" onclick="toggleRead('${item.id}', ${item.read})">
+                            ${item.read ? '미확인으로 변경' : '✔ 확인됨으로 표시'}
+                        </button>
+                        <button class="btn-delete-inquiry" onclick="deleteInquiry('${item.id}')">
+                            🗑 삭제
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // ── 확인/미확인 토글 ──
+        window.toggleRead = async function (id, currentRead) {
+            try {
+                await updateDoc(doc(db, "inquiries", id), { read: !currentRead });
+                const item = allInquiries.find(i => i.id === id);
+                if (item) item.read = !currentRead;
+                await loadInquiries();
+                renderInquiries();
+            } catch (e) { alert('업데이트 실패: ' + e.message); }
+        };
+
+        // ── 삭제 ──
+        window.deleteInquiry = async function (id) {
+            if (!confirm('이 문의를 삭제하시겠습니까?')) return;
+            try {
+                await deleteDoc(doc(db, "inquiries", id));
+                allInquiries = allInquiries.filter(i => i.id !== id);
+                await loadInquiries();
+                renderInquiries();
+            } catch (e) { alert('삭제 실패: ' + e.message); }
+        };
+
+        // ── 필터 ──
+        window.filterInbox = function (filter, btn) {
+            currentFilter = filter;
+            document.querySelectorAll('.inbox-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            renderInquiries();
+        };
+
+        // ── 모달 열기/닫기 ──
+        window.openInbox = async function (e) {
+            e.preventDefault();
+            await loadInquiries();
+            renderInquiries();
+            document.getElementById('inboxModal').style.display = 'flex';
+        };
+        window.closeInbox = function () {
+            document.getElementById('inboxModal').style.display = 'none';
+        };
+        document.getElementById('inboxModal').addEventListener('click', function (e) {
+            if (e.target === this) closeInbox();
         });
     </script>
+
 </body>
 </html>
