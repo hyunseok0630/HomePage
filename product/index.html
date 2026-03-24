@@ -113,7 +113,6 @@
         .edit-btn   { background: #007bff; color: #fff; }
         .delete-btn:hover, .edit-btn:hover { opacity: 0.8; }
 
-        /* ✅ 제품 추가 버튼 — 제목 옆 배치 */
         .admin-add-btn {
             display: none;
             align-items: center;
@@ -202,7 +201,6 @@
 
     <div id="saveToast">✅ 저장되었습니다.</div>
 
-    <!-- 추가/수정 모달 -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <h3 id="modalTitle">새 제품 추가</h3>
@@ -211,7 +209,7 @@
                 <label>카테고리</label>
                 <select id="modalCategory">
                     <option value="wearable">스마트 웨어러블 및 액세서리</option>
-                    <option value="industrial">산업용 환경 용품 및 세정제</option>
+                    <option value="industrial">산업용 환경 안전 용품 및 세정제</option>
                     <option value="grating">Grating SUS 보강판 시리즈</option>
                     <option value="parts">산업용 특수 소재 및 정밀 부품</option>
                 </select>
@@ -318,16 +316,10 @@
     <script type="module" src="../js/auth.js"></script>
 
     <script type="module">
-        import { initializeApp, getApps, getApp }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, doc, getDocs, addDoc,
-                 updateDoc, deleteDoc, writeBatch, serverTimestamp }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytesResumable,
-                 getDownloadURL, deleteObject }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-        import { getAuth, onAuthStateChanged }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
@@ -342,6 +334,9 @@
         const db      = getFirestore(app);
         const auth    = getAuth(app);
         const storage = getStorage(app);
+
+        // ✅ 전역 변수로 관리자 권한 여부 저장
+        window.isAdmin = false; 
 
         const CATEGORIES = [
             { cat: 'wearable',   label: '스마트 웨어러블 및 액세서리' },
@@ -359,12 +354,37 @@
         let imgTabMode  = 'upload';
 
         function esc(s = '') {
-            return String(s)
-                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-                .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
         }
 
-        // ── 전체 로드 ──
+        // ── 관리자 권한 확인 (DB 연동) ──
+        onAuthStateChanged(auth, async (user) => {
+            const btn = document.getElementById('adminEditBtn');
+            window.isAdmin = false;
+
+            if (user) {
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists() && userDoc.data().isAdmin === true) {
+                        window.isAdmin = true;
+                    }
+                } catch (error) {
+                    console.error("권한 로드 오류:", error);
+                }
+            }
+
+            if (window.isAdmin) {
+                if (btn) btn.style.display = 'inline-block';
+            } else {
+                if (btn) btn.style.display = 'none';
+                if (isEditMode) {
+                    isEditMode = false;
+                    document.body.classList.remove('edit-mode');
+                }
+            }
+        });
+
+        // ── 전체 제품 로드 ──
         async function loadAndRender() {
             const root = document.getElementById('productRoot');
             root.innerHTML = '<p style="text-align:center;color:#aaa;padding:60px 0;">불러오는 중...</p>';
@@ -412,9 +432,7 @@
                         <i class="fas fa-exclamation-triangle" style="font-size:40px;margin-bottom:16px;display:block;"></i>
                         <p style="font-size:16px;font-weight:600;">제품을 불러오지 못했습니다.</p>
                         <p style="font-size:13px;color:#aaa;margin-top:8px;">${esc(e.message)}</p>
-                        <button onclick="loadAndRender()" style="
-                            margin-top:20px;padding:10px 24px;background:#1d1d1f;
-                            color:#fff;border:none;border-radius:20px;cursor:pointer;font-size:14px;">
+                        <button onclick="loadAndRender()" style="margin-top:20px;padding:10px 24px;background:#1d1d1f;color:#fff;border:none;border-radius:20px;cursor:pointer;font-size:14px;">
                             다시 시도
                         </button>
                     </div>`;
@@ -425,37 +443,19 @@
         function cardHTML(p) {
             const imgUrl = p.imageUrl || p.img || '';
             const buyUrl = p.buyUrl  || p.link || '';
-            const tagStr = Array.isArray(p.tags)
-                ? p.tags.join(', ')
-                : (p.tag || p.tags || '');
-
-            const buyBtn = buyUrl
-                ? `<a href="${esc(buyUrl)}" target="_blank" rel="noopener noreferrer"
-                      style="display:block;margin-top:14px;padding:12px;
-                             background:#1d1d1f;color:#fff;border-radius:12px;
-                             font-size:14px;font-weight:600;text-decoration:none;
-                             text-align:center;">구매하기</a>`
-                : '';
+            const tagStr = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tag || p.tags || '');
+            const buyBtn = buyUrl ? `<a href="${esc(buyUrl)}" target="_blank" rel="noopener noreferrer" style="display:block;margin-top:14px;padding:12px;background:#1d1d1f;color:#fff;border-radius:12px;font-size:14px;font-weight:600;text-decoration:none;text-align:center;">구매하기</a>` : '';
 
             return `
             <div class="product-card" data-id="${esc(p.id)}">
                 <div style="width:100%;height:220px;overflow:hidden;background:#f5f5f7;flex-shrink:0;">
-                    ${imgUrl
-                        ? `<img src="${esc(imgUrl)}" alt="${esc(p.name)}"
-                                style="width:100%;height:100%;object-fit:cover;display:block;">`
-                        : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
-                               <i class="fas fa-image" style="font-size:40px;color:#ddd;"></i>
-                           </div>`}
+                    ${imgUrl ? `<img src="${esc(imgUrl)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover;display:block;">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><i class="fas fa-image" style="font-size:40px;color:#ddd;"></i></div>`}
                 </div>
                 <div style="padding:20px;flex:1;display:flex;flex-direction:column;">
                     <div style="font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-0.02em;">${esc(p.name || '')}</div>
                     <div class="product-desc" style="font-size:13px;color:#666;line-height:1.6;margin-bottom:10px;flex:1;">${esc(p.desc || '')}</div>
                     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
-                        ${tagStr
-                            ? tagStr.split(',').map(t =>
-                                `<span style="font-size:11px;background:#f0f0f5;padding:3px 10px;border-radius:20px;color:#555;">${esc(t.trim())}</span>`
-                              ).join('')
-                            : ''}
+                        ${tagStr ? tagStr.split(',').map(t => `<span style="font-size:11px;background:#f0f0f5;padding:3px 10px;border-radius:20px;color:#555;">${esc(t.trim())}</span>`).join('') : ''}
                     </div>
                     ${p.price ? `<div style="font-size:16px;font-weight:700;color:#1d1d1f;margin-top:4px;">${esc(p.price)}</div>` : ''}
                     ${buyBtn}
@@ -467,71 +467,58 @@
             </div>`;
         }
 
-        // ── Sortable ──
+        // ── Sortable (드래그 앤 드롭) ──
         function initSortable() {
             document.querySelectorAll('.sortable-grid').forEach(grid => {
                 Sortable.create(grid, {
-                    animation: 150,
-                    ghostClass: 'sortable-ghost',
-                    filter: '.admin-add-btn',
+                    animation: 150, ghostClass: 'sortable-ghost', filter: '.admin-add-btn',
                     onEnd: () => saveOrder(grid)
                 });
             });
         }
 
         async function saveOrder(grid) {
+            if (!window.isAdmin) return; // ✅ 2차 보안
             const cards = [...grid.querySelectorAll('.product-card')];
             const batch = writeBatch(db);
-            cards.forEach((card, i) => {
-                batch.update(doc(db, 'products', card.dataset.id), { order: i });
-            });
+            cards.forEach((card, i) => { batch.update(doc(db, 'products', card.dataset.id), { order: i }); });
             await batch.commit();
             showToast();
         }
 
-        // ── 편집 모드 ──
+        // ── 편집 모드 관리자 방어 ──
         window.toggleEditMode = function(e) {
             e.preventDefault();
+            if (!window.isAdmin) { alert('관리자만 편집 모드를 사용할 수 있습니다.'); return; } // ✅ 2차 보안
+
             isEditMode = !isEditMode;
             document.body.classList.toggle('edit-mode', isEditMode);
             document.getElementById('adminEditBtn').classList.toggle('active', isEditMode);
             if (isEditMode) initSortable();
         };
 
-        // ── 모달 열기 (추가) ──
         window.openAddModal = function(cat) {
-            editingId   = null;
-            addingCat   = cat;
-            uploadedImgUrl      = '';
-            uploadedStoragePath = '';
-            document.getElementById('modalTitle').textContent    = '새 제품 추가';
-            document.getElementById('modalCategory').value       = cat;
-            document.getElementById('modalName').value           = '';
-            document.getElementById('modalDesc').value           = '';
-            document.getElementById('modalTag').value            = '';
-            document.getElementById('modalPrice').value          = '';
-            document.getElementById('modalBuyUrl').value         = '';
-            document.getElementById('modalImg').value            = '';
-            document.getElementById('imgPreview').style.display  = 'none';
-            document.getElementById('imgPreview').src            = '';
+            if (!window.isAdmin) { alert('관리자 권한이 필요합니다.'); return; } // ✅ 2차 보안
+            editingId = null; addingCat = cat; uploadedImgUrl = ''; uploadedStoragePath = '';
+            document.getElementById('modalTitle').textContent = '새 제품 추가';
+            document.getElementById('modalCategory').value = cat;
+            document.getElementById('modalName').value = ''; document.getElementById('modalDesc').value = '';
+            document.getElementById('modalTag').value = ''; document.getElementById('modalPrice').value = '';
+            document.getElementById('modalBuyUrl').value = ''; document.getElementById('modalImg').value = '';
+            document.getElementById('imgPreview').style.display = 'none';
             document.getElementById('imgUploadProgress').style.display = 'none';
-            document.getElementById('imgUploadFill').style.width = '0%';
             switchImgTab('upload');
             document.getElementById('productModal').style.display = 'flex';
         };
 
-        // ── 모달 열기 (수정) ──
         window.openEditModal = function(id) {
+            if (!window.isAdmin) { alert('관리자 권한이 필요합니다.'); return; } // ✅ 2차 보안
             let product = null;
-            Object.values(allProducts).forEach(arr => {
-                const found = arr.find(p => p.id === id);
-                if (found) product = found;
-            });
+            Object.values(allProducts).forEach(arr => { const found = arr.find(p => p.id === id); if (found) product = found; });
             if (!product) return;
 
-            editingId   = id;
-            addingCat   = null;
-            uploadedImgUrl      = product.imageUrl || product.img || '';
+            editingId = id; addingCat = null;
+            uploadedImgUrl = product.imageUrl || product.img || '';
             uploadedStoragePath = product.storagePath || '';
 
             document.getElementById('modalTitle').textContent = '제품 수정';
@@ -540,38 +527,19 @@
             document.getElementById('modalDesc').value        = product.desc   || '';
             document.getElementById('modalPrice').value       = product.price  || '';
             document.getElementById('modalBuyUrl').value      = product.buyUrl || product.link || '';
-
-            const tagStr = Array.isArray(product.tags)
-                ? product.tags.join(', ')
-                : (product.tag || product.tags || '');
-            document.getElementById('modalTag').value = tagStr;
+            document.getElementById('modalTag').value         = Array.isArray(product.tags) ? product.tags.join(', ') : (product.tag || product.tags || '');
 
             const preview = document.getElementById('imgPreview');
-            if (uploadedImgUrl) {
-                preview.src = uploadedImgUrl;
-                preview.style.display = 'block';
-            } else {
-                preview.style.display = 'none';
-            }
+            if (uploadedImgUrl) { preview.src = uploadedImgUrl; preview.style.display = 'block'; } else { preview.style.display = 'none'; }
 
-            if (product.storagePath) {
-                switchImgTab('upload');
-            } else if (uploadedImgUrl) {
-                switchImgTab('url');
-                document.getElementById('modalImg').value = uploadedImgUrl;
-            } else {
-                switchImgTab('upload');
-            }
+            if (product.storagePath || !uploadedImgUrl) { switchImgTab('upload'); } else { switchImgTab('url'); document.getElementById('modalImg').value = uploadedImgUrl; }
 
             document.getElementById('imgUploadProgress').style.display = 'none';
             document.getElementById('productModal').style.display = 'flex';
         };
 
-        window.closeModal = function() {
-            document.getElementById('productModal').style.display = 'none';
-        };
+        window.closeModal = function() { document.getElementById('productModal').style.display = 'none'; };
 
-        // ── 이미지 탭 전환 ──
         window.switchImgTab = function(mode) {
             imgTabMode = mode;
             document.getElementById('tabUpload').classList.toggle('active', mode === 'upload');
@@ -582,15 +550,11 @@
 
         window.onImgDragOver  = (e) => { e.preventDefault(); document.getElementById('imgUploadArea').classList.add('dragover'); };
         window.onImgDragLeave = ()  => { document.getElementById('imgUploadArea').classList.remove('dragover'); };
-        window.onImgDrop      = (e) => {
-            e.preventDefault();
-            document.getElementById('imgUploadArea').classList.remove('dragover');
-            const f = e.dataTransfer.files[0];
-            if (f && f.type.startsWith('image/')) uploadImage(f);
-        };
+        window.onImgDrop      = (e) => { e.preventDefault(); document.getElementById('imgUploadArea').classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f && f.type.startsWith('image/')) uploadImage(f); };
         window.onImgFileSelect = (e) => { const f = e.target.files[0]; if (f) uploadImage(f); };
 
         function uploadImage(file) {
+            if (!window.isAdmin) return; // ✅ 2차 보안
             if (file.size > 5 * 1024 * 1024) { alert('5MB 이하 이미지만 가능합니다.'); return; }
             const path = `products/${Date.now()}_${file.name}`;
             const task = uploadBytesResumable(ref(storage, path), file);
@@ -601,109 +565,65 @@
             prog.style.display = 'block';
 
             task.on('state_changed',
-                snap => {
-                    const pct = Math.round(snap.bytesTransferred / snap.totalBytes * 100);
-                    bar.style.width  = pct + '%';
-                    text.textContent = `업로드 중... ${pct}%`;
-                },
+                snap => { bar.style.width  = Math.round(snap.bytesTransferred / snap.totalBytes * 100) + '%'; text.textContent = `업로드 중... ${bar.style.width}`; },
                 err => { alert('이미지 업로드 실패: ' + err.message); prog.style.display = 'none'; },
                 async () => {
-                    uploadedImgUrl      = await getDownloadURL(task.snapshot.ref);
+                    uploadedImgUrl = await getDownloadURL(task.snapshot.ref);
                     uploadedStoragePath = path;
-                    bar.style.width  = '100%';
-                    text.textContent = '✅ 업로드 완료!';
-                    prev.src = uploadedImgUrl;
-                    prev.style.display = 'block';
+                    bar.style.width  = '100%'; text.textContent = '✅ 업로드 완료!';
+                    prev.src = uploadedImgUrl; prev.style.display = 'block';
                 }
             );
         }
 
-        // ── 저장 ──
         window.saveProduct = async function() {
-            const name     = document.getElementById('modalName').value.trim();
-            const desc     = document.getElementById('modalDesc').value.trim();
-            const tagRaw   = document.getElementById('modalTag').value.trim();
-            const price    = document.getElementById('modalPrice').value.trim();
-            const buyUrl   = document.getElementById('modalBuyUrl').value.trim();
+            if (!window.isAdmin) { alert('관리자 권한이 필요합니다.'); return; } // ✅ 2차 보안
+            
+            const name = document.getElementById('modalName').value.trim();
+            const desc = document.getElementById('modalDesc').value.trim();
+            const tagRaw = document.getElementById('modalTag').value.trim();
+            const price = document.getElementById('modalPrice').value.trim();
+            const buyUrl = document.getElementById('modalBuyUrl').value.trim();
             const category = document.getElementById('modalCategory').value;
-            const btn      = document.getElementById('modalSaveBtn');
+            const btn = document.getElementById('modalSaveBtn');
 
             const tags = tagRaw ? tagRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
-
-            let finalImg  = uploadedImgUrl;
-            let finalPath = uploadedStoragePath;
-            if (imgTabMode === 'url') {
-                finalImg  = document.getElementById('modalImg').value.trim();
-                finalPath = '';
-            }
+            let finalImg = uploadedImgUrl; let finalPath = uploadedStoragePath;
+            if (imgTabMode === 'url') { finalImg = document.getElementById('modalImg').value.trim(); finalPath = ''; }
             if (!name) { alert('상품 이름을 입력해주세요.'); return; }
 
-            btn.disabled    = true;
-            btn.textContent = '저장 중...';
+            btn.disabled = true; btn.textContent = '저장 중...';
 
             try {
                 if (editingId) {
                     let oldPath = '';
-                    Object.values(allProducts).forEach(arr => {
-                        const f = arr.find(p => p.id === editingId);
-                        if (f) oldPath = f.storagePath || '';
-                    });
-                    if (oldPath && finalPath && oldPath !== finalPath) {
-                        try { await deleteObject(ref(storage, oldPath)); } catch(_) {}
-                    }
-                    await updateDoc(doc(db, 'products', editingId), {
-                        name, desc, tags, price, buyUrl, category,
-                        imageUrl: finalImg, storagePath: finalPath
-                    });
+                    Object.values(allProducts).forEach(arr => { const f = arr.find(p => p.id === editingId); if (f) oldPath = f.storagePath || ''; });
+                    if (oldPath && finalPath && oldPath !== finalPath) { try { await deleteObject(ref(storage, oldPath)); } catch(_) {} }
+                    await updateDoc(doc(db, 'products', editingId), { name, desc, tags, price, buyUrl, category, imageUrl: finalImg, storagePath: finalPath });
                 } else {
                     const catItems = allProducts[category] || [];
-                    await addDoc(collection(db, 'products'), {
-                        name, desc, tags, price, buyUrl, category,
-                        imageUrl: finalImg, storagePath: finalPath,
-                        order: catItems.length,
-                        createdAt: serverTimestamp()
-                    });
+                    await addDoc(collection(db, 'products'), { name, desc, tags, price, buyUrl, category, imageUrl: finalImg, storagePath: finalPath, order: catItems.length, createdAt: serverTimestamp() });
                 }
-
-                closeModal();
-                await loadAndRender();
-                showToast();
-            } catch(e) {
-                alert('저장 실패: ' + e.message);
-            } finally {
-                btn.disabled    = false;
-                btn.textContent = 'DB 저장';
-            }
+                closeModal(); await loadAndRender(); showToast();
+            } catch(e) { alert('저장 실패: ' + e.message); } finally { btn.disabled = false; btn.textContent = 'DB 저장'; }
         };
 
-        // ── 삭제 ──
         window.deleteProduct = async function(id, storagePath) {
+            if (!window.isAdmin) { alert('관리자만 삭제할 수 있습니다.'); return; } // ✅ 2차 보안
             if (!confirm('이 제품을 삭제하시겠습니까?')) return;
             try {
-                if (storagePath) {
-                    try { await deleteObject(ref(storage, storagePath)); } catch(_) {}
-                }
+                if (storagePath) { try { await deleteObject(ref(storage, storagePath)); } catch(_) {} }
                 await deleteDoc(doc(db, 'products', id));
-                await loadAndRender();
-                showToast('🗑 삭제되었습니다.');
+                await loadAndRender(); showToast('🗑 삭제되었습니다.');
             } catch(e) { alert('삭제 실패: ' + e.message); }
         };
 
         function showToast(msg = '✅ 저장되었습니다.') {
-            const t = document.getElementById('saveToast');
-            t.textContent   = msg;
-            t.style.display = 'block';
+            const t = document.getElementById('saveToast'); t.textContent = msg; t.style.display = 'block';
             setTimeout(() => { t.style.display = 'none'; }, 2500);
         }
 
-        document.getElementById('productModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        onAuthStateChanged(auth, user => {
-            const btn = document.getElementById('adminEditBtn');
-            if (btn) btn.style.display = user ? 'inline-block' : 'none';
-        });
+        document.getElementById('productModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
         loadAndRender();
     </script>
