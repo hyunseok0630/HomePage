@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <style>
         .contact-section { padding: 100px 0; background: var(--bg-color); }
         .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start; }
@@ -36,50 +38,36 @@
         .step-num { width: 22px; height: 22px; background: var(--accent-blue); color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
         .contact-form-card { background: var(--surface-color); border-radius: 20px; padding: 50px 40px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
-        .form-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; gap: 12px; }
+        .form-card-top { margin-bottom: 32px; }
         .form-card-top h3 { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; margin: 0; }
         .form-card-top p  { font-size: 13px; color: var(--text-muted); margin: 4px 0 0; }
 
-        .btn-download-template {
-            display: inline-flex; align-items: center; gap: 7px;
-            background: #f0f7ff; color: var(--accent-blue);
-            border: 1.5px solid #c0dcf8; border-radius: 10px;
-            padding: 9px 16px; font-size: 13px; font-weight: 600;
-            font-family: inherit; cursor: pointer; white-space: nowrap;
-            text-decoration: none; transition: all 0.2s; flex-shrink: 0;
+        /* 발주 폼 스타일 */
+        .order-input-area { background: #fafafa; border: 1px solid #e5e5ea; border-radius: 14px; padding: 24px; margin-bottom: 20px; }
+        .input-group { margin-bottom: 16px; }
+        .input-group input { 
+            width: 100%; padding: 14px; border: 1.5px solid #d0d0d7; border-radius: 10px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s;
         }
-        .btn-download-template:hover { background: #dbeeff; border-color: var(--accent-blue); transform: translateY(-1px); }
-        .btn-download-template i { font-size: 14px; }
-
-        .file-upload-area {
-            border: 2px dashed #d0d0d7; border-radius: 14px;
-            padding: 48px 24px; text-align: center; cursor: pointer;
-            background: #fafafa; transition: all 0.25s; margin-bottom: 10px;
+        
+        /* 품목 추가 박스 (수취인 정보 포함) */
+        .item-add-box { background: #fff; border: 1px solid #e5e5ea; border-radius: 10px; padding: 16px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .item-add-flex { display: flex; gap: 8px; margin-bottom: 8px; }
+        .item-add-flex:last-child { margin-bottom: 0; }
+        .item-add-flex select, .item-add-flex input {
+            padding: 12px; border: 1.5px solid #d0d0d7; border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; transition: border-color 0.2s;
         }
-        .file-upload-area:hover, .file-upload-area.dragover { border-color: var(--accent-blue); background: #f0f7ff; }
-        .file-upload-area i { font-size: 40px; color: #bbb; display: block; margin-bottom: 12px; transition: color 0.2s; }
-        .file-upload-area:hover i, .file-upload-area.dragover i { color: var(--accent-blue); }
-        .file-upload-area .upload-title { font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; }
-        .file-upload-area .upload-desc  { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
-        .file-upload-area input[type="file"] { display: none; }
-
-        .file-preview {
-            display: none; align-items: center; gap: 14px;
-            background: #f0f7ff; border: 1.5px solid #c0dcf8;
-            border-radius: 10px; padding: 14px 18px; margin-bottom: 16px;
+        .item-add-flex select:focus, .item-add-flex input:focus { border-color: var(--accent-blue); }
+        .btn-add-item { 
+            background: var(--accent-blue); color: #fff; border: none; border-radius: 8px; 
+            padding: 0 20px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s;
         }
-        .file-preview.show { display: flex; }
-        .file-preview i { font-size: 28px; color: #217346; flex-shrink: 0; }
-        .file-preview-info { flex: 1; }
-        .file-preview-name { font-size: 14px; font-weight: 600; color: var(--text-main); }
-        .file-preview-size { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-        .file-preview-remove { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; padding: 4px; transition: color 0.2s; }
-        .file-preview-remove:hover { color: crimson; }
+        .btn-add-item:hover { background: #005bb5; }
 
-        .upload-progress { display: none; margin-bottom: 16px; }
-        .upload-progress-bar { height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; }
-        .upload-progress-fill { height: 100%; background: var(--accent-blue); width: 0%; transition: width 0.2s; }
-        .upload-progress-text { font-size: 12px; color: #666; margin-top: 5px; text-align: center; }
+        .table-responsive { overflow-x: auto; background: #fff; border-radius: 8px; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .selected-items-table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 13px; }
+        .selected-items-table th, .selected-items-table td { padding: 12px; border-bottom: 1px solid #f0f0f0; text-align: left; vertical-align: middle; }
+        .selected-items-table th { background: #f8f8fc; font-weight: 600; color: #555; white-space: nowrap; }
+        .btn-remove-item { color: #ff4d4f; background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; }
 
         .privacy-agree {
             display: flex; align-items: flex-start; gap: 10px;
@@ -105,10 +93,10 @@
             padding: 16px 20px; margin-top: 16px; text-align: center; line-height: 1.7;
         }
         .success-msg.show { display: block; }
-
         .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* 관리자 모달 스타일 */
         #inboxBadge { display: none; position: absolute; top: -4px; right: -4px; background: crimson; color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; line-height: 16px; text-align: center; }
         #inboxBtn { position: relative; }
         .inbox-tab { background: #f5f5f7; border: none; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; font-family: inherit; transition: background 0.2s; }
@@ -119,13 +107,12 @@
         .inbox-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .inbox-name  { font-size: 15px; font-weight: 700; color: #1d1d1f; }
         .inbox-date  { font-size: 12px; color: #aaa; }
-        .inbox-type  { display: inline-block; background: #f5f5f7; color: #555; font-size: 11px; padding: 2px 10px; border-radius: 10px; margin-bottom: 8px; }
+        .inbox-summary { font-size: 13px; color: #555; background: #f8f8fc; padding: 10px 14px; border-radius: 8px; margin: 8px 0; }
         .inbox-file-btn {
             display: inline-flex; align-items: center; gap: 6px;
             background: #f0f7ff; color: var(--accent-blue); border: 1.5px solid #c0dcf8;
             border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500;
-            text-decoration: none; cursor: pointer; font-family: inherit;
-            transition: background 0.2s; margin-top: 6px;
+            text-decoration: none; cursor: pointer; font-family: inherit; transition: background 0.2s; margin-top: 6px;
         }
         .inbox-file-btn:hover { background: #dbeeff; }
         .inbox-actions { display: flex; gap: 8px; margin-top: 12px; }
@@ -136,7 +123,8 @@
         @media (max-width: 768px) {
             .contact-grid { grid-template-columns: 1fr; gap: 30px; }
             .contact-form-card, .info-card { padding: 30px 24px; }
-            .form-card-top { flex-direction: column; align-items: flex-start; }
+            .item-add-flex { flex-direction: column; }
+            .btn-add-item { padding: 12px; }
         }
     </style>
 </head>
@@ -186,7 +174,7 @@
     <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat;">
         <div class="container">
             <h1 style="position:relative; z-index:2;">발주하기</h1>
-            <p style="position:relative; z-index:2;">발주서 양식을 다운로드 후 작성하여 업로드해주세요.</p>
+            <p style="position:relative; z-index:2;">필요한 품목과 배송지 정보를 입력하여 간편하게 발주하세요.</p>
         </div>
     </section>
 
@@ -214,15 +202,15 @@
                     </div>
                     <div class="order-steps">
                         <h4>📋 발주 처리 절차</h4>
-                        <div class="step-item"><span class="step-num">1</span><span>엑셀 발주서 양식 다운로드</span></div>
-                        <div class="step-item"><span class="step-num">2</span><span>발주서 작성 후 본 페이지에 업로드</span></div>
+                        <div class="step-item"><span class="step-num">1</span><span>협력 업체 로그인 (자동 인식)</span></div>
+                        <div class="step-item"><span class="step-num">2</span><span>품목, 수량 및 배송지 정보 추가</span></div>
                         <div class="step-item"><span class="step-num">3</span><span>담당자 확인 후 <strong style="color:#1d1d1f;">1영업일 내</strong> 연락</span></div>
-                        <div class="step-item"><span class="step-num">4</span><span>견적서 발송 및 납품 일정 조율</span></div>
+                        <div class="step-item"><span class="step-num">4</span><span>견적 안내 및 납품 진행</span></div>
                     </div>
                     <div style="margin-top:24px; padding-top:20px; border-top:1px solid #eee;">
                         <p style="font-size:12px; color:#aaa; line-height:1.8;">
                             <i class="fas fa-lock" style="color:var(--accent-blue); margin-right:6px;"></i>
-                            수집된 개인정보 및 발주서 파일은 거래 이행 목적으로만 사용되며,<br>
+                            수집된 정보는 거래 이행 목적으로만 사용되며,<br>
                             <strong style="color:#666;">거래 완료 후 5년간 보관</strong> 후 안전하게 파기됩니다.<br>
                             (전자상거래법 제6조 기준)
                         </p>
@@ -231,69 +219,67 @@
 
                 <div class="contact-form-card">
                     <div class="form-card-top">
-                        <div>
-                            <h3>발주서 제출</h3>
-                            <p>작성 완료된 엑셀 발주서를 업로드해주세요.</p>
-                        </div>
-                        <button class="btn-download-template" onclick="downloadTemplate()">
-                            <i class="fas fa-file-excel"></i>
-                            발주서 양식 다운로드
-                        </button>
+                        <h3>발주서 등록</h3>
+                        <p>발주 품목과 수취인(배송지) 정보를 정확히 입력해 주세요.</p>
                     </div>
 
-                    <div class="file-upload-area" id="fileUploadArea"
-                         onclick="document.getElementById('orderFile').click()"
-                         ondragover="handleDragOver(event)"
-                         ondragleave="handleDragLeave(event)"
-                         ondrop="handleDrop(event)">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <div class="upload-title">클릭하거나 파일을 드래그하여 업로드</div>
-                        <div class="upload-desc">
-                            작성 완료된 발주서 엑셀 파일 (.xlsx, .xls)<br>최대 10MB
+                    <div class="order-input-area">
+                        <div class="input-group">
+                            <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중..." style="background-color: #e8eaed; color: #555; cursor: not-allowed; font-weight: 600;">
+                            <input type="hidden" id="vendorNameInput">
                         </div>
-                        <input type="file" id="orderFile"
-                               accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
-                               onchange="handleFileSelect(event)">
-                    </div>
 
-                    <div class="file-preview" id="filePreview">
-                        <i class="fas fa-file-excel"></i>
-                        <div class="file-preview-info">
-                            <div class="file-preview-name" id="fileName">-</div>
-                            <div class="file-preview-size" id="fileSize">-</div>
+                        <div class="item-add-box">
+                            <div class="item-add-flex">
+                                <select id="productSelect" style="flex: 2;">
+                                    <option value="">제품 목록을 불러오는 중...</option>
+                                </select>
+                                <input type="number" id="productQty" min="1" placeholder="수량 (개)" style="flex: 1; text-align: right;">
+                            </div>
+                            <div class="item-add-flex">
+                                <input type="text" id="recipientName" placeholder="수취인명" style="flex: 1;">
+                                <input type="text" id="recipientPhone" placeholder="전화번호" style="flex: 1.5;">
+                                <input type="text" id="recipientAddress" placeholder="배송지 주소" style="flex: 3;">
+                                <button class="btn-add-item" onclick="addOrderItem()">목록 추가</button>
+                            </div>
                         </div>
-                        <button class="file-preview-remove" onclick="removeFile()" title="제거">✕</button>
-                    </div>
 
-                    <div class="upload-progress" id="uploadProgress">
-                        <div class="upload-progress-bar">
-                            <div class="upload-progress-fill" id="uploadProgressFill"></div>
+                        <div class="table-responsive">
+                            <table class="selected-items-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">품목명</th>
+                                        <th style="width: 10%; text-align: right;">수량</th>
+                                        <th style="width: 15%;">수취인</th>
+                                        <th style="width: 20%;">연락처</th>
+                                        <th style="width: 30%;">주소</th>
+                                        <th style="width: 5%; text-align: center;">삭제</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orderListBody">
+                                    <tr><td colspan="6" style="text-align:center; color:#aaa; padding: 25px;">선택된 품목이 없습니다.</td></tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="upload-progress-text" id="uploadProgressText">업로드 중... 0%</div>
                     </div>
 
                     <label class="privacy-agree">
                         <input type="checkbox" id="privacyAgree">
                         <span class="privacy-agree-text">
-                            <strong>[필수] 개인정보 수집·이용 동의</strong><br>
-                            수집 항목: 발주서 파일 내 기재된 상호명, 사업자번호, 담당자 정보, 수하인 정보<br>
-                            수집 목적: 발주 접수, 견적 안내, 거래 이행<br>
-                            보유 기간: 거래 완료 후 <strong>5년</strong> 보관 뒤 파기 (전자상거래법 제6조)<br>
-                            위 개인정보 수집·이용에 동의합니다. <span style="color:red;">*</span>
+                            <strong>[필수] 발주 정보 제출 동의</strong><br>
+                            입력하신 품목 및 배송지 정보로 발주를 진행하는 것에 동의합니다. <span style="color:red;">*</span>
                         </span>
                     </label>
 
-                    <button class="btn-submit" id="submitBtn" onclick="submitOrder()">발주서 제출</button>
+                    <button class="btn-submit" id="submitBtn" onclick="submitOrder()">발주 제출하기</button>
                     <div class="success-msg" id="successMsg">
-                        ✅ 발주서가 성공적으로 접수되었습니다.<br>
-                        담당자가 <strong>1영업일 내</strong>에 연락드리겠습니다.
+                        ✅ 발주가 성공적으로 접수되었습니다.<br>담당자가 확인 후 1영업일 내에 연락드리겠습니다.
                     </div>
                 </div>
-            </div>
+                </div>
         </div>
     </section>
 
-    <!-- 관리자 발주 확인 모달 -->
     <div id="inboxModal" style="
         display:none; position:fixed; top:0; left:0;
         width:100%; height:100%; background:rgba(0,0,0,0.6);
@@ -353,73 +339,10 @@
     <script src="../js/main.js"></script>
     <script type="module" src="../js/auth.js"></script>
 
-    <script>
-        function getTodayStr() {
-            const d = new Date();
-            return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
-        }
-
-        window.downloadTemplate = function () {
-            const a    = document.createElement('a');
-            a.href     = '../files/order-form.xlsx';
-            a.download = `${getTodayStr()}_스카이커머스_발주서양식.xlsx`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        };
-
-        window.selectedFile = null;
-
-        function formatBytes(bytes) {
-            if (bytes < 1024)    return bytes + ' B';
-            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-            return (bytes / 1048576).toFixed(1) + ' MB';
-        }
-
-        function applyFile(file) {
-            const allowed = [
-                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'application/vnd.ms-excel'
-            ];
-            if (!allowed.includes(file.type) && !file.name.match(/\.(xlsx|xls)$/i)) {
-                alert('엑셀 파일(.xlsx, .xls)만 업로드 가능합니다.'); return;
-            }
-            if (file.size > 10 * 1024 * 1024) {
-                alert('파일 크기는 10MB 이하만 가능합니다.'); return;
-            }
-            window.selectedFile = file;
-            document.getElementById('fileName').textContent = file.name;
-            document.getElementById('fileSize').textContent = formatBytes(file.size);
-            document.getElementById('filePreview').classList.add('show');
-        }
-
-        window.handleFileSelect = (e) => { const f = e.target.files[0]; if (f) applyFile(f); };
-        window.handleDragOver   = (e) => { e.preventDefault(); document.getElementById('fileUploadArea').classList.add('dragover'); };
-        window.handleDragLeave  = ()  => { document.getElementById('fileUploadArea').classList.remove('dragover'); };
-        window.handleDrop       = (e) => {
-            e.preventDefault();
-            document.getElementById('fileUploadArea').classList.remove('dragover');
-            const f = e.dataTransfer.files[0];
-            if (f) applyFile(f);
-        };
-
-        window.removeFile = function () {
-            window.selectedFile = null;
-            document.getElementById('orderFile').value = '';
-            document.getElementById('filePreview').classList.remove('show');
-        };
-    </script>
-
     <script type="module">
-        import { initializeApp, getApps, getApp }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc,
-                 doc, updateDoc, serverTimestamp, query, orderBy }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
@@ -430,108 +353,163 @@
             appId: "1:232403511014:web:318ebb689d678e998b7d27"
         };
 
-        const app     = getApps().length ? getApp() : initializeApp(firebaseConfig);
-        const db      = getFirestore(app);
-        const auth    = getAuth(app);
-        const storage = getStorage(app);
+        const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
 
         let currentFilter = 'all';
-        let allOrders     = [];
+        let allOrders = [];
+        let orderItems = [];
 
         function esc(str = '') {
-            return String(str)
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
-        // ✅ getDownloadURL 제거 — 업로드만 하고 storagePath 반환
-        function uploadOrderFile(file) {
-            return new Promise((resolve, reject) => {
-                const storagePath  = `orders/${Date.now()}_${file.name}`;
-                const uploadTask   = uploadBytesResumable(ref(storage, storagePath), file);
-                const progressWrap = document.getElementById('uploadProgress');
-                const progressFill = document.getElementById('uploadProgressFill');
-                const progressText = document.getElementById('uploadProgressText');
-                progressWrap.style.display = 'block';
-
-                uploadTask.on('state_changed',
-                    (snap) => {
-                        const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-                        progressFill.style.width = pct + '%';
-                        progressText.textContent = `업로드 중... ${pct}%`;
-                    },
-                    (err) => { progressWrap.style.display = 'none'; reject(err); },
-                    () => {
-                        progressFill.style.width = '100%';
-                        progressText.textContent = '✅ 업로드 완료!';
-                        setTimeout(() => { progressWrap.style.display = 'none'; }, 1200);
-                        resolve({ storagePath, fileName: file.name });
-                    }
-                );
-            });
+        function getTodayStr() {
+            const d = new Date();
+            return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
         }
 
-        // ✅ 관리자 클릭 시에만 URL 생성 (로그인 상태라 read 권한 있음)
-        window.downloadOrderFile = async function (storagePath, fileName) {
+        // --- 1. 제품 DB 불러오기 ---
+        async function loadProducts() {
+            const select = document.getElementById('productSelect');
             try {
-                const url = await getDownloadURL(ref(storage, storagePath));
-                const a   = document.createElement('a');
-                a.href    = url;
-                a.target  = '_blank';
-                a.download = fileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                const q = query(collection(db, "products"));
+                const snapshot = await getDocs(q);
+                
+                if (snapshot.empty) {
+                    select.innerHTML = '<option value="">등록된 제품이 없습니다.</option>';
+                    return;
+                }
+
+                let optionsHtml = '<option value="">발주 품목 선택</option>';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const productName = data.name || data.title || doc.id; 
+                    optionsHtml += `<option value="${esc(productName)}">${esc(productName)}</option>`;
+                });
+                select.innerHTML = optionsHtml;
             } catch (e) {
-                alert('파일 다운로드 실패: ' + e.message);
+                console.error("제품 목록 로드 실패:", e);
+                select.innerHTML = '<option value="">목록을 불러오지 못했습니다.</option>';
             }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+        });
+
+        // --- 2. 클라이언트 폼 제어 로직 ---
+        window.addOrderItem = function() {
+            const product = document.getElementById('productSelect').value;
+            const qty = parseInt(document.getElementById('productQty').value);
+            const recipient = document.getElementById('recipientName').value.trim();
+            const phone = document.getElementById('recipientPhone').value.trim();
+            const address = document.getElementById('recipientAddress').value.trim();
+
+            if (!product) { alert('품목을 선택해주세요.'); return; }
+            if (!qty || qty < 1) { alert('올바른 수량을 입력해주세요.'); return; }
+            if (!recipient) { alert('수취인 이름을 입력해주세요.'); return; }
+            if (!phone) { alert('전화번호를 입력해주세요.'); return; }
+            if (!address) { alert('배송지 주소를 입력해주세요.'); return; }
+
+            // 배송지가 다를 수 있으므로 무조건 새 열로 추가합니다.
+            orderItems.push({ product, qty, recipient, phone, address });
+
+            // 입력창 초기화
+            document.getElementById('productSelect').value = '';
+            document.getElementById('productQty').value = '';
+            document.getElementById('recipientName').value = '';
+            document.getElementById('recipientPhone').value = '';
+            document.getElementById('recipientAddress').value = '';
+            
+            renderOrderInputList();
         };
 
+        window.removeOrderItem = function(index) {
+            orderItems.splice(index, 1);
+            renderOrderInputList();
+        };
+
+        function renderOrderInputList() {
+            const tbody = document.getElementById('orderListBody');
+            if (orderItems.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#aaa; padding:25px;">선택된 품목이 없습니다.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = orderItems.map((item, idx) => `
+                <tr>
+                    <td><strong>${esc(item.product)}</strong></td>
+                    <td style="text-align: right;">${item.qty}개</td>
+                    <td>${esc(item.recipient)}</td>
+                    <td>${esc(item.phone)}</td>
+                    <td><span style="display:inline-block; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${esc(item.address)}">${esc(item.address)}</span></td>
+                    <td style="text-align: center;">
+                        <button class="btn-remove-item" onclick="removeOrderItem(${idx})" title="삭제"><i class="fas fa-times"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
         window.submitOrder = async function () {
-            const agreed  = document.getElementById('privacyAgree').checked;
-            const btn     = document.getElementById('submitBtn');
+            const vendor = document.getElementById('vendorNameInput').value;
+            const agreed = document.getElementById('privacyAgree').checked;
+            const btn = document.getElementById('submitBtn');
             const success = document.getElementById('successMsg');
-            const file    = window.selectedFile ?? null;
 
-            if (!file)   { alert('발주서 엑셀 파일을 업로드해주세요.'); return; }
-            if (!agreed) { alert('개인정보 수집·이용에 동의해주세요.'); document.getElementById('privacyAgree').focus(); return; }
+            if (!vendor) { alert('로그인이 필요하거나 업체 정보가 인식되지 않았습니다.'); return; }
+            if (orderItems.length === 0) { alert('발주할 품목을 1개 이상 추가해주세요.'); return; }
+            if (!agreed) { alert('발주 정보 제출에 동의해주세요.'); return; }
 
-            btn.disabled  = true;
+            btn.disabled = true;
             btn.innerHTML = '<span class="spinner"></span>제출 중...';
 
             try {
-                const { storagePath, fileName } = await uploadOrderFile(file);
+                const totalQty = orderItems.reduce((sum, item) => sum + item.qty, 0);
+                const summaryText = orderItems.length === 1 
+                    ? `${orderItems[0].product} (${totalQty}개)` 
+                    : `${orderItems[0].product} 외 ${orderItems.length - 1}건 (총 ${totalQty}개)`;
 
                 await addDoc(collection(db, "inquiries"), {
-                    storagePath, fileName,
-                    type: '발주', privacyAgreed: true, read: false,
+                    vendorName: vendor,
+                    items: orderItems,
+                    summary: summaryText,
+                    totalQty: totalQty,
+                    type: '발주', 
+                    privacyAgreed: true, 
+                    read: false,
                     createdAt: serverTimestamp()
                 });
 
                 success.classList.add('show');
+                
                 document.getElementById('privacyAgree').checked = false;
-                window.removeFile();
+                orderItems = [];
+                renderOrderInputList();
+
                 btn.innerHTML = '✅ 제출 완료';
                 setTimeout(() => {
-                    btn.disabled  = false;
-                    btn.innerHTML = '발주서 제출';
+                    btn.disabled = false;
+                    btn.innerHTML = '발주 제출하기';
                     success.classList.remove('show');
-                }, 5000);
+                }, 3000);
             } catch (e) {
                 alert('제출 실패: ' + e.message);
-                btn.disabled  = false;
-                btn.innerHTML = '발주서 제출';
+                btn.disabled = false;
+                btn.innerHTML = '발주 제출하기';
             }
         };
 
+        // --- 3. 관리자 모달 및 엑셀 로직 ---
         async function loadOrders() {
             try {
-                const q        = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
+                const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
                 const snapshot = await getDocs(q);
-                allOrders      = [];
+                allOrders = [];
                 snapshot.forEach(d => allOrders.push({ id: d.id, ...d.data() }));
-                const unread = allOrders.filter(i => !i.read).length;
-                const badge  = document.getElementById('inboxBadge');
+                
+                const unread = allOrders.filter(i => !i.read && i.type === '발주').length;
+                const badge = document.getElementById('inboxBadge');
                 if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'block' : 'none'; }
                 const uc = document.getElementById('unreadCount');
                 if (uc) uc.textContent = unread > 0 ? `(${unread})` : '';
@@ -539,10 +517,11 @@
         }
 
         function renderOrders() {
-            const list     = document.getElementById('inboxList');
+            const list = document.getElementById('inboxList');
             const filtered = allOrders.filter(i => {
+                if (i.type !== '발주') return false;
                 if (currentFilter === 'unread') return !i.read;
-                if (currentFilter === 'read')   return  i.read;
+                if (currentFilter === 'read') return i.read;
                 return true;
             });
 
@@ -552,29 +531,22 @@
             }
 
             list.innerHTML = filtered.map(item => {
-                const date = item.createdAt?.toDate
-                    ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
-
-                // storagePath 방식 우선, 구버전 fileUrl fallback
-                const fileBtn = item.storagePath
-                    ? `<button class="inbox-file-btn"
-                           onclick="downloadOrderFile('${esc(item.storagePath)}','${esc(item.fileName || '발주서.xlsx')}')">
-                           <i class="fas fa-file-excel"></i> ${esc(item.fileName || '발주서.xlsx')} 다운로드
-                       </button>`
-                    : item.fileUrl
-                        ? `<a href="${esc(item.fileUrl)}" target="_blank" rel="noopener noreferrer" class="inbox-file-btn">
-                               <i class="fas fa-file-excel"></i> ${esc(item.fileName || '발주서.xlsx')} 다운로드
-                           </a>`
-                        : '<span style="font-size:12px;color:#bbb;">파일 없음</span>';
+                const date = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
+                const vendor = item.vendorName || '알 수 없는 업체';
+                const summary = item.summary || '상세 품목 없음';
 
                 return `
                 <div class="inbox-item ${item.read ? 'read' : 'unread'}">
                     <div class="inbox-item-header">
-                        <span class="inbox-name">${item.read ? '' : '🔵 '}📦 발주 접수</span>
+                        <span class="inbox-name">${item.read ? '' : '🔵 '}🏢 [${esc(vendor)}] 발주</span>
                         <span class="inbox-date">${esc(date)}</span>
                     </div>
-                    <span class="inbox-type">발주</span>
-                    ${fileBtn}
+                    <div class="inbox-summary">
+                        📦 <strong>요약:</strong> ${esc(summary)}
+                    </div>
+                    <button class="inbox-file-btn" onclick="downloadAdminExcel('${esc(item.id)}')">
+                        <i class="fas fa-file-excel"></i> 엑셀로 저장
+                    </button>
                     <div class="inbox-actions">
                         <button class="btn-read-toggle" onclick="toggleRead('${esc(item.id)}',${item.read})">
                             ${item.read ? '미확인으로 변경' : '✔ 확인됨으로 표시'}
@@ -585,31 +557,59 @@
             }).join('');
         }
 
+        // 엑셀 생성 및 다운로드 (업체이름_날짜_발주서.xlsx)
+        window.downloadAdminExcel = function(orderId) {
+            const order = allOrders.find(i => i.id === orderId);
+            if (!order || !order.items || order.items.length === 0) {
+                alert('엑셀로 변환할 품목 데이터가 없습니다.');
+                return;
+            }
+
+            // 추가된 수취인 정보까지 포함하여 엑셀 데이터 생성
+            const excelData = order.items.map((item, idx) => ({
+                "연번": idx + 1,
+                "협력업체": order.vendorName,
+                "품목명": item.product,
+                "수량": item.qty,
+                "수취인": item.recipient || '',
+                "전화번호": item.phone || '',
+                "배송지 주소": item.address || '',
+                "발주일시": order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('ko-KR') : ''
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(excelData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "발주서");
+            
+            // 엑셀 셀 너비 설정 (주소 등 길어지는 항목 고려)
+            worksheet['!cols'] = [
+                { wch: 5 },  // 연번
+                { wch: 15 }, // 협력업체
+                { wch: 25 }, // 품목명
+                { wch: 8 },  // 수량
+                { wch: 12 }, // 수취인
+                { wch: 15 }, // 전화번호
+                { wch: 45 }, // 배송지 주소
+                { wch: 20 }  // 발주일시
+            ];
+
+            // 파일명 규칙 적용: 업체이름_날짜_발주서.xlsx
+            const fileName = `${order.vendorName}_${getTodayStr()}_발주서.xlsx`;
+            XLSX.writeFile(workbook, fileName);
+        };
+
         window.toggleRead = async function (id, currentRead) {
             try {
                 await updateDoc(doc(db, "inquiries", id), { read: !currentRead });
-                const item = allOrders.find(i => i.id === id);
-                if (item) item.read = !currentRead;
                 await loadOrders();
                 renderOrders();
             } catch (e) { alert('업데이트 실패: ' + e.message); }
         };
 
-        // ✅ Storage 파일 + Firestore 문서 동시 삭제
         window.deleteOrder = async function (id) {
             if (!confirm('이 발주를 삭제하시겠습니까?')) return;
             try {
-                const item = allOrders.find(i => i.id === id);
-
-                // 1. Storage 파일 삭제
-                if (item?.storagePath) {
-                    try { await deleteObject(ref(storage, item.storagePath)); }
-                    catch (se) { console.warn('Storage 파일 삭제 생략:', se.code); }
-                }
-
-                // 2. Firestore 문서 삭제
                 await deleteDoc(doc(db, "inquiries", id));
-                allOrders = allOrders.filter(i => i.id !== id);
                 await loadOrders();
                 renderOrders();
             } catch (e) { alert('삭제 실패: ' + e.message); }
@@ -629,19 +629,41 @@
             document.getElementById('inboxModal').style.display = 'flex';
         };
 
-        window.closeInbox = function () {
-            document.getElementById('inboxModal').style.display = 'none';
-        };
-
+        window.closeInbox = function () { document.getElementById('inboxModal').style.display = 'none'; };
         document.getElementById('inboxModal').addEventListener('click', function (e) {
             if (e.target === this) closeInbox();
         });
 
-        onAuthStateChanged(auth, (user) => {
+        // --- 4. 로그인 상태 변경 및 업체 정보 연동 ---
+        onAuthStateChanged(auth, async (user) => {
+            const vendorDisplay = document.getElementById('vendorDisplay');
+            const vendorInput = document.getElementById('vendorNameInput');
+
             if (user) {
-                document.getElementById('inboxBtn').style.display     = 'block';
+                // 관리자 UI
+                document.getElementById('inboxBtn').style.display = 'block';
                 document.getElementById('adminEditBtn').style.display = 'block';
                 loadOrders();
+
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    
+                    if (userDoc.exists() && userDoc.data().vendorName) {
+                        const vName = userDoc.data().vendorName;
+                        vendorDisplay.value = `🏢 [${vName}] 님 환영합니다.`;
+                        vendorInput.value = vName; 
+                    } else {
+                        vendorDisplay.value = `👤 ${user.email} (업체명 미등록)`;
+                        vendorInput.value = user.email;
+                    }
+                } catch (error) {
+                    console.error("업체 정보 로드 실패:", error);
+                    vendorDisplay.value = `👤 ${user.email}`;
+                    vendorInput.value = user.email;
+                }
+            } else {
+                vendorDisplay.value = "⚠️ 로그인이 필요합니다.";
+                vendorInput.value = "";
             }
         });
     </script>
