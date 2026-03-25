@@ -3,107 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>발주하기 | SKY Commerce</title>
+    <title>회사 소개 | SKY Commerce</title>
     <link rel="icon" type="image/png" sizes="any" href="../img/logo_blue.png">
     <meta property="og:type"         content="website">
     <meta property="og:site_name"    content="SKY Commerce">
-    <meta property="og:title"        content="발주하기 | SKY Commerce">
-    <meta property="og:description"  content="SKY Commerce 제품 발주 및 거래 문의를 남겨주세요.">
-    <meta property="og:url"          content="https://skycommerce.co.kr/contact/">
+    <meta property="og:title"        content="회사 소개 | SKY Commerce">
+    <meta property="og:description"  content="TCL RayNeo 국내 공식 판매처, SKY Commerce를 소개합니다.">
+    <meta property="og:url"          content="https://skycommerce.co.kr/about/">
     <meta property="og:image"        content="https://skycommerce.co.kr/img/og_image.png">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:locale"       content="ko_KR">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
     <style>
-        .contact-section { padding: 100px 0; background: var(--bg-color); }
-        .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start; }
+        .intro-text-section { text-align: center; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        .intro-text-section h2 { font-size: 36px; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.04em; }
+        .intro-text-section p  { font-size: 18px; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; word-break: keep-all; }
 
-        .info-card { background: var(--surface-color); border-radius: 20px; padding: 50px 40px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
-        .info-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #eee; letter-spacing: -0.03em; }
-        .info-row { display: flex; margin-bottom: 24px; align-items: flex-start; gap: 16px; }
-        .info-row i { width: 20px; color: var(--accent-blue); font-size: 18px; margin-top: 2px; flex-shrink: 0; }
-        .info-row span { color: var(--text-main); font-size: 15px; line-height: 1.6; }
+        .business-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 30px; margin-top: 50px; }
+        .business-card { background: var(--surface-color); padding: 50px 40px; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); transition: transform 0.4s ease; }
+        .business-card:hover { transform: translateY(-5px); }
+        .business-card h3 { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 16px; }
+        .business-card p  { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
 
-        .order-steps { margin-top: 30px; padding-top: 24px; border-top: 1px solid #eee; }
-        .order-steps h4 { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 14px; }
-        .step-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 13px; color: var(--text-muted); }
-        .step-num { width: 22px; height: 22px; background: var(--accent-blue); color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .timeline-wrapper { position: relative; margin: 40px auto 0; width: 100%; }
+        .horizontal-timeline { display: flex; overflow-x: auto; padding: 20px 0 40px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #c1c1c1 #f5f5f7; }
+        .horizontal-timeline::-webkit-scrollbar { height: 6px; }
+        .horizontal-timeline::-webkit-scrollbar-track { background: #f5f5f7; border-radius: 10px; }
+        .horizontal-timeline::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
+        .horizontal-timeline::-webkit-scrollbar-thumb:hover { background: #a1a1a6; }
 
-        .contact-form-card { background: var(--surface-color); border-radius: 20px; padding: 50px 40px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
-        .form-card-top { margin-bottom: 32px; }
-        .form-card-top h3 { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; margin: 0; }
-        .form-card-top p  { font-size: 13px; color: var(--text-muted); margin: 4px 0 0; }
+        .timeline-item-hz { flex: 0 0 320px; position: relative; padding: 0 30px; }
+        .timeline-item-hz::after { content: ''; position: absolute; top: 85px; left: 0; width: 100%; height: 2px; background-color: #e5e5ea; z-index: 1; }
+        .timeline-item-hz:first-child::after { left: 50%; width: 50%; }
+        .timeline-item-hz:last-child::after  { width: 50%; }
 
-        .order-input-area { background: #fafafa; border: 1px solid #e5e5ea; border-radius: 14px; padding: 24px; margin-bottom: 20px; }
-        .input-group { margin-bottom: 16px; }
-        .input-group input { width: 100%; padding: 14px; border: 1.5px solid #d0d0d7; border-radius: 10px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s; }
-
-        .item-add-box { background: #fff; border: 1px solid #e5e5ea; border-radius: 10px; padding: 16px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-        .item-add-flex { display: flex; gap: 8px; margin-bottom: 8px; }
-        .item-add-flex:last-child { margin-bottom: 0; }
-        .item-add-flex select, .item-add-flex input { padding: 12px; border: 1.5px solid #d0d0d7; border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; transition: border-color 0.2s; }
-        .item-add-flex select:focus, .item-add-flex input:focus { border-color: var(--accent-blue); }
-        .btn-add-item { background: var(--accent-blue); color: #fff; border: none; border-radius: 8px; padding: 0 20px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }
-        .btn-add-item:hover { background: #005bb5; }
-
-        .table-responsive { overflow-x: auto; background: #fff; border-radius: 8px; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-        .selected-items-table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 13px; }
-        .selected-items-table th, .selected-items-table td { padding: 12px; border-bottom: 1px solid #f0f0f0; text-align: left; vertical-align: middle; }
-        .selected-items-table th { background: #f8f8fc; font-weight: 600; color: #555; white-space: nowrap; }
-        .btn-remove-item { color: #ff4d4f; background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; }
-        .btn-edit-item { color: #0071e3; background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; margin-right: 4px; }
-
-        .privacy-agree { display: flex; align-items: flex-start; gap: 10px; background: #f8f8fc; border: 1.5px solid #e5e5ea; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; cursor: pointer; transition: border-color 0.2s; }
-        .privacy-agree:has(input:checked) { border-color: var(--accent-blue); background: #f0f7ff; }
-        .privacy-agree input[type="checkbox"] { width: 17px; height: 17px; margin-top: 2px; flex-shrink: 0; accent-color: var(--accent-blue); cursor: pointer; }
-        .privacy-agree-text { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
-        .privacy-agree-text strong { color: var(--text-main); }
-
-        .btn-submit { width: 100%; background: #1d1d1f; color: #fff; border: none; border-radius: 10px; padding: 15px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.2s, transform 0.2s; }
-        .btn-submit:hover { background: #000; transform: translateY(-1px); }
-        .btn-submit:disabled { background: #aaa; cursor: not-allowed; transform: none; }
-        .success-msg { display: none; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; color: #065f46; font-size: 14px; padding: 16px 20px; margin-top: 16px; text-align: center; line-height: 1.7; }
-        .success-msg.show { display: block; }
-        .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .my-order-section { margin-top: 40px; padding-top: 30px; border-top: 2px solid #eee; }
-        .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; }
-        .status-wait    { background: #fff7ed; color: #c2410c; }
-        .status-confirm { background: #f0fdf4; color: #166534; }
-        .btn-mini { padding: 5px 10px; font-size: 11px; border-radius: 6px; cursor: pointer; border: 1px solid #ddd; background: #fff; margin: 0 2px; font-family: inherit; transition: 0.2s; }
-        .btn-mini:hover { background: #f0f0f0; }
-        .btn-mini-del { color: crimson; border-color: #ffcccc; background: #fff0f0; }
-        .btn-mini-del:hover { background: #ffe0e0; }
-
-        #inboxBadge { display: none; position: absolute; top: -4px; right: -4px; background: crimson; color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; line-height: 16px; text-align: center; }
-        #inboxBtn { position: relative; }
-        .inbox-tab { background: #f5f5f7; border: none; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; font-family: inherit; transition: background 0.2s; }
-        .inbox-tab.active { background: #1d1d1f; color: #fff; }
-        .inbox-item { border: 1px solid #eee; border-radius: 12px; padding: 18px 20px; margin-bottom: 10px; }
-        .inbox-item.unread { border-left: 4px solid #0071e3; background: #f0f7ff; }
-        .inbox-item.read   { border-left: 4px solid #ddd; }
-        .inbox-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .inbox-name  { font-size: 15px; font-weight: 700; color: #1d1d1f; }
-        .inbox-date  { font-size: 12px; color: #aaa; }
-        .inbox-summary { font-size: 13px; color: #555; background: #f8f8fc; padding: 10px 14px; border-radius: 8px; margin: 8px 0; }
-        .inbox-file-btn { display: inline-flex; align-items: center; gap: 6px; background: #f0f7ff; color: var(--accent-blue); border: 1.5px solid #c0dcf8; border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; font-family: inherit; transition: background 0.2s; margin-top: 6px; }
-        .inbox-file-btn:hover { background: #dbeeff; }
-        .inbox-actions { display: flex; gap: 8px; margin-top: 12px; }
-        .btn-read-toggle    { background: #e8f4ff; color: #0071e3; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 500; }
-        .btn-delete-inquiry { background: #fff0f0; color: crimson; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 500; }
-        .empty-inbox { text-align: center; padding: 60px 0; color: #bbb; font-size: 15px; }
+        .timeline-year-hz { text-align: center; font-size: 38px; font-weight: 700; color: var(--text-main); margin-bottom: 60px; letter-spacing: -0.02em; }
+        .timeline-dot-hz  { position: absolute; top: 77px; left: 50%; transform: translateX(-50%); width: 16px; height: 16px; border-radius: 50%; background-color: #ffffff; border: 4px solid var(--accent-blue); z-index: 2; }
+        .timeline-content-hz { margin-top: 35px; text-align: left; }
+        .timeline-content-hz ul { list-style: none; padding: 0; margin: 0; }
+        .timeline-content-hz li { display: flex; align-items: flex-start; font-size: 16px; color: #444; margin-bottom: 16px; line-height: 1.6; letter-spacing: -0.01em; word-break: keep-all; }
+        .timeline-content-hz li::before { content: ''; display: block; width: 6px; height: 6px; background-color: #86868b; border-radius: 50%; margin-top: 10px; margin-right: 14px; flex-shrink: 0; }
 
         @media (max-width: 768px) {
-            .contact-grid { grid-template-columns: 1fr; gap: 30px; }
-            .contact-form-card, .info-card { padding: 30px 24px; }
-            .item-add-flex { flex-direction: column; }
-            .btn-add-item { padding: 12px; }
+            .business-grid { grid-template-columns: 1fr; }
+            .timeline-item-hz { flex: 0 0 280px; padding: 0 20px; }
+            .timeline-year-hz { font-size: 32px; }
+            .timeline-content-hz li { font-size: 15px; }
         }
     </style>
 </head>
@@ -118,7 +68,7 @@
             <nav class="header-center">
                 <ul class="nav-menu">
                     <li><a href="../">홈</a></li>
-                    <li><a href="../about/">회사 소개</a></li>
+                    <li><a href="../about/" class="active">회사 소개</a></li>
                     <li class="has-dropdown">
                         <a href="../product/">제품 <i class="fas fa-chevron-down chevron"></i></a>
                         <ul class="dropdown">
@@ -128,7 +78,8 @@
                             <li><a href="../product/#section-parts"><i class="fas fa-cog"></i> 산업용 특수 소재</a></li>
                         </ul>
                     </li>
-                    <li><a href="../contact/" class="active">발주하기</a></li>
+                    <li><a href="../contact/">발주하기</a></li>
+                    <!-- ✅ How to Use 추가 -->
                     <li class="has-dropdown">
                         <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
                         <ul class="dropdown">
@@ -149,10 +100,8 @@
             <div class="header-right utility-icons">
                 <a href="#"><i class="fas fa-globe"></i></a>
                 <a href="#"><i class="fas fa-search"></i></a>
-                <a href="#" id="inboxBtn" title="발주 확인" style="display:none;" onclick="openInbox(event)">
-                    <i class="fas fa-envelope"></i>
-                    <span id="inboxBadge">0</span>
-                </a>
+                <a href="../contact/" id="inboxBtn" title="발주 확인" style="display:none;"><i class="fas fa-envelope"></i></a>
+                <a href="../product/" id="adminEditBtn" title="제품 관리" style="display:none;"><i class="fas fa-edit"></i></a>
                 <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
                 <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 <button class="hamburger" id="hamburger" aria-label="메뉴">
@@ -166,13 +115,14 @@
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
             <li><a href="../">홈</a></li>
-            <li><a href="../about/">회사 소개</a></li>
+            <li><a href="../about/" class="active">회사 소개</a></li>
             <li><a href="../product/">제품</a></li>
             <li><a href="../product/#section-wearable"   class="sub-item">· 스마트 웨어러블</a></li>
             <li><a href="../product/#section-industrial" class="sub-item">· 환경 안전 용품</a></li>
             <li><a href="../product/#section-grating"    class="sub-item">· Grating 시리즈</a></li>
             <li><a href="../product/#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
-            <li><a href="../contact/" class="active">발주하기</a></li>
+            <li><a href="../contact/">발주하기</a></li>
+            <!-- ✅ How to Use 추가 -->
             <li><a href="#">How to Use</a></li>
             <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener" class="sub-item">· Watch the video</a></li>
             <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
@@ -180,142 +130,117 @@
     </nav>
 
     <!-- ── 서브 히어로 ── -->
-    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat; padding: 160px 20px 100px;">
+    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('../img/bird.png') center/cover no-repeat;">
         <div class="container">
-            <h1 style="position:relative; z-index:2;">발주하기</h1>
-            <p style="position:relative; z-index:2;">필요한 품목과 배송지 정보를 입력하여 간편하게 발주하세요.</p>
+            <h1 style="position:relative;z-index:2;">회사 소개</h1>
+            <p style="position:relative;z-index:2;">미래를 일상으로 만드는 기업, SKY Commerce</p>
         </div>
     </section>
 
-    <!-- ── 발주 섹션 ── -->
-    <section class="contact-section">
+    <!-- ── 회사 소개 텍스트 ── -->
+    <section class="sub-content" style="background-color:var(--bg-color); padding-top:80px;">
         <div class="container">
-            <div class="contact-grid">
-
-                <div class="info-card">
-                    <h3>연락처 정보</h3>
-                    <div class="info-row"><i class="fas fa-map-marker-alt"></i><span>경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</span></div>
-                    <div class="info-row"><i class="fas fa-phone"></i><span>031-205-4133</span></div>
-                    <div class="info-row"><i class="fas fa-envelope"></i><span>car2314@naver.com</span></div>
-                    <div class="info-row"><i class="fas fa-clock"></i><span>평일 09:00 - 17:00<br><small style="color:#aaa;">(주말 및 공휴일 휴무)</small></span></div>
-                    <div class="order-steps">
-                        <h4>📋 발주 처리 절차</h4>
-                        <div class="step-item"><span class="step-num">1</span><span>협력 업체 로그인 (자동 인식)</span></div>
-                        <div class="step-item"><span class="step-num">2</span><span>품목, 수량 및 배송지 정보 추가</span></div>
-                        <div class="step-item"><span class="step-num">3</span><span>담당자 확인 후 <strong style="color:#1d1d1f;">1영업일 내</strong> 연락</span></div>
-                        <div class="step-item"><span class="step-num">4</span><span>견적 안내 및 납품 진행</span></div>
-                    </div>
-                    <div style="margin-top:24px; padding-top:20px; border-top:1px solid #eee;">
-                        <p style="font-size:12px; color:#aaa; line-height:1.8;">
-                            <i class="fas fa-lock" style="color:var(--accent-blue); margin-right:6px;"></i>
-                            수집된 정보는 거래 이행 목적으로만 사용되며,<br>
-                            <strong style="color:#666;">거래 완료 후 5년간 보관</strong> 후 안전하게 파기됩니다.
-                        </p>
-                    </div>
+            <div class="intro-text-section">
+                <h2>회사 소개</h2>
+                <p>SKY Commerce는 2015년 설립된 기업입니다. 우리는 글로벌 스마트 글래스 브랜드 <strong>TCL RayNeo</strong>의 공식 판매처로서, 최첨단 AR 스마트 글래스 기술을 한국 시장에 소개하고 있습니다.</p>
+                <p>우리의 목표는 증강현실 기술을 통해 사람들의 일상생활과 업무 환경을 혁신적으로 변화시키는 것입니다. 고객 중심의 접근 방식과 전문적인 서비스를 통해 최고의 사용자 경험을 제공하기 위해 끊임없이 노력하고 있습니다.</p>
+            </div>
+            <div class="business-grid">
+                <div class="business-card">
+                    <h3>산업 분야</h3>
+                    <p>삼성전기, LG 등 국내 최고 기업들의 1차 벤더 파트너사로서, 극한의 산업 환경에 필요한 특수 소재(Inconel, Titanium, 세라믹 등)와 산업용 정밀 장비를 안정적으로 공급하는 B2B 전문 솔루션을 제공합니다.</p>
                 </div>
-
-                <div class="contact-form-card">
-                    <div class="form-card-top" style="margin-bottom: 20px;">
-                        <h3 id="formTitle">발주서 등록</h3>
-                        <p id="formDesc">발주 품목과 수취인(배송지) 정보를 정확히 입력해 주세요.</p>
-                    </div>
-
-                    <div class="order-input-area">
-                        <div class="input-group">
-                            <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중..." style="background-color:#e8eaed; color:#555; cursor:not-allowed; font-weight:600;">
-                            <input type="hidden" id="vendorNameInput">
-                        </div>
-
-                        <div class="item-add-box">
-                            <div class="item-add-flex">
-                                <select id="productSelect" style="flex:2;">
-                                    <option value="">제품 목록을 불러오는 중...</option>
-                                </select>
-                                <input type="number" id="productQty" min="1" placeholder="수량 (개)" style="flex:1; text-align:right;">
-                            </div>
-                            <div class="item-add-flex">
-                                <input type="text" id="recipientName"    placeholder="수취인명"    style="flex:1;">
-                                <input type="text" id="recipientPhone"   placeholder="전화번호"    style="flex:1.5;">
-                                <input type="text" id="recipientAddress" placeholder="배송지 주소" style="flex:3;">
-                                <button class="btn-add-item" onclick="addOrderItem()">목록 추가</button>
-                            </div>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="selected-items-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width:20%;">품목명</th>
-                                        <th style="width:10%; text-align:right;">수량</th>
-                                        <th style="width:15%;">수취인</th>
-                                        <th style="width:20%;">연락처</th>
-                                        <th style="width:30%;">주소</th>
-                                        <th style="width:5%; text-align:center;">관리</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="orderListBody">
-                                    <tr><td colspan="6" style="text-align:center; color:#aaa; padding:25px;">선택된 품목이 없습니다.</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <label class="privacy-agree">
-                        <input type="checkbox" id="privacyAgree">
-                        <span class="privacy-agree-text">
-                            <strong>[필수] 발주 정보 제출 동의</strong><br>
-                            입력하신 품목 및 배송지 정보로 발주를 진행하는 것에 동의합니다. <span style="color:red;">*</span>
-                        </span>
-                    </label>
-
-                    <button class="btn-submit" id="submitBtn" onclick="submitOrder()">발주 제출하기</button>
-                    <div class="success-msg" id="successMsg">
-                        ✅ 발주가 성공적으로 접수되었습니다.<br>담당자가 확인 후 1영업일 내에 연락드리겠습니다.
-                    </div>
-
-                    <div class="my-order-section">
-                        <h4 style="margin-bottom:15px; font-size:16px;"><i class="fas fa-history"></i> 나의 발주 내역</h4>
-                        <p style="font-size:12px; color:#888; margin-bottom:12px;">담당자가 확인하기 전(미확인 상태)에만 수정 및 삭제가 가능합니다.</p>
-                        <div class="table-responsive">
-                            <table class="selected-items-table" style="font-size:12px;">
-                                <thead>
-                                    <tr>
-                                        <th>발주일시</th>
-                                        <th>요약</th>
-                                        <th>상태</th>
-                                        <th style="text-align:center;">관리</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="myOrdersBody">
-                                    <tr><td colspan="4" style="text-align:center; color:#aaa; padding:25px;">발주 내역을 불러오는 중...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="business-card">
+                    <h3>스마트 기기 및 유통</h3>
+                    <p>혁신적인 AR 스마트 글래스와 첨단 웨어러블 기기(TCL RayNeo, Mudra 등)를 유통하여 디지털과 현실 세계를 원활하게 연결하는 최상의 고객 경험을 제공합니다.</p>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ── 관리자 모달 ── -->
-    <div id="inboxModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
-        <div style="background:#fff; border-radius:16px; width:90%; max-width:720px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.3);">
-            <div style="padding:24px 28px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
-                <div>
-                    <h3 style="font-size:18px; font-weight:700; margin:0;">📦 전체 발주 목록 (관리자)</h3>
-                    <p style="font-size:12px; color:#aaa; margin:4px 0 0;">최신순으로 표시됩니다</p>
-                </div>
-                <button onclick="closeInbox()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#888;">✕</button>
+    <!-- ── 우리의 가치 ── -->
+    <section class="sub-content" style="background-color:#ffffff; padding-bottom:80px;">
+        <div class="container">
+            <div style="text-align:center; margin-bottom:60px;">
+                <h2 style="font-size:32px; font-weight:700; color:var(--text-main);">우리의 가치</h2>
             </div>
-            <div style="padding:14px 28px; border-bottom:1px solid #f0f0f0; display:flex; gap:8px; flex-shrink:0;">
-                <button class="inbox-tab active" onclick="filterInbox('all',this)">전체</button>
-                <button class="inbox-tab"        onclick="filterInbox('unread',this)">미확인 <span id="unreadCount"></span></button>
-                <button class="inbox-tab"        onclick="filterInbox('read',this)">확인됨</button>
+            <div class="feature-grid">
+                <div class="feature-item"><i class="fas fa-lightbulb"></i><h3>혁신</h3><p>끊임없는 혁신을 통해 최첨단 기술과 솔루션을 발굴합니다.</p></div>
+                <div class="feature-item"><i class="fas fa-users"></i><h3>고객 중심</h3><p>고객의 니즈를 최우선으로 생각하며 최상의 서비스를 제공합니다.</p></div>
+                <div class="feature-item"><i class="fas fa-shield-alt"></i><h3>신뢰성</h3><p>모든 비즈니스 관계에서 투명성을 바탕으로 신뢰를 구축합니다.</p></div>
+                <div class="feature-item"><i class="fas fa-chart-line"></i><h3>성장</h3><p>지속적인 학습과 발전을 통해 개인과 조직의 동반 성장을 추구합니다.</p></div>
             </div>
-            <div id="inboxList" style="overflow-y:auto; flex:1; padding:16px 28px;"></div>
         </div>
-    </div>
+    </section>
+
+    <!-- ── 회사 연혁 ── -->
+    <section class="sub-content" style="background-color:var(--bg-color);">
+        <div class="container" style="max-width:1400px; padding:0 40px;">
+            <div style="text-align:center; margin-bottom:20px;">
+                <h2 style="font-size:32px; font-weight:700; color:var(--text-main);">회사 연혁</h2>
+            </div>
+            <div class="timeline-wrapper">
+                <div class="horizontal-timeline">
+                    <div class="timeline-item-hz">
+                        <div class="timeline-year-hz">2025</div>
+                        <div class="timeline-dot-hz"></div>
+                        <div class="timeline-content-hz"><ul>
+                            <li>삼성전기 N2 Box Oven 제작 및 납품</li>
+                            <li>삼성전기 화성기 제작 및 납품</li>
+                            <li>혁신적 제스처 컨트롤러 "Mudra" 독점 계약</li>
+                        </ul></div>
+                    </div>
+                    <div class="timeline-item-hz">
+                        <div class="timeline-year-hz">2024</div>
+                        <div class="timeline-dot-hz"></div>
+                        <div class="timeline-content-hz"><ul>
+                            <li>"Keheal" 브랜드 독점 계약</li>
+                            <li>자사 브랜드 "SKY Brand" 공식 런칭</li>
+                        </ul></div>
+                    </div>
+                    <div class="timeline-item-hz">
+                        <div class="timeline-year-hz">2023</div>
+                        <div class="timeline-dot-hz"></div>
+                        <div class="timeline-content-hz"><ul>
+                            <li>글로벌 브랜드 "TCL RayNeo (NXTWEAR)" 독점 계약</li>
+                            <li>"Eloam" 독점 계약 체결</li>
+                            <li>국내 주요 온라인 쇼핑몰 23개사 협력업체 등록</li>
+                        </ul></div>
+                    </div>
+                    <div class="timeline-item-hz">
+                        <div class="timeline-year-hz">2018</div>
+                        <div class="timeline-dot-hz"></div>
+                        <div class="timeline-content-hz"><ul>
+                            <li>삼성전기 N2 Box Oven 제작 및 납품</li>
+                            <li>SIC & SISIC 산업용 특수 품목 추가</li>
+                        </ul></div>
+                    </div>
+                    <div class="timeline-item-hz">
+                        <div class="timeline-year-hz">2017</div>
+                        <div class="timeline-dot-hz"></div>
+                        <div class="timeline-content-hz"><ul>
+                            <li>LG 1차 벤더 파트너사로서 특수 소재 공급</li>
+                        </ul></div>
+                    </div>
+                    <div class="timeline-item-hz">
+                        <div class="timeline-year-hz">2016</div>
+                        <div class="timeline-dot-hz"></div>
+                        <div class="timeline-content-hz"><ul>
+                            <li>삼성전기 1차 벤더 파트너사 세라믹 관련 제품<br>(단열재, Roller, Pipe 등) 공급</li>
+                        </ul></div>
+                    </div>
+                    <div class="timeline-item-hz">
+                        <div class="timeline-year-hz">2015</div>
+                        <div class="timeline-dot-hz"></div>
+                        <div class="timeline-content-hz"><ul>
+                            <li>주식회사 스카이커머스(SKY Commerce) 공식 설립</li>
+                            <li>삼성전기 1차 벤더 파트너사 특수소재<br>(Inconel Plate, Tube, Pipe, Mesh Belt 등) 공급</li>
+                        </ul></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- ── 푸터 ── -->
     <footer>
@@ -351,353 +276,5 @@
 
     <script src="../js/main.js"></script>
     <script type="module" src="../js/auth.js"></script>
-
-    <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy, getDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
-            authDomain: "skycommerce-7fec4.firebaseapp.com",
-            projectId: "skycommerce-7fec4",
-            storageBucket: "skycommerce-7fec4.firebasestorage.app",
-            messagingSenderId: "232403511014",
-            appId: "1:232403511014:web:318ebb689d678e998b7d27"
-        };
-
-        const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
-        const db   = getFirestore(app);
-        const auth = getAuth(app);
-
-        window.isAdmin = false;
-        let currentFilter  = 'all';
-        let allOrders      = [];
-        let orderItems     = [];
-        let editingOrderId = null;
-
-        function esc(str = '') {
-            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-        }
-        function getTodayStr() {
-            const d = new Date();
-            return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
-        }
-
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                alert("발주 시스템은 로그인이 필요합니다.");
-                window.location.replace("../login/");
-                return;
-            }
-            const vendorDisplay = document.getElementById('vendorDisplay');
-            const vendorInput   = document.getElementById('vendorNameInput');
-            window.isAdmin = false;
-
-            try {
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (userDoc.exists()) {
-                    const data = userDoc.data();
-                    if (data.isAdmin === true) window.isAdmin = true;
-                    if (data.vendorName) {
-                        vendorDisplay.value = `🏢 [${data.vendorName}] 님 환영합니다.`;
-                        vendorInput.value   = data.vendorName;
-                    } else {
-                        vendorDisplay.value = `👤 ${user.email} (업체명 미등록)`;
-                        vendorInput.value   = user.email;
-                    }
-                }
-            } catch (e) {
-                vendorDisplay.value = `👤 ${user.email}`;
-                vendorInput.value   = user.email;
-            }
-
-            if (window.isAdmin) {
-                document.getElementById('inboxBtn').style.display = 'block';
-                loadOrders();
-            }
-            loadProducts();
-            loadMyOrders(user.uid);
-        });
-
-        async function loadProducts() {
-            const select = document.getElementById('productSelect');
-            try {
-                const snapshot = await getDocs(query(collection(db, "products")));
-                if (snapshot.empty) { select.innerHTML = '<option value="">등록된 제품이 없습니다.</option>'; return; }
-                let html = '<option value="">발주 품목 선택 (스마트 웨어러블 전용)</option>';
-                let cnt  = 0;
-                snapshot.forEach(d => {
-                    const data = d.data();
-                    if (data.category === 'wearable') {
-                        const name = data.name || data.title || d.id;
-                        html += `<option value="${esc(name)}">${esc(name)}</option>`;
-                        cnt++;
-                    }
-                });
-                select.innerHTML = cnt === 0 ? '<option value="">발주 가능한 웨어러블 제품이 없습니다.</option>' : html;
-            } catch (e) {
-                select.innerHTML = '<option value="">목록을 불러오지 못했습니다.</option>';
-            }
-        }
-
-        window.addOrderItem = function() {
-            const product   = document.getElementById('productSelect').value;
-            const qty       = parseInt(document.getElementById('productQty').value);
-            const recipient = document.getElementById('recipientName').value.trim();
-            const phone     = document.getElementById('recipientPhone').value.trim();
-            const address   = document.getElementById('recipientAddress').value.trim();
-            if (!product)        { alert('품목을 선택해주세요.'); return; }
-            if (!qty || qty < 1) { alert('올바른 수량을 입력해주세요.'); return; }
-            if (!recipient)      { alert('수취인 이름을 입력해주세요.'); return; }
-            if (!phone)          { alert('전화번호를 입력해주세요.'); return; }
-            if (!address)        { alert('배송지 주소를 입력해주세요.'); return; }
-            orderItems.push({ product, qty, recipient, phone, address });
-            document.getElementById('productSelect').value    = '';
-            document.getElementById('productQty').value       = '';
-            document.getElementById('recipientName').value    = '';
-            document.getElementById('recipientPhone').value   = '';
-            document.getElementById('recipientAddress').value = '';
-            renderOrderInputList();
-        };
-
-        window.removeOrderItem = function(i) { orderItems.splice(i,1); renderOrderInputList(); };
-
-        window.editOrderItem = function(i) {
-            const item = orderItems[i];
-            document.getElementById('productSelect').value    = item.product;
-            document.getElementById('productQty').value       = item.qty;
-            document.getElementById('recipientName').value    = item.recipient;
-            document.getElementById('recipientPhone').value   = item.phone;
-            document.getElementById('recipientAddress').value = item.address;
-            orderItems.splice(i,1);
-            renderOrderInputList();
-            document.querySelector('.item-add-box').scrollIntoView({ behavior:'smooth', block:'center' });
-        };
-
-        function renderOrderInputList() {
-            const tbody = document.getElementById('orderListBody');
-            if (orderItems.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#aaa; padding:25px;">선택된 품목이 없습니다.</td></tr>';
-                return;
-            }
-            tbody.innerHTML = orderItems.map((item, idx) => `
-                <tr>
-                    <td><strong>${esc(item.product)}</strong></td>
-                    <td style="text-align:right;">${item.qty}개</td>
-                    <td>${esc(item.recipient)}</td>
-                    <td>${esc(item.phone)}</td>
-                    <td><span style="display:inline-block; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${esc(item.address)}">${esc(item.address)}</span></td>
-                    <td style="text-align:center;">
-                        <button class="btn-edit-item"   onclick="editOrderItem(${idx})"   title="수정"><i class="fas fa-edit"></i></button>
-                        <button class="btn-remove-item" onclick="removeOrderItem(${idx})" title="삭제"><i class="fas fa-times"></i></button>
-                    </td>
-                </tr>`).join('');
-        }
-
-        window.submitOrder = async function() {
-            const vendor  = document.getElementById('vendorNameInput').value;
-            const agreed  = document.getElementById('privacyAgree').checked;
-            const btn     = document.getElementById('submitBtn');
-            const success = document.getElementById('successMsg');
-            if (!vendor)                { alert('업체 정보가 인식되지 않았습니다.'); return; }
-            if (orderItems.length === 0){ alert('발주할 품목을 1개 이상 추가해주세요.'); return; }
-            if (!agreed)                { alert('발주 정보 제출에 동의해주세요.'); return; }
-
-            btn.disabled  = true;
-            btn.innerHTML = '<span class="spinner"></span>제출 중...';
-
-            try {
-                const totalQty    = orderItems.reduce((s,i) => s+i.qty, 0);
-                const summaryText = orderItems.length === 1
-                    ? `${orderItems[0].product} (${totalQty}개)`
-                    : `${orderItems[0].product} 외 ${orderItems.length-1}건 (총 ${totalQty}개)`;
-
-                if (editingOrderId) {
-                    await updateDoc(doc(db,"inquiries",editingOrderId), { items:orderItems, summary:summaryText, totalQty });
-                    alert('발주 내역이 성공적으로 수정되었습니다.');
-                    editingOrderId = null;
-                    document.getElementById('formTitle').innerText = "발주서 등록";
-                    document.getElementById('formDesc').innerText  = "발주 품목과 수취인(배송지) 정보를 정확히 입력해 주세요.";
-                    btn.style.background = "#1d1d1f";
-                    btn.innerHTML = '발주 제출하기';
-                } else {
-                    await addDoc(collection(db,"inquiries"), {
-                        vendorName: vendor, userId: auth.currentUser.uid,
-                        items: orderItems, summary: summaryText, totalQty,
-                        type: '발주', privacyAgreed: true, read: false,
-                        createdAt: serverTimestamp()
-                    });
-                    success.classList.add('show');
-                }
-
-                document.getElementById('privacyAgree').checked = false;
-                orderItems = [];
-                renderOrderInputList();
-                loadMyOrders(auth.currentUser.uid);
-
-                if (!editingOrderId) {
-                    btn.innerHTML = '✅ 제출 완료';
-                    setTimeout(() => { btn.disabled=false; btn.innerHTML='발주 제출하기'; success.classList.remove('show'); }, 3000);
-                } else {
-                    btn.disabled = false;
-                }
-            } catch(e) {
-                alert('처리 실패: ' + e.message);
-                btn.disabled  = false;
-                btn.innerHTML = '발주 제출하기';
-            }
-        };
-
-        async function loadMyOrders(uid) {
-            const q     = query(collection(db,"inquiries"), where("userId","==",uid), orderBy("createdAt","desc"));
-            const tbody = document.getElementById('myOrdersBody');
-            try {
-                const snap = await getDocs(q);
-                if (snap.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:25px; color:#aaa;">아직 접수한 발주 내역이 없습니다.</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = snap.docs.map(d => {
-                    const item = d.data();
-                    const date = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '방금 전';
-                    const statusStr = item.read
-                        ? '<span class="status-badge status-confirm">✔ 확인됨 (진행중)</span>'
-                        : '<span class="status-badge status-wait">⏳ 미확인 (수정가능)</span>';
-                    const actionBtns = !item.read
-                        ? `<button class="btn-mini" onclick="editMyOrder('${d.id}')">수정</button>
-                           <button class="btn-mini btn-mini-del" onclick="deleteMyOrder('${d.id}')">삭제</button>`
-                        : '<span style="color:#aaa; font-size:11px;">수정 불가</span>';
-                    return `<tr>
-                        <td>${date}</td>
-                        <td><strong>${esc(item.summary)}</strong></td>
-                        <td>${statusStr}</td>
-                        <td style="text-align:center;">${actionBtns}</td>
-                    </tr>`;
-                }).join('');
-            } catch(e) { console.error(e); }
-        }
-
-        window.editMyOrder = async function(id) {
-            try {
-                const d = await getDoc(doc(db,"inquiries",id));
-                if (!d.exists()) return;
-                const data = d.data();
-                orderItems     = [...data.items];
-                editingOrderId = id;
-                document.getElementById('formTitle').innerText        = "🔄 발주서 수정하기";
-                document.getElementById('formDesc').innerText         = "내용을 변경한 뒤 '발주 수정 완료' 버튼을 눌러주세요.";
-                document.getElementById('submitBtn').innerText        = "발주 수정 완료";
-                document.getElementById('submitBtn').style.background = "#0071e3";
-                if (orderItems.length === 1) { editOrderItem(0); } else { renderOrderInputList(); }
-                document.querySelector('.contact-form-card').scrollIntoView({ behavior:'smooth', block:'start' });
-            } catch(e) { alert('불러오기 실패: ' + e.message); }
-        };
-
-        window.deleteMyOrder = async function(id) {
-            if (confirm("해당 발주 내역을 정말 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
-                try {
-                    await deleteDoc(doc(db,"inquiries",id));
-                    alert("발주가 취소/삭제되었습니다.");
-                    loadMyOrders(auth.currentUser.uid);
-                } catch(e) { alert("삭제 오류: " + e.message); }
-            }
-        };
-
-        async function loadOrders() {
-            if (!window.isAdmin) return;
-            try {
-                const snap = await getDocs(query(collection(db,"inquiries"), orderBy("createdAt","desc")));
-                allOrders = [];
-                snap.forEach(d => allOrders.push({ id:d.id, ...d.data() }));
-                const unread = allOrders.filter(i => !i.read && i.type==='발주').length;
-                const badge  = document.getElementById('inboxBadge');
-                if (badge) { badge.textContent = unread; badge.style.display = unread>0?'block':'none'; }
-                const uc = document.getElementById('unreadCount');
-                if (uc) uc.textContent = unread>0?`(${unread})`:'';
-            } catch(e) { console.error(e); }
-        }
-
-        function renderOrders() {
-            if (!window.isAdmin) return;
-            const list = document.getElementById('inboxList');
-            const filtered = allOrders.filter(i => {
-                if (i.type !== '발주') return false;
-                if (currentFilter === 'unread') return !i.read;
-                if (currentFilter === 'read')   return  i.read;
-                return true;
-            });
-            if (filtered.length === 0) { list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>'; return; }
-            list.innerHTML = filtered.map(item => {
-                const date    = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
-                const vendor  = item.vendorName || '알 수 없는 업체';
-                const summary = item.summary    || '상세 품목 없음';
-                return `
-                <div class="inbox-item ${item.read?'read':'unread'}">
-                    <div class="inbox-item-header">
-                        <span class="inbox-name">${item.read?'':'🔵 '}🏢 [${esc(vendor)}] 발주</span>
-                        <span class="inbox-date">${esc(date)}</span>
-                    </div>
-                    <div class="inbox-summary">📦 <strong>요약:</strong> ${esc(summary)}</div>
-                    <button class="inbox-file-btn" onclick="downloadAdminExcel('${esc(item.id)}')">
-                        <i class="fas fa-file-excel"></i> 엑셀로 저장
-                    </button>
-                    <div class="inbox-actions">
-                        <button class="btn-read-toggle"    onclick="toggleRead('${esc(item.id)}',${item.read})">${item.read?'미확인으로 변경':'✔ 확인됨으로 표시'}</button>
-                        <button class="btn-delete-inquiry" onclick="deleteAdminOrder('${esc(item.id)}')">🗑 삭제</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        window.downloadAdminExcel = function(orderId) {
-            if (!window.isAdmin) return;
-            const order = allOrders.find(i => i.id===orderId);
-            if (!order?.items?.length) { alert('엑셀로 변환할 품목 데이터가 없습니다.'); return; }
-            const data = order.items.map((item,idx) => ({
-                "연번": idx+1, "협력업체": order.vendorName,
-                "품목명": item.product, "수량": item.qty,
-                "수취인": item.recipient||'', "전화번호": item.phone||'',
-                "배송지 주소": item.address||'',
-                "발주일시": order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('ko-KR') : ''
-            }));
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "발주서");
-            ws['!cols'] = [{wch:5},{wch:15},{wch:25},{wch:8},{wch:12},{wch:15},{wch:45},{wch:20}];
-            XLSX.writeFile(wb, `${order.vendorName}_${getTodayStr()}_발주서.xlsx`);
-        };
-
-        window.toggleRead = async function(id, cur) {
-            if (!window.isAdmin) return;
-            try { await updateDoc(doc(db,"inquiries",id),{read:!cur}); await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid); }
-            catch(e) { alert('업데이트 실패: '+e.message); }
-        };
-
-        window.deleteAdminOrder = async function(id) {
-            if (!window.isAdmin) return;
-            if (!confirm('관리자 권한으로 이 발주를 삭제하시겠습니까?')) return;
-            try { await deleteDoc(doc(db,"inquiries",id)); await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid); }
-            catch(e) { alert('삭제 실패: '+e.message); }
-        };
-
-        window.filterInbox = function(filter, btn) {
-            if (!window.isAdmin) return;
-            currentFilter = filter;
-            document.querySelectorAll('.inbox-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            renderOrders();
-        };
-
-        window.openInbox = async function(e) {
-            e.preventDefault();
-            if (!window.isAdmin) return;
-            await loadOrders(); renderOrders();
-            document.getElementById('inboxModal').style.display = 'flex';
-        };
-
-        window.closeInbox = function() { document.getElementById('inboxModal').style.display = 'none'; };
-        document.getElementById('inboxModal').addEventListener('click', function(e) { if (e.target===this) closeInbox(); });
-    </script>
 </body>
 </html>
