@@ -1,61 +1,58 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const header       = document.getElementById('main-header');
-    const heroContent  = document.getElementById('hero-content');
-    const videoOverlay = document.getElementById('video-overlay');
+document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. 스크롤 이벤트 처리 ---
-    function handleScroll() {
-        const isMainPage = document.querySelector('.video-hero') !== null;
-        if (isMainPage) {
+    /* ═══════════════════════════════════════
+       1. 헤더 — 스크롤 시 배경 진하게
+    ═══════════════════════════════════════ */
+    const header = document.getElementById('main-header');
+
+    if (header) {
+        window.addEventListener('scroll', () => {
             if (window.scrollY > 10) {
-                if (header)       header.classList.add('scrolled');
-                if (heroContent)  heroContent.classList.add('scrolled');
-                if (videoOverlay) videoOverlay.classList.add('scrolled');
+                header.classList.add('scrolled');
             } else {
-                if (header)       header.classList.remove('scrolled');
-                if (heroContent)  heroContent.classList.remove('scrolled');
-                if (videoOverlay) videoOverlay.classList.remove('scrolled');
+                header.classList.remove('scrolled');
             }
-        } else {
-            // 서브페이지는 항상 헤더가 보이도록 처리
-            if (header) header.classList.add('scrolled');
-        }
+        });
+
+        header.addEventListener('mouseenter', () => header.classList.add('hovered'));
+        header.addEventListener('mouseleave', () => header.classList.remove('hovered'));
     }
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
 
-    // ✅ --- 2. 마우스 상단 호버(접근) 이벤트 처리 추가 ---
-    document.addEventListener('mousemove', function(e) {
-        const isMainPage = document.querySelector('.video-hero') !== null;
-        
-        // 메인 페이지(index)이면서 스크롤이 최상단(10px 이하)에 있을 때만 작동
-        if (isMainPage && window.scrollY <= 10) {
-            // 마우스 Y 좌표가 85px 이하 (헤더 높이 근처)로 올라가면
-            if (e.clientY <= 85) {
-                if (header) header.classList.add('hovered');
+    /* ═══════════════════════════════════════
+       2. 오버레이 — 스크롤 시 더 어둡게
+    ═══════════════════════════════════════ */
+    const heroOverlay = document.getElementById('heroOverlay');
+
+    if (heroOverlay) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                heroOverlay.classList.add('scrolled');
             } else {
-                // 마우스가 다시 아래로 내려가면
-                if (header) header.classList.remove('hovered');
+                heroOverlay.classList.remove('scrolled');
             }
-        }
-    });
+        });
+    }
 
-    // --- 3. 햄버거 메뉴 처리 ---
+
+    /* ═══════════════════════════════════════
+       3. 햄버거 메뉴
+    ═══════════════════════════════════════ */
     const hamburger  = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
-    
+
     if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', function() {
-            mobileMenu.classList.toggle('open');
+        hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
         });
-        
-        document.addEventListener('click', function(e) {
-            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-                mobileMenu.classList.remove('open');
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
                 hamburger.classList.remove('open');
-            }
+                mobileMenu.classList.remove('open');
+            });
         });
     }
+
 });

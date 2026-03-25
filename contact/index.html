@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>발주하기 | SKY Commerce</title>
     <link rel="icon" type="image/png" sizes="any" href="../img/logo_blue.png">
-
     <meta property="og:type"         content="website">
     <meta property="og:site_name"    content="SKY Commerce">
     <meta property="og:title"        content="발주하기 | SKY Commerce">
@@ -13,13 +12,11 @@
     <meta property="og:url"          content="https://skycommerce.co.kr/contact/">
     <meta property="og:image"        content="https://skycommerce.co.kr/img/og_image.png">
     <meta property="og:locale"       content="ko_KR">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -45,7 +42,7 @@
         .order-input-area { background: #fafafa; border: 1px solid #e5e5ea; border-radius: 14px; padding: 24px; margin-bottom: 20px; }
         .input-group { margin-bottom: 16px; }
         .input-group input { width: 100%; padding: 14px; border: 1.5px solid #d0d0d7; border-radius: 10px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s; }
-        
+
         .item-add-box { background: #fff; border: 1px solid #e5e5ea; border-radius: 10px; padding: 16px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
         .item-add-flex { display: flex; gap: 8px; margin-bottom: 8px; }
         .item-add-flex:last-child { margin-bottom: 0; }
@@ -70,23 +67,21 @@
         .btn-submit { width: 100%; background: #1d1d1f; color: #fff; border: none; border-radius: 10px; padding: 15px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.2s, transform 0.2s; }
         .btn-submit:hover { background: #000; transform: translateY(-1px); }
         .btn-submit:disabled { background: #aaa; cursor: not-allowed; transform: none; }
-
         .success-msg { display: none; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; color: #065f46; font-size: 14px; padding: 16px 20px; margin-top: 16px; text-align: center; line-height: 1.7; }
         .success-msg.show { display: block; }
         .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* 나의 발주 내역 전용 스타일 */
         .my-order-section { margin-top: 40px; padding-top: 30px; border-top: 2px solid #eee; }
         .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; }
-        .status-wait { background: #fff7ed; color: #c2410c; } 
-        .status-confirm { background: #f0fdf4; color: #166534; } 
+        .status-wait    { background: #fff7ed; color: #c2410c; }
+        .status-confirm { background: #f0fdf4; color: #166534; }
         .btn-mini { padding: 5px 10px; font-size: 11px; border-radius: 6px; cursor: pointer; border: 1px solid #ddd; background: #fff; margin: 0 2px; font-family: inherit; transition: 0.2s; }
         .btn-mini:hover { background: #f0f0f0; }
         .btn-mini-del { color: crimson; border-color: #ffcccc; background: #fff0f0; }
         .btn-mini-del:hover { background: #ffe0e0; }
 
-        /* 관리자 모달 스타일 */
+        /* 관리자 모달 */
         #inboxBadge { display: none; position: absolute; top: -4px; right: -4px; background: crimson; color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; line-height: 16px; text-align: center; }
         #inboxBtn { position: relative; }
         .inbox-tab { background: #f5f5f7; border: none; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; font-family: inherit; transition: background 0.2s; }
@@ -115,6 +110,7 @@
 </head>
 <body>
 
+    <!-- ── 헤더 ── -->
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
@@ -124,7 +120,15 @@
                 <ul class="nav-menu">
                     <li><a href="../">홈</a></li>
                     <li><a href="../about/">회사 소개</a></li>
-                    <li><a href="../product/">제품</a></li>
+                    <li class="has-dropdown">
+                        <a href="../product/">제품 <i class="fas fa-chevron-down chevron"></i></a>
+                        <ul class="dropdown">
+                            <li><a href="../product/#section-wearable"><i class="fas fa-glasses"></i> 스마트 웨어러블</a></li>
+                            <li><a href="../product/#section-industrial"><i class="fas fa-hard-hat"></i> 환경 안전 용품</a></li>
+                            <li><a href="../product/#section-grating"><i class="fas fa-th"></i> Grating 시리즈</a></li>
+                            <li><a href="../product/#section-parts"><i class="fas fa-cog"></i> 산업용 특수 소재</a></li>
+                        </ul>
+                    </li>
                     <li><a href="../contact/" class="active">발주하기</a></li>
                 </ul>
             </nav>
@@ -147,22 +151,29 @@
         </div>
     </header>
 
+    <!-- ── 모바일 메뉴 ── -->
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
             <li><a href="../">홈</a></li>
             <li><a href="../about/">회사 소개</a></li>
             <li><a href="../product/">제품</a></li>
+            <li><a href="../product/#section-wearable"   class="sub-item">· 스마트 웨어러블</a></li>
+            <li><a href="../product/#section-industrial" class="sub-item">· 환경 안전 용품</a></li>
+            <li><a href="../product/#section-grating"    class="sub-item">· Grating 시리즈</a></li>
+            <li><a href="../product/#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
             <li><a href="../contact/" class="active">발주하기</a></li>
         </ul>
     </nav>
 
-    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat;">
+    <!-- ── 서브 히어로 ── -->
+    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat; padding: 160px 20px 100px;">
         <div class="container">
             <h1 style="position:relative; z-index:2;">발주하기</h1>
             <p style="position:relative; z-index:2;">필요한 품목과 배송지 정보를 입력하여 간편하게 발주하세요.</p>
         </div>
     </section>
 
+    <!-- ── 발주 섹션 ── -->
     <section class="contact-section">
         <div class="container">
             <div class="contact-grid">
@@ -197,21 +208,21 @@
 
                     <div class="order-input-area">
                         <div class="input-group">
-                            <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중..." style="background-color: #e8eaed; color: #555; cursor: not-allowed; font-weight: 600;">
+                            <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중..." style="background-color:#e8eaed; color:#555; cursor:not-allowed; font-weight:600;">
                             <input type="hidden" id="vendorNameInput">
                         </div>
 
                         <div class="item-add-box">
                             <div class="item-add-flex">
-                                <select id="productSelect" style="flex: 2;">
+                                <select id="productSelect" style="flex:2;">
                                     <option value="">제품 목록을 불러오는 중...</option>
                                 </select>
-                                <input type="number" id="productQty" min="1" placeholder="수량 (개)" style="flex: 1; text-align: right;">
+                                <input type="number" id="productQty" min="1" placeholder="수량 (개)" style="flex:1; text-align:right;">
                             </div>
                             <div class="item-add-flex">
-                                <input type="text" id="recipientName" placeholder="수취인명" style="flex: 1;">
-                                <input type="text" id="recipientPhone" placeholder="전화번호" style="flex: 1.5;">
-                                <input type="text" id="recipientAddress" placeholder="배송지 주소" style="flex: 3;">
+                                <input type="text" id="recipientName"    placeholder="수취인명"    style="flex:1;">
+                                <input type="text" id="recipientPhone"   placeholder="전화번호"    style="flex:1.5;">
+                                <input type="text" id="recipientAddress" placeholder="배송지 주소" style="flex:3;">
                                 <button class="btn-add-item" onclick="addOrderItem()">목록 추가</button>
                             </div>
                         </div>
@@ -220,16 +231,16 @@
                             <table class="selected-items-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 20%;">품목명</th>
-                                        <th style="width: 10%; text-align: right;">수량</th>
-                                        <th style="width: 15%;">수취인</th>
-                                        <th style="width: 20%;">연락처</th>
-                                        <th style="width: 30%;">주소</th>
-                                        <th style="width: 5%; text-align: center;">관리</th>
+                                        <th style="width:20%;">품목명</th>
+                                        <th style="width:10%; text-align:right;">수량</th>
+                                        <th style="width:15%;">수취인</th>
+                                        <th style="width:20%;">연락처</th>
+                                        <th style="width:30%;">주소</th>
+                                        <th style="width:5%; text-align:center;">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody id="orderListBody">
-                                    <tr><td colspan="6" style="text-align:center; color:#aaa; padding: 25px;">선택된 품목이 없습니다.</td></tr>
+                                    <tr><td colspan="6" style="text-align:center; color:#aaa; padding:25px;">선택된 품목이 없습니다.</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -249,8 +260,8 @@
                     </div>
 
                     <div class="my-order-section">
-                        <h4 style="margin-bottom:15px; font-size: 16px;"><i class="fas fa-history"></i> 나의 발주 내역</h4>
-                        <p style="font-size: 12px; color: #888; margin-bottom: 12px;">담당자가 확인하기 전(미확인 상태)에만 수정 및 삭제가 가능합니다.</p>
+                        <h4 style="margin-bottom:15px; font-size:16px;"><i class="fas fa-history"></i> 나의 발주 내역</h4>
+                        <p style="font-size:12px; color:#888; margin-bottom:12px;">담당자가 확인하기 전(미확인 상태)에만 수정 및 삭제가 가능합니다.</p>
                         <div class="table-responsive">
                             <table class="selected-items-table" style="font-size:12px;">
                                 <thead>
@@ -258,20 +269,22 @@
                                         <th>발주일시</th>
                                         <th>요약</th>
                                         <th>상태</th>
-                                        <th style="text-align: center;">관리</th>
+                                        <th style="text-align:center;">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody id="myOrdersBody">
-                                    <tr><td colspan="4" style="text-align:center; color:#aaa; padding: 25px;">발주 내역을 불러오는 중...</td></tr>
+                                    <tr><td colspan="4" style="text-align:center; color:#aaa; padding:25px;">발주 내역을 불러오는 중...</td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
+    <!-- ── 관리자 모달 ── -->
     <div id="inboxModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
         <div style="background:#fff; border-radius:16px; width:90%; max-width:720px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.3);">
             <div style="padding:24px 28px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
@@ -290,6 +303,7 @@
         </div>
     </div>
 
+    <!-- ── 푸터 ── -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -317,7 +331,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+            <div class="footer-bottom"><p>&copy; 2026 SKY Commerce. All Rights Reserved.</p></div>
         </div>
     </footer>
 
@@ -338,150 +352,114 @@
             appId: "1:232403511014:web:318ebb689d678e998b7d27"
         };
 
-        const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
+        const db   = getFirestore(app);
         const auth = getAuth(app);
 
-        // --- 공통 상태 변수 ---
-        window.isAdmin = false; 
+        window.isAdmin = false;
         let currentFilter = 'all';
-        let allOrders = []; // 관리자용 전체 발주 데이터
-        
-        let orderItems = []; // 현재 입력 중인 폼의 품목 데이터
-        let editingOrderId = null; // 사용자가 수정 중인 발주 ID
+        let allOrders  = [];
+        let orderItems = [];
+        let editingOrderId = null;
 
         function esc(str = '') {
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
         }
-
         function getTodayStr() {
             const d = new Date();
             return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
         }
 
-        // ✅ 로그인 상태 확인 및 DB 권한 체크
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 alert("발주 시스템은 로그인이 필요합니다.");
                 window.location.replace("../login/");
                 return;
             }
-
             const vendorDisplay = document.getElementById('vendorDisplay');
-            const vendorInput = document.getElementById('vendorNameInput');
+            const vendorInput   = document.getElementById('vendorNameInput');
             window.isAdmin = false;
 
             try {
                 const userDoc = await getDoc(doc(db, "users", user.uid));
                 if (userDoc.exists()) {
                     const data = userDoc.data();
-                    if (data.isAdmin === true) {
-                        window.isAdmin = true;
-                    }
+                    if (data.isAdmin === true) window.isAdmin = true;
                     if (data.vendorName) {
                         vendorDisplay.value = `🏢 [${data.vendorName}] 님 환영합니다.`;
-                        vendorInput.value = data.vendorName; 
+                        vendorInput.value   = data.vendorName;
                     } else {
                         vendorDisplay.value = `👤 ${user.email} (업체명 미등록)`;
-                        vendorInput.value = user.email;
+                        vendorInput.value   = user.email;
                     }
                 }
-            } catch (error) {
+            } catch (e) {
                 vendorDisplay.value = `👤 ${user.email}`;
-                vendorInput.value = user.email;
+                vendorInput.value   = user.email;
             }
 
             if (window.isAdmin) {
-                document.getElementById('inboxBtn').style.display = 'block';
+                document.getElementById('inboxBtn').style.display    = 'block';
                 document.getElementById('adminEditBtn').style.display = 'block';
-                loadOrders(); 
+                loadOrders();
             }
-
             loadProducts();
             loadMyOrders(user.uid);
         });
 
-        // ✅ 제품 불러오기 (스마트 웨어러블 전용 필터링)
         async function loadProducts() {
             const select = document.getElementById('productSelect');
             try {
-                const q = query(collection(db, "products"));
-                const snapshot = await getDocs(q);
-                
-                if (snapshot.empty) {
-                    select.innerHTML = '<option value="">등록된 제품이 없습니다.</option>';
-                    return;
-                }
-
-                let optionsHtml = '<option value="">발주 품목 선택 (스마트 웨어러블 전용)</option>';
-                let wearableCount = 0;
-
-                snapshot.forEach(doc => {
-                    const data = doc.data();
+                const snapshot = await getDocs(query(collection(db, "products")));
+                if (snapshot.empty) { select.innerHTML = '<option value="">등록된 제품이 없습니다.</option>'; return; }
+                let html = '<option value="">발주 품목 선택 (스마트 웨어러블 전용)</option>';
+                let cnt  = 0;
+                snapshot.forEach(d => {
+                    const data = d.data();
                     if (data.category === 'wearable') {
-                        const productName = data.name || data.title || doc.id; 
-                        optionsHtml += `<option value="${esc(productName)}">${esc(productName)}</option>`;
-                        wearableCount++;
+                        const name = data.name || data.title || d.id;
+                        html += `<option value="${esc(name)}">${esc(name)}</option>`;
+                        cnt++;
                     }
                 });
-
-                if (wearableCount === 0) {
-                    select.innerHTML = '<option value="">발주 가능한 웨어러블 제품이 없습니다.</option>';
-                } else {
-                    select.innerHTML = optionsHtml;
-                }
+                select.innerHTML = cnt === 0 ? '<option value="">발주 가능한 웨어러블 제품이 없습니다.</option>' : html;
             } catch (e) {
-                console.error("제품 목록 로드 실패:", e);
                 select.innerHTML = '<option value="">목록을 불러오지 못했습니다.</option>';
             }
         }
-        
-        // ✅ 폼 입력 및 목록 컨트롤
+
         window.addOrderItem = function() {
-            const product = document.getElementById('productSelect').value;
-            const qty = parseInt(document.getElementById('productQty').value);
+            const product   = document.getElementById('productSelect').value;
+            const qty       = parseInt(document.getElementById('productQty').value);
             const recipient = document.getElementById('recipientName').value.trim();
-            const phone = document.getElementById('recipientPhone').value.trim();
-            const address = document.getElementById('recipientAddress').value.trim();
-
-            if (!product) { alert('품목을 선택해주세요.'); return; }
-            if (!qty || qty < 1) { alert('올바른 수량을 입력해주세요.'); return; }
-            if (!recipient) { alert('수취인 이름을 입력해주세요.'); return; }
-            if (!phone) { alert('전화번호를 입력해주세요.'); return; }
-            if (!address) { alert('배송지 주소를 입력해주세요.'); return; }
-
+            const phone     = document.getElementById('recipientPhone').value.trim();
+            const address   = document.getElementById('recipientAddress').value.trim();
+            if (!product)           { alert('품목을 선택해주세요.'); return; }
+            if (!qty || qty < 1)    { alert('올바른 수량을 입력해주세요.'); return; }
+            if (!recipient)         { alert('수취인 이름을 입력해주세요.'); return; }
+            if (!phone)             { alert('전화번호를 입력해주세요.'); return; }
+            if (!address)           { alert('배송지 주소를 입력해주세요.'); return; }
             orderItems.push({ product, qty, recipient, phone, address });
-
-            document.getElementById('productSelect').value = '';
-            document.getElementById('productQty').value = '';
-            document.getElementById('recipientName').value = '';
-            document.getElementById('recipientPhone').value = '';
+            document.getElementById('productSelect').value    = '';
+            document.getElementById('productQty').value       = '';
+            document.getElementById('recipientName').value    = '';
+            document.getElementById('recipientPhone').value   = '';
             document.getElementById('recipientAddress').value = '';
-            
             renderOrderInputList();
         };
 
-        // 삭제
-        window.removeOrderItem = function(index) {
-            orderItems.splice(index, 1);
-            renderOrderInputList();
-        };
+        window.removeOrderItem = function(i) { orderItems.splice(i,1); renderOrderInputList(); };
 
-        // 수정 (데이터를 입력창으로 다시 가져오기)
-        window.editOrderItem = function(index) {
-            const item = orderItems[index];
-
-            document.getElementById('productSelect').value = item.product;
-            document.getElementById('productQty').value = item.qty;
-            document.getElementById('recipientName').value = item.recipient;
-            document.getElementById('recipientPhone').value = item.phone;
+        window.editOrderItem = function(i) {
+            const item = orderItems[i];
+            document.getElementById('productSelect').value    = item.product;
+            document.getElementById('productQty').value       = item.qty;
+            document.getElementById('recipientName').value    = item.recipient;
+            document.getElementById('recipientPhone').value   = item.phone;
             document.getElementById('recipientAddress').value = item.address;
-
-            // 표에서는 임시로 지우고 재렌더링
-            orderItems.splice(index, 1);
+            orderItems.splice(i,1);
             renderOrderInputList();
-            
-            document.querySelector('.item-add-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.querySelector('.item-add-box').scrollIntoView({ behavior:'smooth', block:'center' });
         };
 
         function renderOrderInputList() {
@@ -493,177 +471,138 @@
             tbody.innerHTML = orderItems.map((item, idx) => `
                 <tr>
                     <td><strong>${esc(item.product)}</strong></td>
-                    <td style="text-align: right;">${item.qty}개</td>
+                    <td style="text-align:right;">${item.qty}개</td>
                     <td>${esc(item.recipient)}</td>
                     <td>${esc(item.phone)}</td>
                     <td><span style="display:inline-block; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${esc(item.address)}">${esc(item.address)}</span></td>
-                    <td style="text-align: center;">
-                        <button class="btn-edit-item" onclick="editOrderItem(${idx})" title="수정"><i class="fas fa-edit"></i></button>
+                    <td style="text-align:center;">
+                        <button class="btn-edit-item"   onclick="editOrderItem(${idx})"   title="수정"><i class="fas fa-edit"></i></button>
                         <button class="btn-remove-item" onclick="removeOrderItem(${idx})" title="삭제"><i class="fas fa-times"></i></button>
                     </td>
-                </tr>
-            `).join('');
+                </tr>`).join('');
         }
 
-        // ✅ 발주 제출
-        window.submitOrder = async function () {
-            const vendor = document.getElementById('vendorNameInput').value;
-            const agreed = document.getElementById('privacyAgree').checked;
-            const btn = document.getElementById('submitBtn');
+        window.submitOrder = async function() {
+            const vendor  = document.getElementById('vendorNameInput').value;
+            const agreed  = document.getElementById('privacyAgree').checked;
+            const btn     = document.getElementById('submitBtn');
             const success = document.getElementById('successMsg');
-
-            if (!vendor) { alert('업체 정보가 인식되지 않았습니다.'); return; }
-            if (orderItems.length === 0) { alert('발주할 품목을 1개 이상 추가해주세요.'); return; }
-            if (!agreed) { alert('발주 정보 제출에 동의해주세요.'); return; }
+            if (!vendor)               { alert('업체 정보가 인식되지 않았습니다.'); return; }
+            if (orderItems.length ===0){ alert('발주할 품목을 1개 이상 추가해주세요.'); return; }
+            if (!agreed)               { alert('발주 정보 제출에 동의해주세요.'); return; }
 
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner"></span>제출 중...';
 
             try {
-                const totalQty = orderItems.reduce((sum, item) => sum + item.qty, 0);
-                const summaryText = orderItems.length === 1 
-                    ? `${orderItems[0].product} (${totalQty}개)` 
-                    : `${orderItems[0].product} 외 ${orderItems.length - 1}건 (총 ${totalQty}개)`;
+                const totalQty    = orderItems.reduce((s,i) => s+i.qty, 0);
+                const summaryText = orderItems.length === 1
+                    ? `${orderItems[0].product} (${totalQty}개)`
+                    : `${orderItems[0].product} 외 ${orderItems.length-1}건 (총 ${totalQty}개)`;
 
                 if (editingOrderId) {
-                    await updateDoc(doc(db, "inquiries", editingOrderId), {
-                        items: orderItems,
-                        summary: summaryText,
-                        totalQty: totalQty
-                    });
+                    await updateDoc(doc(db,"inquiries",editingOrderId), { items:orderItems, summary:summaryText, totalQty });
                     alert('발주 내역이 성공적으로 수정되었습니다.');
                     editingOrderId = null;
                     document.getElementById('formTitle').innerText = "발주서 등록";
-                    document.getElementById('formDesc').innerText = "발주 품목과 수취인(배송지) 정보를 정확히 입력해 주세요.";
+                    document.getElementById('formDesc').innerText  = "발주 품목과 수취인(배송지) 정보를 정확히 입력해 주세요.";
                     btn.style.background = "#1d1d1f";
                     btn.innerHTML = '발주 제출하기';
                 } else {
-                    await addDoc(collection(db, "inquiries"), {
-                        vendorName: vendor,
-                        userId: auth.currentUser.uid, 
-                        items: orderItems,
-                        summary: summaryText,
-                        totalQty: totalQty,
-                        type: '발주', 
-                        privacyAgreed: true, 
-                        read: false,
+                    await addDoc(collection(db,"inquiries"), {
+                        vendorName: vendor, userId: auth.currentUser.uid,
+                        items: orderItems, summary: summaryText, totalQty,
+                        type: '발주', privacyAgreed: true, read: false,
                         createdAt: serverTimestamp()
                     });
                     success.classList.add('show');
                 }
-                
+
                 document.getElementById('privacyAgree').checked = false;
                 orderItems = [];
                 renderOrderInputList();
-                loadMyOrders(auth.currentUser.uid); 
+                loadMyOrders(auth.currentUser.uid);
 
                 if (!editingOrderId) {
                     btn.innerHTML = '✅ 제출 완료';
-                    setTimeout(() => {
-                        btn.disabled = false;
-                        btn.innerHTML = '발주 제출하기';
-                        success.classList.remove('show');
-                    }, 3000);
+                    setTimeout(() => { btn.disabled=false; btn.innerHTML='발주 제출하기'; success.classList.remove('show'); }, 3000);
                 } else {
                     btn.disabled = false;
                 }
-            } catch (e) {
+            } catch(e) {
                 alert('처리 실패: ' + e.message);
                 btn.disabled = false;
                 btn.innerHTML = '발주 제출하기';
             }
         };
 
-        // ✅ 내 발주 관리
         async function loadMyOrders(uid) {
-            const q = query(collection(db, "inquiries"), where("userId", "==", uid), orderBy("createdAt", "desc"));
+            const q     = query(collection(db,"inquiries"), where("userId","==",uid), orderBy("createdAt","desc"));
             const tbody = document.getElementById('myOrdersBody');
             try {
                 const snap = await getDocs(q);
-                
                 if (snap.empty) {
                     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:25px; color:#aaa;">아직 접수한 발주 내역이 없습니다.</td></tr>';
                     return;
                 }
-
                 tbody.innerHTML = snap.docs.map(d => {
                     const item = d.data();
                     const date = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '방금 전';
-                    const statusStr = item.read 
-                        ? '<span class="status-badge status-confirm">✔ 확인됨 (진행중)</span>' 
+                    const statusStr = item.read
+                        ? '<span class="status-badge status-confirm">✔ 확인됨 (진행중)</span>'
                         : '<span class="status-badge status-wait">⏳ 미확인 (수정가능)</span>';
-                    
-                    const actionBtns = !item.read ? `
-                        <button class="btn-mini" onclick="editMyOrder('${d.id}')">수정</button>
-                        <button class="btn-mini btn-mini-del" onclick="deleteMyOrder('${d.id}')">삭제</button>
-                    ` : '<span style="color:#aaa; font-size:11px;">수정 불가</span>';
-
+                    const actionBtns = !item.read
+                        ? `<button class="btn-mini" onclick="editMyOrder('${d.id}')">수정</button>
+                           <button class="btn-mini btn-mini-del" onclick="deleteMyOrder('${d.id}')">삭제</button>`
+                        : '<span style="color:#aaa; font-size:11px;">수정 불가</span>';
                     return `<tr>
                         <td>${date}</td>
                         <td><strong>${esc(item.summary)}</strong></td>
                         <td>${statusStr}</td>
-                        <td style="text-align: center;">${actionBtns}</td>
+                        <td style="text-align:center;">${actionBtns}</td>
                     </tr>`;
                 }).join('');
-            } catch (error) {
-                console.error(error);
-            }
+            } catch(e) { console.error(e); }
         }
 
         window.editMyOrder = async function(id) {
             try {
-                const d = await getDoc(doc(db, "inquiries", id));
+                const d = await getDoc(doc(db,"inquiries",id));
                 if (!d.exists()) return;
                 const data = d.data();
-                
-                orderItems = [...data.items];
+                orderItems     = [...data.items];
                 editingOrderId = id;
-                
-                document.getElementById('formTitle').innerText = "🔄 발주서 수정하기";
-                document.getElementById('formDesc').innerText = "내용을 변경한 뒤 '발주 수정 완료' 버튼을 눌러주세요.";
-                document.getElementById('submitBtn').innerText = "발주 수정 완료";
-                document.getElementById('submitBtn').style.background = "#0071e3"; 
-                
-                // 단일 품목일 경우 표에 멈추지 않고 즉시 입력창으로 올림
-                if (orderItems.length === 1) {
-                    editOrderItem(0);
-                } else {
-                    renderOrderInputList();
-                }
-                
-                document.querySelector('.contact-form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } catch (error) {
-                alert('불러오기 실패: ' + error.message);
-            }
+                document.getElementById('formTitle').innerText  = "🔄 발주서 수정하기";
+                document.getElementById('formDesc').innerText   = "내용을 변경한 뒤 '발주 수정 완료' 버튼을 눌러주세요.";
+                document.getElementById('submitBtn').innerText  = "발주 수정 완료";
+                document.getElementById('submitBtn').style.background = "#0071e3";
+                if (orderItems.length === 1) { editOrderItem(0); } else { renderOrderInputList(); }
+                document.querySelector('.contact-form-card').scrollIntoView({ behavior:'smooth', block:'start' });
+            } catch(e) { alert('불러오기 실패: ' + e.message); }
         };
 
         window.deleteMyOrder = async function(id) {
             if (confirm("해당 발주 내역을 정말 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
                 try {
-                    await deleteDoc(doc(db, "inquiries", id));
+                    await deleteDoc(doc(db,"inquiries",id));
                     alert("발주가 취소/삭제되었습니다.");
                     loadMyOrders(auth.currentUser.uid);
-                } catch (e) {
-                    alert("삭제 오류: " + e.message);
-                }
+                } catch(e) { alert("삭제 오류: " + e.message); }
             }
         };
 
-        // ✅ 관리자 기능
         async function loadOrders() {
-            if (!window.isAdmin) return; 
+            if (!window.isAdmin) return;
             try {
-                const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
-                const snapshot = await getDocs(q);
+                const snap = await getDocs(query(collection(db,"inquiries"), orderBy("createdAt","desc")));
                 allOrders = [];
-                snapshot.forEach(d => allOrders.push({ id: d.id, ...d.data() }));
-                
-                const unread = allOrders.filter(i => !i.read && i.type === '발주').length;
-                const badge = document.getElementById('inboxBadge');
-                if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'block' : 'none'; }
+                snap.forEach(d => allOrders.push({ id:d.id, ...d.data() }));
+                const unread = allOrders.filter(i => !i.read && i.type==='발주').length;
+                const badge  = document.getElementById('inboxBadge');
+                if (badge) { badge.textContent = unread; badge.style.display = unread>0?'block':'none'; }
                 const uc = document.getElementById('unreadCount');
-                if (uc) uc.textContent = unread > 0 ? `(${unread})` : '';
-            } catch (e) { console.error(e); }
+                if (uc) uc.textContent = unread>0?`(${unread})`:'';
+            } catch(e) { console.error(e); }
         }
 
         function renderOrders() {
@@ -672,36 +611,26 @@
             const filtered = allOrders.filter(i => {
                 if (i.type !== '발주') return false;
                 if (currentFilter === 'unread') return !i.read;
-                if (currentFilter === 'read') return i.read;
+                if (currentFilter === 'read')   return i.read;
                 return true;
             });
-
-            if (filtered.length === 0) {
-                list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>';
-                return;
-            }
-
+            if (filtered.length === 0) { list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>'; return; }
             list.innerHTML = filtered.map(item => {
-                const date = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
-                const vendor = item.vendorName || '알 수 없는 업체';
-                const summary = item.summary || '상세 품목 없음';
-
+                const date   = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
+                const vendor  = item.vendorName || '알 수 없는 업체';
+                const summary = item.summary    || '상세 품목 없음';
                 return `
-                <div class="inbox-item ${item.read ? 'read' : 'unread'}">
+                <div class="inbox-item ${item.read?'read':'unread'}">
                     <div class="inbox-item-header">
-                        <span class="inbox-name">${item.read ? '' : '🔵 '}🏢 [${esc(vendor)}] 발주</span>
+                        <span class="inbox-name">${item.read?'':'🔵 '}🏢 [${esc(vendor)}] 발주</span>
                         <span class="inbox-date">${esc(date)}</span>
                     </div>
-                    <div class="inbox-summary">
-                        📦 <strong>요약:</strong> ${esc(summary)}
-                    </div>
+                    <div class="inbox-summary">📦 <strong>요약:</strong> ${esc(summary)}</div>
                     <button class="inbox-file-btn" onclick="downloadAdminExcel('${esc(item.id)}')">
                         <i class="fas fa-file-excel"></i> 엑셀로 저장
                     </button>
                     <div class="inbox-actions">
-                        <button class="btn-read-toggle" onclick="toggleRead('${esc(item.id)}',${item.read})">
-                            ${item.read ? '미확인으로 변경' : '✔ 확인됨으로 표시'}
-                        </button>
+                        <button class="btn-read-toggle"    onclick="toggleRead('${esc(item.id)}',${item.read})">${item.read?'미확인으로 변경':'✔ 확인됨으로 표시'}</button>
                         <button class="btn-delete-inquiry" onclick="deleteAdminOrder('${esc(item.id)}')">🗑 삭제</button>
                     </div>
                 </div>`;
@@ -710,58 +639,36 @@
 
         window.downloadAdminExcel = function(orderId) {
             if (!window.isAdmin) return;
-            const order = allOrders.find(i => i.id === orderId);
-            if (!order || !order.items || order.items.length === 0) {
-                alert('엑셀로 변환할 품목 데이터가 없습니다.');
-                return;
-            }
-
-            const excelData = order.items.map((item, idx) => ({
-                "연번": idx + 1,
-                "협력업체": order.vendorName,
-                "품목명": item.product,
-                "수량": item.qty,
-                "수취인": item.recipient || '',
-                "전화번호": item.phone || '',
-                "배송지 주소": item.address || '',
+            const order = allOrders.find(i => i.id===orderId);
+            if (!order?.items?.length) { alert('엑셀로 변환할 품목 데이터가 없습니다.'); return; }
+            const data = order.items.map((item,idx) => ({
+                "연번": idx+1, "협력업체": order.vendorName,
+                "품목명": item.product, "수량": item.qty,
+                "수취인": item.recipient||'', "전화번호": item.phone||'',
+                "배송지 주소": item.address||'',
                 "발주일시": order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('ko-KR') : ''
             }));
-
-            const worksheet = XLSX.utils.json_to_sheet(excelData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "발주서");
-            
-            worksheet['!cols'] = [
-                { wch: 5 },  { wch: 15 }, { wch: 25 }, { wch: 8 }, 
-                { wch: 12 }, { wch: 15 }, { wch: 45 }, { wch: 20 } 
-            ];
-
-            const fileName = `${order.vendorName}_${getTodayStr()}_발주서.xlsx`;
-            XLSX.writeFile(workbook, fileName);
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "발주서");
+            ws['!cols'] = [{wch:5},{wch:15},{wch:25},{wch:8},{wch:12},{wch:15},{wch:45},{wch:20}];
+            XLSX.writeFile(wb, `${order.vendorName}_${getTodayStr()}_발주서.xlsx`);
         };
 
-        window.toggleRead = async function (id, currentRead) {
+        window.toggleRead = async function(id, cur) {
             if (!window.isAdmin) return;
-            try {
-                await updateDoc(doc(db, "inquiries", id), { read: !currentRead });
-                await loadOrders();
-                renderOrders();
-                loadMyOrders(auth.currentUser.uid);
-            } catch (e) { alert('업데이트 실패: ' + e.message); }
+            try { await updateDoc(doc(db,"inquiries",id),{read:!cur}); await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid); }
+            catch(e) { alert('업데이트 실패: '+e.message); }
         };
 
-        window.deleteAdminOrder = async function (id) {
+        window.deleteAdminOrder = async function(id) {
             if (!window.isAdmin) return;
             if (!confirm('관리자 권한으로 이 발주를 삭제하시겠습니까?')) return;
-            try {
-                await deleteDoc(doc(db, "inquiries", id));
-                await loadOrders();
-                renderOrders();
-                loadMyOrders(auth.currentUser.uid); 
-            } catch (e) { alert('삭제 실패: ' + e.message); }
+            try { await deleteDoc(doc(db,"inquiries",id)); await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid); }
+            catch(e) { alert('삭제 실패: '+e.message); }
         };
 
-        window.filterInbox = function (filter, btn) {
+        window.filterInbox = function(filter, btn) {
             if (!window.isAdmin) return;
             currentFilter = filter;
             document.querySelectorAll('.inbox-tab').forEach(t => t.classList.remove('active'));
@@ -769,19 +676,15 @@
             renderOrders();
         };
 
-        window.openInbox = async function (e) {
+        window.openInbox = async function(e) {
             e.preventDefault();
             if (!window.isAdmin) return;
-            await loadOrders();
-            renderOrders();
+            await loadOrders(); renderOrders();
             document.getElementById('inboxModal').style.display = 'flex';
         };
 
-        window.closeInbox = function () { document.getElementById('inboxModal').style.display = 'none'; };
-        document.getElementById('inboxModal').addEventListener('click', function (e) {
-            if (e.target === this) closeInbox();
-        });
-
+        window.closeInbox = function() { document.getElementById('inboxModal').style.display = 'none'; };
+        document.getElementById('inboxModal').addEventListener('click', function(e) { if (e.target===this) closeInbox(); });
     </script>
 </body>
 </html>

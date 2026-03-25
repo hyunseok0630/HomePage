@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SKY Commerce | 미래를 일상으로</title>
     <link rel="icon" type="image/png" sizes="any" href="img/logo_blue.png">
-
     <meta name="description" content="스마트 웨어러블부터 고품질 산업용 소재까지, SKY Commerce가 혁신을 제공합니다.">
     <meta property="og:type"         content="website">
     <meta property="og:site_name"    content="SKY Commerce">
@@ -19,7 +18,6 @@
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="SKY Commerce | 미래를 일상으로">
     <meta name="twitter:image"       content="https://skycommerce.co.kr/img/og_image.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -31,25 +29,30 @@
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
-                <a href="/"><img src="img/main.jpg" alt="SKY Commerce"></a>  <!-- ✅ 수정 -->
+                <a href="/"><img src="img/main.jpg" alt="SKY Commerce"></a>
             </div>
             <nav class="header-center">
                 <ul class="nav-menu">
-                    <li><a href="/" class="active">홈</a></li>               <!-- ✅ 수정 -->
+                    <li><a href="/" class="active">홈</a></li>
                     <li><a href="about/">회사 소개</a></li>
-                    <li><a href="product/">제품</a></li>
+                    <!-- ✅ 제품 드롭다운 -->
+                    <li class="has-dropdown">
+                        <a href="product/">제품 <i class="fas fa-chevron-down chevron"></i></a>
+                        <ul class="dropdown">
+                            <li><a href="product/#section-wearable"><i class="fas fa-glasses"></i> 스마트 웨어러블</a></li>
+                            <li><a href="product/#section-industrial"><i class="fas fa-hard-hat"></i> 환경 안전 용품</a></li>
+                            <li><a href="product/#section-grating"><i class="fas fa-th"></i> Grating 시리즈</a></li>
+                            <li><a href="product/#section-parts"><i class="fas fa-cog"></i> 산업용 특수 소재</a></li>
+                        </ul>
+                    </li>
                     <li><a href="contact/">발주하기</a></li>
                 </ul>
             </nav>
             <div class="header-right utility-icons">
                 <a href="#"><i class="fas fa-globe"></i></a>
                 <a href="#"><i class="fas fa-search"></i></a>
-                <a href="contact/" id="inboxBtn" title="발주 확인" style="display:none;">
-                    <i class="fas fa-envelope"></i>
-                </a>
-                <a href="product/" id="adminEditBtn" title="제품 관리" style="display:none;">
-                    <i class="fas fa-edit"></i>
-                </a>
+                <a href="contact/" id="inboxBtn" title="발주 확인" style="display:none;"><i class="fas fa-envelope"></i></a>
+                <a href="product/" id="adminEditBtn" title="제품 관리" style="display:none;"><i class="fas fa-edit"></i></a>
                 <a href="login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
                 <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 <button class="hamburger" id="hamburger" aria-label="메뉴">
@@ -61,9 +64,13 @@
 
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
-            <li><a href="/" class="active">홈</a></li>                       <!-- ✅ 수정 -->
+            <li><a href="/" class="active">홈</a></li>
             <li><a href="about/">회사 소개</a></li>
             <li><a href="product/">제품</a></li>
+            <li><a href="product/#section-wearable" class="sub-item">· 스마트 웨어러블</a></li>
+            <li><a href="product/#section-industrial" class="sub-item">· 환경 안전 용품</a></li>
+            <li><a href="product/#section-grating" class="sub-item">· Grating 시리즈</a></li>
+            <li><a href="product/#section-parts" class="sub-item">· 산업용 특수 소재</a></li>
             <li><a href="contact/">발주하기</a></li>
         </ul>
     </nav>
@@ -126,14 +133,11 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">
-                    <h3>SKY COMMERCE</h3>
-                    <p>미래를 일상으로.</p>
-                </div>
+                <div class="footer-logo"><h3>SKY COMMERCE</h3><p>미래를 일상으로.</p></div>
                 <div class="footer-links">
                     <h4>메뉴</h4>
                     <ul>
-                        <li><a href="/">홈</a></li>                          <!-- ✅ 수정 -->
+                        <li><a href="/">홈</a></li>
                         <li><a href="about/">회사 소개</a></li>
                         <li><a href="product/">제품</a></li>
                         <li><a href="contact/">발주하기</a></li>
@@ -153,9 +157,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 SKY Commerce. All Rights Reserved.</p>
-            </div>
+            <div class="footer-bottom"><p>&copy; 2026 SKY Commerce. All Rights Reserved.</p></div>
         </div>
     </footer>
 
