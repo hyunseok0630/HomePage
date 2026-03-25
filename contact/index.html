@@ -81,7 +81,6 @@
         .btn-mini-del { color: crimson; border-color: #ffcccc; background: #fff0f0; }
         .btn-mini-del:hover { background: #ffe0e0; }
 
-        /* 관리자 모달 */
         #inboxBadge { display: none; position: absolute; top: -4px; right: -4px; background: crimson; color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; line-height: 16px; text-align: center; }
         #inboxBtn { position: relative; }
         .inbox-tab { background: #f5f5f7; border: none; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; font-family: inherit; transition: background 0.2s; }
@@ -130,6 +129,21 @@
                         </ul>
                     </li>
                     <li><a href="../contact/" class="active">발주하기</a></li>
+                    <li class="has-dropdown">
+                        <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
+                        <ul class="dropdown">
+                            <li>
+                                <a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener">
+                                    <i class="fas fa-play-circle"></i> Watch the video
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <div class="header-right utility-icons">
@@ -138,9 +152,6 @@
                 <a href="#" id="inboxBtn" title="발주 확인" style="display:none;" onclick="openInbox(event)">
                     <i class="fas fa-envelope"></i>
                     <span id="inboxBadge">0</span>
-                </a>
-                <a href="../product/" id="adminEditBtn" title="제품 관리" style="display:none;">
-                    <i class="fas fa-edit"></i>
                 </a>
                 <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
                 <a href="#"><i class="fas fa-shopping-cart"></i></a>
@@ -162,6 +173,9 @@
             <li><a href="../product/#section-grating"    class="sub-item">· Grating 시리즈</a></li>
             <li><a href="../product/#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
             <li><a href="../contact/" class="active">발주하기</a></li>
+            <li><a href="#">How to Use</a></li>
+            <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener" class="sub-item">· Watch the video</a></li>
+            <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
         </ul>
     </nav>
 
@@ -357,9 +371,9 @@
         const auth = getAuth(app);
 
         window.isAdmin = false;
-        let currentFilter = 'all';
-        let allOrders  = [];
-        let orderItems = [];
+        let currentFilter  = 'all';
+        let allOrders      = [];
+        let orderItems     = [];
         let editingOrderId = null;
 
         function esc(str = '') {
@@ -399,8 +413,7 @@
             }
 
             if (window.isAdmin) {
-                document.getElementById('inboxBtn').style.display    = 'block';
-                document.getElementById('adminEditBtn').style.display = 'block';
+                document.getElementById('inboxBtn').style.display = 'block';
                 loadOrders();
             }
             loadProducts();
@@ -434,11 +447,11 @@
             const recipient = document.getElementById('recipientName').value.trim();
             const phone     = document.getElementById('recipientPhone').value.trim();
             const address   = document.getElementById('recipientAddress').value.trim();
-            if (!product)           { alert('품목을 선택해주세요.'); return; }
-            if (!qty || qty < 1)    { alert('올바른 수량을 입력해주세요.'); return; }
-            if (!recipient)         { alert('수취인 이름을 입력해주세요.'); return; }
-            if (!phone)             { alert('전화번호를 입력해주세요.'); return; }
-            if (!address)           { alert('배송지 주소를 입력해주세요.'); return; }
+            if (!product)        { alert('품목을 선택해주세요.'); return; }
+            if (!qty || qty < 1) { alert('올바른 수량을 입력해주세요.'); return; }
+            if (!recipient)      { alert('수취인 이름을 입력해주세요.'); return; }
+            if (!phone)          { alert('전화번호를 입력해주세요.'); return; }
+            if (!address)        { alert('배송지 주소를 입력해주세요.'); return; }
             orderItems.push({ product, qty, recipient, phone, address });
             document.getElementById('productSelect').value    = '';
             document.getElementById('productQty').value       = '';
@@ -487,11 +500,11 @@
             const agreed  = document.getElementById('privacyAgree').checked;
             const btn     = document.getElementById('submitBtn');
             const success = document.getElementById('successMsg');
-            if (!vendor)               { alert('업체 정보가 인식되지 않았습니다.'); return; }
-            if (orderItems.length ===0){ alert('발주할 품목을 1개 이상 추가해주세요.'); return; }
-            if (!agreed)               { alert('발주 정보 제출에 동의해주세요.'); return; }
+            if (!vendor)                { alert('업체 정보가 인식되지 않았습니다.'); return; }
+            if (orderItems.length === 0){ alert('발주할 품목을 1개 이상 추가해주세요.'); return; }
+            if (!agreed)                { alert('발주 정보 제출에 동의해주세요.'); return; }
 
-            btn.disabled = true;
+            btn.disabled  = true;
             btn.innerHTML = '<span class="spinner"></span>제출 중...';
 
             try {
@@ -531,7 +544,7 @@
                 }
             } catch(e) {
                 alert('처리 실패: ' + e.message);
-                btn.disabled = false;
+                btn.disabled  = false;
                 btn.innerHTML = '발주 제출하기';
             }
         };
@@ -572,9 +585,9 @@
                 const data = d.data();
                 orderItems     = [...data.items];
                 editingOrderId = id;
-                document.getElementById('formTitle').innerText  = "🔄 발주서 수정하기";
-                document.getElementById('formDesc').innerText   = "내용을 변경한 뒤 '발주 수정 완료' 버튼을 눌러주세요.";
-                document.getElementById('submitBtn').innerText  = "발주 수정 완료";
+                document.getElementById('formTitle').innerText        = "🔄 발주서 수정하기";
+                document.getElementById('formDesc').innerText         = "내용을 변경한 뒤 '발주 수정 완료' 버튼을 눌러주세요.";
+                document.getElementById('submitBtn').innerText        = "발주 수정 완료";
                 document.getElementById('submitBtn').style.background = "#0071e3";
                 if (orderItems.length === 1) { editOrderItem(0); } else { renderOrderInputList(); }
                 document.querySelector('.contact-form-card').scrollIntoView({ behavior:'smooth', block:'start' });
@@ -611,12 +624,12 @@
             const filtered = allOrders.filter(i => {
                 if (i.type !== '발주') return false;
                 if (currentFilter === 'unread') return !i.read;
-                if (currentFilter === 'read')   return i.read;
+                if (currentFilter === 'read')   return  i.read;
                 return true;
             });
             if (filtered.length === 0) { list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>'; return; }
             list.innerHTML = filtered.map(item => {
-                const date   = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
+                const date    = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
                 const vendor  = item.vendorName || '알 수 없는 업체';
                 const summary = item.summary    || '상세 품목 없음';
                 return `

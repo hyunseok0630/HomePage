@@ -26,6 +26,7 @@
 </head>
 <body>
 
+    <!-- ── 헤더 ── -->
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
@@ -35,7 +36,6 @@
                 <ul class="nav-menu">
                     <li><a href="/" class="active">홈</a></li>
                     <li><a href="about/">회사 소개</a></li>
-                    <!-- ✅ 제품 드롭다운 -->
                     <li class="has-dropdown">
                         <a href="product/">제품 <i class="fas fa-chevron-down chevron"></i></a>
                         <ul class="dropdown">
@@ -46,6 +46,22 @@
                         </ul>
                     </li>
                     <li><a href="contact/">발주하기</a></li>
+                    <!-- ✅ How to Use 추가 -->
+                    <li class="has-dropdown">
+                        <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
+                        <ul class="dropdown">
+                            <li>
+                                <a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener">
+                                    <i class="fas fa-play-circle"></i> Watch the video
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <div class="header-right utility-icons">
@@ -62,19 +78,25 @@
         </div>
     </header>
 
+    <!-- ── 모바일 메뉴 ── -->
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
             <li><a href="/" class="active">홈</a></li>
             <li><a href="about/">회사 소개</a></li>
             <li><a href="product/">제품</a></li>
-            <li><a href="product/#section-wearable" class="sub-item">· 스마트 웨어러블</a></li>
+            <li><a href="product/#section-wearable"   class="sub-item">· 스마트 웨어러블</a></li>
             <li><a href="product/#section-industrial" class="sub-item">· 환경 안전 용품</a></li>
-            <li><a href="product/#section-grating" class="sub-item">· Grating 시리즈</a></li>
-            <li><a href="product/#section-parts" class="sub-item">· 산업용 특수 소재</a></li>
+            <li><a href="product/#section-grating"    class="sub-item">· Grating 시리즈</a></li>
+            <li><a href="product/#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
             <li><a href="contact/">발주하기</a></li>
+            <!-- ✅ How to Use 추가 -->
+            <li><a href="#">How to Use</a></li>
+            <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener" class="sub-item">· Watch the video</a></li>
+            <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
         </ul>
     </nav>
 
+    <!-- ── 히어로 영상 ── -->
     <section class="video-hero">
         <video class="hero-video" autoplay muted loop playsinline>
             <source src="img/hero.mp4" type="video/mp4">
@@ -90,6 +112,7 @@
         </div>
     </section>
 
+    <!-- ── 회사 서비스 ── -->
     <section class="features">
         <div class="container">
             <h2 class="section-title">회사 서비스</h2>
@@ -118,18 +141,20 @@
         </div>
     </section>
 
+    <!-- ── 브랜드 파트너 ── -->
     <section class="about-images-only" style="background:#f5f5f7;">
         <div class="container">
             <h2 class="section-title">브랜드 파트너</h2>
             <div class="images-grid">
                 <div class="image-item"><img src="img/rayneo.png" alt="TCL RayNeo"></div>
-                <div class="image-item"><img src="img/mudra.png" alt="Mudra"></div>
+                <div class="image-item"><img src="img/mudra.png"  alt="Mudra"></div>
                 <div class="image-item"><img src="img/keheal.png" alt="Keheal"></div>
-                <div class="image-item"><img src="img/eloam.png" alt="Eloam"></div>
+                <div class="image-item"><img src="img/Eloam.png"  alt="Eloam"></div>
             </div>
         </div>
     </section>
 
+    <!-- ── 푸터 ── -->
     <footer>
         <div class="container">
             <div class="footer-content">
