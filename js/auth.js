@@ -15,35 +15,62 @@ const path          = window.location.pathname;
 const isProductPage = path.includes('/product');
 const isContactPage = path.includes('/contact');
 
-// ── 자동 로그아웃 타이머 ────────────────────────
-let inactivityTimer;
-const INACTIVITY_LIMIT = 30 * 60 * 1000;
+// ── 세션 설정 ────────────────────────────────────
+const SESSION_LIMIT   = 60 * 60 * 1000; // 1시간 (밀리초)
+const LOGIN_TIME_KEY  = 'sessionLoginTime';
 
-function resetInactivityTimer() {
-    clearTimeout(inactivityTimer);
-    if (auth.currentUser) {
-        inactivityTimer = setTimeout(async () => {
-            alert('보안을 위해 30분간 활동이 없어 자동 로그아웃 되었습니다.');
-            await performLogout();
-        }, INACTIVITY_LIMIT);
+let sessionTimer;
+
+// 로그인 기준 시간 저장 (최초 로그인 시 1회만)
+function initLoginTime() {
+    if (!localStorage.getItem(LOGIN_TIME_KEY)) {
+        localStorage.setItem(LOGIN_TIME_KEY, Date.now().toString());
     }
 }
 
-async function performLogout() {
-    localStorage.removeItem('loginTime');
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userRole');
-    await signOut(auth);
-    window.location.href = '/login/';
+// 로그인 후 경과 시간 확인
+function isSessionExpired() {
+    const loginTime = localStorage.getItem(LOGIN_TIME_KEY);
+    if (!loginTime) return false;
+    return (Date.now() - parseInt(loginTime)) >= SESSION_LIMIT;
 }
 
-['mousemove', 'keydown', 'scroll', 'click'].forEach(event => {
-    window.addEventListener(event, resetInactivityTimer);
-});
+// 만료까지 남은 시간 계산
+function getRemainingTime() {
+    const loginTime = localStorage.getItem(LOGIN_TIME_KEY);
+    if (!loginTime) return SESSION_LIMIT;
+    const elapsed = Date.now() - parseInt(loginTime);
+    return Math.max(SESSION_LIMIT - elapsed, 0);
+}
 
-// ✅ 탭 복귀 시 타이머 재설정
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') resetInactivityTimer();
+async function performLogout() {
+    clearTimeout(sessionTimer);
+    localStorage.removeItem(LOGIN_TIME_KEY);
+    await signOut(auth);
+    const depth  = (path.match(/\//g) || []).length - 1;
+    const prefix = depth > 1 ? '../' : '';
+    window.location.href = prefix + 'login/';
+}
+
+// 남은 시간만큼 타이머 설정
+function startSessionTimer() {
+    clearTimeout(sessionTimer);
+    const remaining = getRemainingTime();
+    if (remaining <= 0) return;
+    sessionTimer = setTimeout(async () => {
+        alert('로그인 후 1시간이 경과하여 자동 로그아웃 되었습니다.');
+        await performLogout();
+    }, remaining);
+}
+
+// 탭 복귀 시 만료 여부 재확인
+document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible' && auth.currentUser) {
+        if (isSessionExpired()) {
+            alert('로그인 후 1시간이 경과하여 자동 로그아웃 되었습니다.');
+            await performLogout();
+        }
+    }
 });
 
 // ── 인증 상태 감지 ───────────────────────────────
@@ -53,7 +80,16 @@ onAuthStateChanged(auth, async (user) => {
     const inboxBtn       = document.getElementById('inboxBtn');
 
     if (user) {
-        resetInactivityTimer();
+        // 페이지 로드 시 만료 확인
+        if (isSessionExpired()) {
+            alert('로그인 후 1시간이 경과하여 자동 로그아웃 되었습니다.');
+            await performLogout();
+            return;
+        }
+
+        // 로그인 시각 저장 & 타이머 시작
+        initLoginTime();
+        startSessionTimer();
 
         // Firestore에서 isAdmin 확인
         let isAdmin = false;
@@ -76,16 +112,14 @@ onAuthStateChanged(auth, async (user) => {
             };
         }
 
-        // ✅ 관리자 아이콘: 페이지별 표시
-        // adminEditBtn(제품 관리) → product 페이지에서만
-        // inboxBtn(발주 확인)    → contact 페이지에서만
+        // 관리자 아이콘: 페이지별 표시
         if (adminEditBtn) adminEditBtn.style.display = (isAdmin && isProductPage) ? 'inline-block' : 'none';
         if (inboxBtn)     inboxBtn.style.display     = (isAdmin && isContactPage) ? 'inline-block' : 'none';
 
     } else {
-        clearTimeout(inactivityTimer);
+        clearTimeout(sessionTimer);
+        localStorage.removeItem(LOGIN_TIME_KEY);
 
-        // 로그인 아이콘 → 기본 (로그인 링크)
         if (userProfileBtn) {
             userProfileBtn.style.color = 'rgba(255,255,255,0.8)';
             userProfileBtn.title       = '로그인';
@@ -93,11 +127,7 @@ onAuthStateChanged(auth, async (user) => {
             userProfileBtn.onclick     = null;
         }
 
-        // ✅ 비로그인 상태: 관리자 아이콘 모두 숨김
         if (adminEditBtn) adminEditBtn.style.display = 'none';
         if (inboxBtn)     inboxBtn.style.display     = 'none';
-
-        // ✅ 발주하기 메뉴는 비로그인 상태에서도 항상 표시
-        // (contact 페이지 진입 시 로그인 유도 처리는 contact/index.html에서 담당)
     }
 });
