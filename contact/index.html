@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>발주하기 | SKY Commerce</title>
     <link rel="icon" type="image/png" sizes="any" href="../img/logo_blue.png">
+
     <meta property="og:type"         content="website">
     <meta property="og:site_name"    content="SKY Commerce">
     <meta property="og:title"        content="발주하기 | SKY Commerce">
@@ -12,11 +13,13 @@
     <meta property="og:url"          content="https://skycommerce.co.kr/contact/">
     <meta property="og:image"        content="https://skycommerce.co.kr/img/og_image.png">
     <meta property="og:locale"       content="ko_KR">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -74,7 +77,7 @@
 
         .my-order-section { margin-top: 40px; padding-top: 30px; border-top: 2px solid #eee; }
         .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; }
-        .status-wait    { background: #fff7ed; color: #c2410c; }
+        .status-wait { background: #fff7ed; color: #c2410c; }
         .status-confirm { background: #f0fdf4; color: #166534; }
         .btn-mini { padding: 5px 10px; font-size: 11px; border-radius: 6px; cursor: pointer; border: 1px solid #ddd; background: #fff; margin: 0 2px; font-family: inherit; transition: 0.2s; }
         .btn-mini:hover { background: #f0f0f0; }
@@ -109,7 +112,6 @@
 </head>
 <body>
 
-    <!-- ── 헤더 ── -->
     <header id="main-header">
         <div class="header-inner">
             <div class="header-left logo">
@@ -119,31 +121,8 @@
                 <ul class="nav-menu">
                     <li><a href="../">홈</a></li>
                     <li><a href="../about/">회사 소개</a></li>
-                    <li class="has-dropdown">
-                        <a href="../product/">제품 <i class="fas fa-chevron-down chevron"></i></a>
-                        <ul class="dropdown">
-                            <li><a href="../product/#section-wearable"><i class="fas fa-glasses"></i> 스마트 웨어러블</a></li>
-                            <li><a href="../product/#section-industrial"><i class="fas fa-hard-hat"></i> 환경 안전 용품</a></li>
-                            <li><a href="../product/#section-grating"><i class="fas fa-th"></i> Grating 시리즈</a></li>
-                            <li><a href="../product/#section-parts"><i class="fas fa-cog"></i> 산업용 특수 소재</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="../product/">제품</a></li>
                     <li><a href="../contact/" class="active">발주하기</a></li>
-                    <li class="has-dropdown">
-                        <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
-                        <ul class="dropdown">
-                            <li>
-                                <a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener">
-                                    <i class="fas fa-play-circle"></i> Watch the video
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener">
-                                    <i class="fas fa-download"></i> Download
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
             </nav>
             <div class="header-right utility-icons">
@@ -153,6 +132,7 @@
                     <i class="fas fa-envelope"></i>
                     <span id="inboxBadge">0</span>
                 </a>
+                <!-- ✅ adminEditBtn 제거 -->
                 <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
                 <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 <button class="hamburger" id="hamburger" aria-label="메뉴">
@@ -162,36 +142,25 @@
         </div>
     </header>
 
-    <!-- ── 모바일 메뉴 ── -->
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
             <li><a href="../">홈</a></li>
             <li><a href="../about/">회사 소개</a></li>
             <li><a href="../product/">제품</a></li>
-            <li><a href="../product/#section-wearable"   class="sub-item">· 스마트 웨어러블</a></li>
-            <li><a href="../product/#section-industrial" class="sub-item">· 환경 안전 용품</a></li>
-            <li><a href="../product/#section-grating"    class="sub-item">· Grating 시리즈</a></li>
-            <li><a href="../product/#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
             <li><a href="../contact/" class="active">발주하기</a></li>
-            <li><a href="#">How to Use</a></li>
-            <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener" class="sub-item">· Watch the video</a></li>
-            <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
         </ul>
     </nav>
 
-    <!-- ── 서브 히어로 ── -->
-    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat; padding: 160px 20px 100px;">
+    <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat;">
         <div class="container">
             <h1 style="position:relative; z-index:2;">발주하기</h1>
             <p style="position:relative; z-index:2;">필요한 품목과 배송지 정보를 입력하여 간편하게 발주하세요.</p>
         </div>
     </section>
 
-    <!-- ── 발주 섹션 ── -->
     <section class="contact-section">
         <div class="container">
             <div class="contact-grid">
-
                 <div class="info-card">
                     <h3>연락처 정보</h3>
                     <div class="info-row"><i class="fas fa-map-marker-alt"></i><span>경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</span></div>
@@ -222,21 +191,21 @@
 
                     <div class="order-input-area">
                         <div class="input-group">
-                            <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중..." style="background-color:#e8eaed; color:#555; cursor:not-allowed; font-weight:600;">
+                            <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중..." style="background-color: #e8eaed; color: #555; cursor: not-allowed; font-weight: 600;">
                             <input type="hidden" id="vendorNameInput">
                         </div>
 
                         <div class="item-add-box">
                             <div class="item-add-flex">
-                                <select id="productSelect" style="flex:2;">
+                                <select id="productSelect" style="flex: 2;">
                                     <option value="">제품 목록을 불러오는 중...</option>
                                 </select>
-                                <input type="number" id="productQty" min="1" placeholder="수량 (개)" style="flex:1; text-align:right;">
+                                <input type="number" id="productQty" min="1" placeholder="수량 (개)" style="flex: 1; text-align: right;">
                             </div>
                             <div class="item-add-flex">
-                                <input type="text" id="recipientName"    placeholder="수취인명"    style="flex:1;">
-                                <input type="text" id="recipientPhone"   placeholder="전화번호"    style="flex:1.5;">
-                                <input type="text" id="recipientAddress" placeholder="배송지 주소" style="flex:3;">
+                                <input type="text" id="recipientName" placeholder="수취인명" style="flex: 1;">
+                                <input type="text" id="recipientPhone" placeholder="전화번호" style="flex: 1.5;">
+                                <input type="text" id="recipientAddress" placeholder="배송지 주소" style="flex: 3;">
                                 <button class="btn-add-item" onclick="addOrderItem()">목록 추가</button>
                             </div>
                         </div>
@@ -245,16 +214,16 @@
                             <table class="selected-items-table">
                                 <thead>
                                     <tr>
-                                        <th style="width:20%;">품목명</th>
-                                        <th style="width:10%; text-align:right;">수량</th>
-                                        <th style="width:15%;">수취인</th>
-                                        <th style="width:20%;">연락처</th>
-                                        <th style="width:30%;">주소</th>
-                                        <th style="width:5%; text-align:center;">관리</th>
+                                        <th style="width: 20%;">품목명</th>
+                                        <th style="width: 10%; text-align: right;">수량</th>
+                                        <th style="width: 15%;">수취인</th>
+                                        <th style="width: 20%;">연락처</th>
+                                        <th style="width: 30%;">주소</th>
+                                        <th style="width: 5%; text-align: center;">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody id="orderListBody">
-                                    <tr><td colspan="6" style="text-align:center; color:#aaa; padding:25px;">선택된 품목이 없습니다.</td></tr>
+                                    <tr><td colspan="6" style="text-align:center; color:#aaa; padding: 25px;">선택된 품목이 없습니다.</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -274,8 +243,8 @@
                     </div>
 
                     <div class="my-order-section">
-                        <h4 style="margin-bottom:15px; font-size:16px;"><i class="fas fa-history"></i> 나의 발주 내역</h4>
-                        <p style="font-size:12px; color:#888; margin-bottom:12px;">담당자가 확인하기 전(미확인 상태)에만 수정 및 삭제가 가능합니다.</p>
+                        <h4 style="margin-bottom:15px; font-size: 16px;"><i class="fas fa-history"></i> 나의 발주 내역</h4>
+                        <p style="font-size: 12px; color: #888; margin-bottom: 12px;">담당자가 확인하기 전(미확인 상태)에만 수정 및 삭제가 가능합니다.</p>
                         <div class="table-responsive">
                             <table class="selected-items-table" style="font-size:12px;">
                                 <thead>
@@ -283,22 +252,21 @@
                                         <th>발주일시</th>
                                         <th>요약</th>
                                         <th>상태</th>
-                                        <th style="text-align:center;">관리</th>
+                                        <th style="text-align: center;">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody id="myOrdersBody">
-                                    <tr><td colspan="4" style="text-align:center; color:#aaa; padding:25px;">발주 내역을 불러오는 중...</td></tr>
+                                    <tr><td colspan="4" style="text-align:center; color:#aaa; padding: 25px;">발주 내역을 불러오는 중...</td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ── 관리자 모달 ── -->
+    <!-- 관리자 인박스 모달 -->
     <div id="inboxModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
         <div style="background:#fff; border-radius:16px; width:90%; max-width:720px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.3);">
             <div style="padding:24px 28px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
@@ -306,13 +274,13 @@
                     <h3 style="font-size:18px; font-weight:700; margin:0;">📦 전체 발주 목록 (관리자)</h3>
                     <p style="font-size:12px; color:#aaa; margin:4px 0 0;">최신순으로 표시됩니다</p>
                 </div>
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <!-- ✅ 푸시 알림 등록 버튼 -->
-                    <button id="pushRegBtn" onclick="registerPushToken()"
-                        style="display:none; background:#f0f7ff; color:#0071e3; border:1.5px solid #c0dcf8;
-                               border-radius:8px; padding:8px 16px; font-size:13px; font-weight:600;
-                               cursor:pointer; font-family:inherit;">
-                        <i class="fas fa-bell"></i> 푸시 알림 등록
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <!-- ✅ 푸시 토글 버튼 -->
+                    <button id="pushRegisterBtn" onclick="togglePushNotification()"
+                        style="background:#0071e3; color:#fff; border:none; border-radius:8px;
+                               padding:8px 14px; font-size:13px; font-weight:600;
+                               cursor:pointer; font-family:inherit; transition:background 0.2s;">
+                        🔔 푸시 알림 등록
                     </button>
                     <button onclick="closeInbox()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#888;">✕</button>
                 </div>
@@ -326,7 +294,6 @@
         </div>
     </div>
 
-    <!-- ── 푸터 ── -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -354,7 +321,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom"><p>&copy; 2026 SKY Commerce. All Rights Reserved.</p></div>
+            <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
         </div>
     </footer>
 
@@ -363,9 +330,11 @@
 
     <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy, getDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, setDoc, serverTimestamp, query, orderBy, getDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+        const VAPID_KEY = "BGxbvkmxV9MLk740bk3As6Zh2hRQd9axal0KwjiokV1sJ8VHaWP2NWxKXVoy1sv5PJw8N3fHyG8knTiGIXuqgLk"; // ← Firebase Console > 프로젝트 설정 > 클라우드 메시징
 
         const firebaseConfig = {
             apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
@@ -376,97 +345,33 @@
             appId: "1:232403511014:web:318ebb689d678e998b7d27"
         };
 
-        // ✅ Firebase Console → 프로젝트 설정 → 클라우드 메시징 → 웹 푸시 인증서 → 키 쌍 생성 후 여기에 붙여넣기
-        const VAPID_KEY = 'BBlkX8AWtFgKxGhxP2pn7YUD7tBE17cIaOchHB8qTD1uS4MoPrj_ubepL0lJdcae31vKTC9sBthx_j_tp8T_8cA';
-
-        const app       = getApps().length ? getApp() : initializeApp(firebaseConfig);
-        const db        = getFirestore(app);
-        const auth      = getAuth(app);
-        const messaging = getMessaging(app);
+        const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
+        const db   = getFirestore(app);
+        const auth = getAuth(app);
 
         window.isAdmin = false;
-        let currentFilter  = 'all';
-        let allOrders      = [];
-        let orderItems     = [];
+        let currentFilter = 'all';
+        let allOrders  = [];
+        let orderItems = [];
         let editingOrderId = null;
 
         function esc(str = '') {
             return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
         }
+
         function getTodayStr() {
             const d = new Date();
             return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
         }
 
-        // ── 포그라운드 푸시 알림 수신 (페이지 열려있을 때) ──
-        onMessage(messaging, (payload) => {
-            const { title, body } = payload.notification;
-            if (Notification.permission === 'granted') {
-                new Notification(title, {
-                    body,
-                    icon: '../img/logo_blue.png',
-                    tag:  'new-order',
-                    requireInteraction: true
-                });
-            }
-        });
-
-        // ── 푸시 알림 토큰 등록 (관리자 전용) ──
-        window.registerPushToken = async function() {
-            if (!window.isAdmin) return;
-            try {
-                const permission = await Notification.requestPermission();
-                if (permission !== 'granted') {
-                    alert('푸시 알림 권한이 거부되었습니다.\n브라우저 주소창 왼쪽 자물쇠 아이콘에서 허용해주세요.');
-                    return;
-                }
-
-                const swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-
-                const token = await getToken(messaging, {
-                    vapidKey: VAPID_KEY,
-                    serviceWorkerRegistration: swReg
-                });
-
-                if (!token) { alert('토큰 발급 실패: 잠시 후 다시 시도해주세요.'); return; }
-
-                const existing = await getDocs(query(
-                    collection(db, 'adminTokens'),
-                    where('token', '==', token)
-                ));
-
-                if (!existing.empty) {
-                    alert('✅ 이미 이 기기에서 푸시 알림이 등록되어 있습니다.');
-                    return;
-                }
-
-                await addDoc(collection(db, 'adminTokens'), {
-                    token,
-                    device:    navigator.userAgent.substring(0, 80),
-                    createdAt: serverTimestamp()
-                });
-
-                document.getElementById('pushRegBtn').innerHTML = '<i class="fas fa-bell"></i> 알림 등록됨 ✅';
-                document.getElementById('pushRegBtn').style.background = '#ecfdf5';
-                document.getElementById('pushRegBtn').style.color = '#166534';
-                document.getElementById('pushRegBtn').style.borderColor = '#6ee7b7';
-                document.getElementById('pushRegBtn').onclick = null;
-
-                alert('✅ 푸시 알림 등록 완료!\n새 발주가 들어오면 이 기기로 알림이 전송됩니다.\n(로그인 여부와 무관하게 크롬이 실행 중이면 수신됩니다.)');
-
-            } catch(e) {
-                console.error(e);
-                alert('푸시 등록 실패: ' + e.message);
-            }
-        };
-
-        // ── 인증 상태 감지 ──
+        // ✅ 로그인 상태 확인
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 alert("발주 시스템은 로그인이 필요합니다.");
-                window.location.replace("../login/");
+                window.location.replace("/login/");
                 return;
             }
+
             const vendorDisplay = document.getElementById('vendorDisplay');
             const vendorInput   = document.getElementById('vendorNameInput');
             window.isAdmin = false;
@@ -484,99 +389,147 @@
                         vendorInput.value   = user.email;
                     }
                 }
-            } catch (e) {
+            } catch (error) {
                 vendorDisplay.value = `👤 ${user.email}`;
                 vendorInput.value   = user.email;
             }
 
             if (window.isAdmin) {
                 document.getElementById('inboxBtn').style.display = 'block';
-                // 푸시 알림 버튼 표시
-                const pushBtn = document.getElementById('pushRegBtn');
-                if (pushBtn) pushBtn.style.display = 'inline-block';
-                // 이미 등록된 기기인지 확인 후 버튼 상태 변경
-                checkPushTokenStatus();
                 loadOrders();
             }
+
             loadProducts();
             loadMyOrders(user.uid);
         });
 
-        // 이미 등록된 토큰 기기인지 확인
-        async function checkPushTokenStatus() {
-            if (!('serviceWorker' in navigator) || !('Notification' in window)) return;
-            if (Notification.permission !== 'granted') return;
+        // ✅ 푸시 버튼 상태 업데이트 (초록=등록됨 / 파란=미등록)
+        async function updatePushButtonState() {
+            const user = auth.currentUser;
+            if (!user || !window.isAdmin) return;
+            const btn = document.getElementById('pushRegisterBtn');
+            if (!btn) return;
             try {
-                const swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-                const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg });
-                if (!token) return;
-                const existing = await getDocs(query(collection(db, 'adminTokens'), where('token', '==', token)));
-                if (!existing.empty) {
-                    const btn = document.getElementById('pushRegBtn');
-                    if (btn) {
-                        btn.innerHTML     = '<i class="fas fa-bell"></i> 알림 등록됨 ✅';
-                        btn.style.background   = '#ecfdf5';
-                        btn.style.color        = '#166534';
-                        btn.style.borderColor  = '#6ee7b7';
-                        btn.onclick = null;
-                    }
+                const tokenDoc = await getDoc(doc(db, 'adminTokens', user.uid));
+                if (tokenDoc.exists()) {
+                    btn.textContent       = '🔔 알림 등록됨 ✓';
+                    btn.style.background  = '#16a34a';
+                    btn.title             = '클릭하면 알림 등록 취소';
+                } else {
+                    btn.textContent       = '🔔 푸시 알림 등록';
+                    btn.style.background  = '#0071e3';
+                    btn.title             = '푸시 알림 등록';
                 }
-            } catch(e) { /* 무시 */ }
+            } catch(e) { console.error(e); }
         }
 
+        // ✅ 푸시 알림 등록/취소 토글
+        window.togglePushNotification = async function() {
+            const user = auth.currentUser;
+            if (!user)            { alert('로그인이 필요합니다.'); return; }
+            if (!window.isAdmin)  { alert('관리자만 등록할 수 있습니다.'); return; }
+
+            const btn = document.getElementById('pushRegisterBtn');
+
+            try {
+                const tokenDoc = await getDoc(doc(db, 'adminTokens', user.uid));
+
+                if (tokenDoc.exists()) {
+                    // 이미 등록됨 → 취소
+                    if (!confirm('푸시 알림 등록을 취소하시겠습니까?')) return;
+                    await deleteDoc(doc(db, 'adminTokens', user.uid));
+                    btn.textContent      = '🔔 푸시 알림 등록';
+                    btn.style.background = '#0071e3';
+                    alert('푸시 알림이 해제되었습니다.');
+                } else {
+                    // 미등록 → 등록
+                    const permission = await Notification.requestPermission();
+                    if (permission !== 'granted') { alert('알림 권한이 거부되었습니다. 브라우저 설정에서 허용해주세요.'); return; }
+
+                    const messaging = getMessaging(app);
+                    const fcmToken  = await getToken(messaging, { vapidKey: VAPID_KEY });
+                    if (!fcmToken) { alert('FCM 토큰을 가져오지 못했습니다.'); return; }
+
+                    await setDoc(doc(db, 'adminTokens', user.uid), {
+                        token: fcmToken,
+                        uid: user.uid,
+                        updatedAt: serverTimestamp()
+                    });
+
+                    btn.textContent      = '🔔 알림 등록됨 ✓';
+                    btn.style.background = '#16a34a';
+                    alert('✅ 푸시 알림 등록 완료!');
+                }
+            } catch(e) {
+                alert('처리 실패: ' + e.message);
+                console.error(e);
+            }
+        };
+
+        // ✅ 제품 불러오기
         async function loadProducts() {
             const select = document.getElementById('productSelect');
             try {
                 const snapshot = await getDocs(query(collection(db, "products")));
                 if (snapshot.empty) { select.innerHTML = '<option value="">등록된 제품이 없습니다.</option>'; return; }
-                let html = '<option value="">발주 품목 선택 (스마트 웨어러블 전용)</option>';
-                let cnt  = 0;
+
+                let optionsHtml  = '<option value="">발주 품목 선택 (스마트 웨어러블 전용)</option>';
+                let wearableCount = 0;
                 snapshot.forEach(d => {
                     const data = d.data();
                     if (data.category === 'wearable') {
                         const name = data.name || data.title || d.id;
-                        html += `<option value="${esc(name)}">${esc(name)}</option>`;
-                        cnt++;
+                        optionsHtml += `<option value="${esc(name)}">${esc(name)}</option>`;
+                        wearableCount++;
                     }
                 });
-                select.innerHTML = cnt === 0 ? '<option value="">발주 가능한 웨어러블 제품이 없습니다.</option>' : html;
+                select.innerHTML = wearableCount === 0
+                    ? '<option value="">발주 가능한 웨어러블 제품이 없습니다.</option>'
+                    : optionsHtml;
             } catch (e) {
+                console.error("제품 목록 로드 실패:", e);
                 select.innerHTML = '<option value="">목록을 불러오지 못했습니다.</option>';
             }
         }
 
+        // ✅ 품목 추가/삭제/수정
         window.addOrderItem = function() {
             const product   = document.getElementById('productSelect').value;
             const qty       = parseInt(document.getElementById('productQty').value);
             const recipient = document.getElementById('recipientName').value.trim();
             const phone     = document.getElementById('recipientPhone').value.trim();
             const address   = document.getElementById('recipientAddress').value.trim();
-            if (!product)        { alert('품목을 선택해주세요.'); return; }
-            if (!qty || qty < 1) { alert('올바른 수량을 입력해주세요.'); return; }
-            if (!recipient)      { alert('수취인 이름을 입력해주세요.'); return; }
-            if (!phone)          { alert('전화번호를 입력해주세요.'); return; }
-            if (!address)        { alert('배송지 주소를 입력해주세요.'); return; }
+
+            if (!product)          { alert('품목을 선택해주세요.'); return; }
+            if (!qty || qty < 1)   { alert('올바른 수량을 입력해주세요.'); return; }
+            if (!recipient)        { alert('수취인 이름을 입력해주세요.'); return; }
+            if (!phone)            { alert('전화번호를 입력해주세요.'); return; }
+            if (!address)          { alert('배송지 주소를 입력해주세요.'); return; }
+
             orderItems.push({ product, qty, recipient, phone, address });
-            document.getElementById('productSelect').value    = '';
-            document.getElementById('productQty').value       = '';
-            document.getElementById('recipientName').value    = '';
-            document.getElementById('recipientPhone').value   = '';
+            document.getElementById('productSelect').value   = '';
+            document.getElementById('productQty').value      = '';
+            document.getElementById('recipientName').value   = '';
+            document.getElementById('recipientPhone').value  = '';
             document.getElementById('recipientAddress').value = '';
             renderOrderInputList();
         };
 
-        window.removeOrderItem = function(i) { orderItems.splice(i,1); renderOrderInputList(); };
+        window.removeOrderItem = function(index) {
+            orderItems.splice(index, 1);
+            renderOrderInputList();
+        };
 
-        window.editOrderItem = function(i) {
-            const item = orderItems[i];
+        window.editOrderItem = function(index) {
+            const item = orderItems[index];
             document.getElementById('productSelect').value    = item.product;
             document.getElementById('productQty').value       = item.qty;
             document.getElementById('recipientName').value    = item.recipient;
             document.getElementById('recipientPhone').value   = item.phone;
             document.getElementById('recipientAddress').value = item.address;
-            orderItems.splice(i,1);
+            orderItems.splice(index, 1);
             renderOrderInputList();
-            document.querySelector('.item-add-box').scrollIntoView({ behavior:'smooth', block:'center' });
+            document.querySelector('.item-add-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
         };
 
         function renderOrderInputList() {
@@ -593,43 +546,51 @@
                     <td>${esc(item.phone)}</td>
                     <td><span style="display:inline-block; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${esc(item.address)}">${esc(item.address)}</span></td>
                     <td style="text-align:center;">
-                        <button class="btn-edit-item"   onclick="editOrderItem(${idx})"   title="수정"><i class="fas fa-edit"></i></button>
+                        <button class="btn-edit-item" onclick="editOrderItem(${idx})" title="수정"><i class="fas fa-edit"></i></button>
                         <button class="btn-remove-item" onclick="removeOrderItem(${idx})" title="삭제"><i class="fas fa-times"></i></button>
                     </td>
-                </tr>`).join('');
+                </tr>
+            `).join('');
         }
 
+        // ✅ 발주 제출
         window.submitOrder = async function() {
             const vendor  = document.getElementById('vendorNameInput').value;
             const agreed  = document.getElementById('privacyAgree').checked;
             const btn     = document.getElementById('submitBtn');
             const success = document.getElementById('successMsg');
-            if (!vendor)                { alert('업체 정보가 인식되지 않았습니다.'); return; }
-            if (orderItems.length === 0){ alert('발주할 품목을 1개 이상 추가해주세요.'); return; }
-            if (!agreed)                { alert('발주 정보 제출에 동의해주세요.'); return; }
+
+            if (!vendor)               { alert('업체 정보가 인식되지 않았습니다.'); return; }
+            if (orderItems.length === 0) { alert('발주할 품목을 1개 이상 추가해주세요.'); return; }
+            if (!agreed)               { alert('발주 정보 제출에 동의해주세요.'); return; }
 
             btn.disabled  = true;
             btn.innerHTML = '<span class="spinner"></span>제출 중...';
 
             try {
-                const totalQty    = orderItems.reduce((s,i) => s+i.qty, 0);
+                const totalQty    = orderItems.reduce((sum, item) => sum + item.qty, 0);
                 const summaryText = orderItems.length === 1
                     ? `${orderItems[0].product} (${totalQty}개)`
-                    : `${orderItems[0].product} 외 ${orderItems.length-1}건 (총 ${totalQty}개)`;
+                    : `${orderItems[0].product} 외 ${orderItems.length - 1}건 (총 ${totalQty}개)`;
 
                 if (editingOrderId) {
-                    await updateDoc(doc(db,"inquiries",editingOrderId), { items:orderItems, summary:summaryText, totalQty });
+                    await updateDoc(doc(db, "inquiries", editingOrderId), { items: orderItems, summary: summaryText, totalQty });
                     alert('발주 내역이 성공적으로 수정되었습니다.');
                     editingOrderId = null;
                     document.getElementById('formTitle').innerText = "발주서 등록";
                     document.getElementById('formDesc').innerText  = "발주 품목과 수취인(배송지) 정보를 정확히 입력해 주세요.";
                     btn.style.background = "#1d1d1f";
-                    btn.innerHTML = '발주 제출하기';
+                    btn.innerHTML        = '발주 제출하기';
                 } else {
-                    await addDoc(collection(db,"inquiries"), {
-                        vendorName: vendor, userId: auth.currentUser.uid,
-                        items: orderItems, summary: summaryText, totalQty,
-                        type: '발주', privacyAgreed: true, read: false,
+                    await addDoc(collection(db, "inquiries"), {
+                        vendorName: vendor,
+                        userId: auth.currentUser.uid,
+                        items: orderItems,
+                        summary: summaryText,
+                        totalQty,
+                        type: '발주',
+                        privacyAgreed: true,
+                        read: false,
                         createdAt: serverTimestamp()
                     });
                     success.classList.add('show');
@@ -642,93 +603,92 @@
 
                 if (!editingOrderId) {
                     btn.innerHTML = '✅ 제출 완료';
-                    setTimeout(() => { btn.disabled=false; btn.innerHTML='발주 제출하기'; success.classList.remove('show'); }, 3000);
+                    setTimeout(() => {
+                        btn.disabled  = false;
+                        btn.innerHTML = '발주 제출하기';
+                        success.classList.remove('show');
+                    }, 3000);
                 } else {
                     btn.disabled = false;
                 }
-            } catch(e) {
+            } catch (e) {
                 alert('처리 실패: ' + e.message);
                 btn.disabled  = false;
                 btn.innerHTML = '발주 제출하기';
             }
         };
 
+        // ✅ 내 발주 내역
         async function loadMyOrders(uid) {
-            const q     = query(collection(db,"inquiries"), where("userId","==",uid), orderBy("createdAt","desc"));
             const tbody = document.getElementById('myOrdersBody');
             try {
-                const snap = await getDocs(q);
+                const snap = await getDocs(query(collection(db, "inquiries"), where("userId", "==", uid), orderBy("createdAt", "desc")));
                 if (snap.empty) {
                     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:25px; color:#aaa;">아직 접수한 발주 내역이 없습니다.</td></tr>';
                     return;
                 }
                 tbody.innerHTML = snap.docs.map(d => {
-                    const item = d.data();
-                    const date = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '방금 전';
-                    const statusStr = item.read
+                    const item   = d.data();
+                    const date   = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '방금 전';
+                    const statusStr  = item.read
                         ? '<span class="status-badge status-confirm">✔ 확인됨 (진행중)</span>'
                         : '<span class="status-badge status-wait">⏳ 미확인 (수정가능)</span>';
                     const actionBtns = !item.read
-                        ? `<button class="btn-mini" onclick="editMyOrder('${d.id}')">수정</button>
-                           <button class="btn-mini btn-mini-del" onclick="deleteMyOrder('${d.id}')">삭제</button>`
+                        ? `<button class="btn-mini" onclick="editMyOrder('${d.id}')">수정</button><button class="btn-mini btn-mini-del" onclick="deleteMyOrder('${d.id}')">삭제</button>`
                         : '<span style="color:#aaa; font-size:11px;">수정 불가</span>';
-                    return `<tr>
-                        <td>${date}</td>
-                        <td><strong>${esc(item.summary)}</strong></td>
-                        <td>${statusStr}</td>
-                        <td style="text-align:center;">${actionBtns}</td>
-                    </tr>`;
+                    return `<tr><td>${date}</td><td><strong>${esc(item.summary)}</strong></td><td>${statusStr}</td><td style="text-align:center;">${actionBtns}</td></tr>`;
                 }).join('');
-            } catch(e) { console.error(e); }
+            } catch (error) { console.error(error); }
         }
 
         window.editMyOrder = async function(id) {
             try {
-                const d = await getDoc(doc(db,"inquiries",id));
+                const d = await getDoc(doc(db, "inquiries", id));
                 if (!d.exists()) return;
                 const data = d.data();
                 orderItems     = [...data.items];
                 editingOrderId = id;
-                document.getElementById('formTitle').innerText        = "🔄 발주서 수정하기";
-                document.getElementById('formDesc').innerText         = "내용을 변경한 뒤 '발주 수정 완료' 버튼을 눌러주세요.";
-                document.getElementById('submitBtn').innerText        = "발주 수정 완료";
+                document.getElementById('formTitle').innerText   = "🔄 발주서 수정하기";
+                document.getElementById('formDesc').innerText    = "내용을 변경한 뒤 '발주 수정 완료' 버튼을 눌러주세요.";
+                document.getElementById('submitBtn').innerText   = "발주 수정 완료";
                 document.getElementById('submitBtn').style.background = "#0071e3";
-                if (orderItems.length === 1) { editOrderItem(0); } else { renderOrderInputList(); }
-                document.querySelector('.contact-form-card').scrollIntoView({ behavior:'smooth', block:'start' });
-            } catch(e) { alert('불러오기 실패: ' + e.message); }
+                if (orderItems.length === 1) editOrderItem(0); else renderOrderInputList();
+                document.querySelector('.contact-form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) { alert('불러오기 실패: ' + error.message); }
         };
 
         window.deleteMyOrder = async function(id) {
             if (confirm("해당 발주 내역을 정말 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
                 try {
-                    await deleteDoc(doc(db,"inquiries",id));
+                    await deleteDoc(doc(db, "inquiries", id));
                     alert("발주가 취소/삭제되었습니다.");
                     loadMyOrders(auth.currentUser.uid);
-                } catch(e) { alert("삭제 오류: " + e.message); }
+                } catch (e) { alert("삭제 오류: " + e.message); }
             }
         };
 
+        // ✅ 관리자 발주 목록
         async function loadOrders() {
             if (!window.isAdmin) return;
             try {
-                const snap = await getDocs(query(collection(db,"inquiries"), orderBy("createdAt","desc")));
+                const snapshot = await getDocs(query(collection(db, "inquiries"), orderBy("createdAt", "desc")));
                 allOrders = [];
-                snap.forEach(d => allOrders.push({ id:d.id, ...d.data() }));
-                const unread = allOrders.filter(i => !i.read && i.type==='발주').length;
+                snapshot.forEach(d => allOrders.push({ id: d.id, ...d.data() }));
+                const unread = allOrders.filter(i => !i.read && i.type === '발주').length;
                 const badge  = document.getElementById('inboxBadge');
-                if (badge) { badge.textContent = unread; badge.style.display = unread>0?'block':'none'; }
+                if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'block' : 'none'; }
                 const uc = document.getElementById('unreadCount');
-                if (uc) uc.textContent = unread>0?`(${unread})`:'';
-            } catch(e) { console.error(e); }
+                if (uc) uc.textContent = unread > 0 ? `(${unread})` : '';
+            } catch (e) { console.error(e); }
         }
 
         function renderOrders() {
             if (!window.isAdmin) return;
-            const list = document.getElementById('inboxList');
+            const list     = document.getElementById('inboxList');
             const filtered = allOrders.filter(i => {
                 if (i.type !== '발주') return false;
                 if (currentFilter === 'unread') return !i.read;
-                if (currentFilter === 'read')   return  i.read;
+                if (currentFilter === 'read')   return i.read;
                 return true;
             });
             if (filtered.length === 0) { list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>'; return; }
@@ -737,9 +697,9 @@
                 const vendor  = item.vendorName || '알 수 없는 업체';
                 const summary = item.summary    || '상세 품목 없음';
                 return `
-                <div class="inbox-item ${item.read?'read':'unread'}">
+                <div class="inbox-item ${item.read ? 'read' : 'unread'}">
                     <div class="inbox-item-header">
-                        <span class="inbox-name">${item.read?'':'🔵 '}🏢 [${esc(vendor)}] 발주</span>
+                        <span class="inbox-name">${item.read ? '' : '🔵 '}🏢 [${esc(vendor)}] 발주</span>
                         <span class="inbox-date">${esc(date)}</span>
                     </div>
                     <div class="inbox-summary">📦 <strong>요약:</strong> ${esc(summary)}</div>
@@ -747,7 +707,9 @@
                         <i class="fas fa-file-excel"></i> 엑셀로 저장
                     </button>
                     <div class="inbox-actions">
-                        <button class="btn-read-toggle"    onclick="toggleRead('${esc(item.id)}',${item.read})">${item.read?'미확인으로 변경':'✔ 확인됨으로 표시'}</button>
+                        <button class="btn-read-toggle" onclick="toggleRead('${esc(item.id)}',${item.read})">
+                            ${item.read ? '미확인으로 변경' : '✔ 확인됨으로 표시'}
+                        </button>
                         <button class="btn-delete-inquiry" onclick="deleteAdminOrder('${esc(item.id)}')">🗑 삭제</button>
                     </div>
                 </div>`;
@@ -756,52 +718,58 @@
 
         window.downloadAdminExcel = function(orderId) {
             if (!window.isAdmin) return;
-            const order = allOrders.find(i => i.id===orderId);
-            if (!order?.items?.length) { alert('엑셀로 변환할 품목 데이터가 없습니다.'); return; }
-            const data = order.items.map((item,idx) => ({
-                "연번": idx+1, "협력업체": order.vendorName,
-                "품목명": item.product, "수량": item.qty,
-                "수취인": item.recipient||'', "전화번호": item.phone||'',
-                "배송지 주소": item.address||'',
+            const order = allOrders.find(i => i.id === orderId);
+            if (!order || !order.items || order.items.length === 0) { alert('엑셀로 변환할 품목 데이터가 없습니다.'); return; }
+            const excelData = order.items.map((item, idx) => ({
+                "연번": idx + 1, "협력업체": order.vendorName, "품목명": item.product,
+                "수량": item.qty, "수취인": item.recipient || '', "전화번호": item.phone || '',
+                "배송지 주소": item.address || '',
                 "발주일시": order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('ko-KR') : ''
             }));
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "발주서");
-            ws['!cols'] = [{wch:5},{wch:15},{wch:25},{wch:8},{wch:12},{wch:15},{wch:45},{wch:20}];
-            XLSX.writeFile(wb, `${order.vendorName}_${getTodayStr()}_발주서.xlsx`);
+            const worksheet = XLSX.utils.json_to_sheet(excelData);
+            const workbook  = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "발주서");
+            worksheet['!cols'] = [{ wch:5 },{ wch:15 },{ wch:25 },{ wch:8 },{ wch:12 },{ wch:15 },{ wch:45 },{ wch:20 }];
+            XLSX.writeFile(workbook, `${order.vendorName}_${getTodayStr()}_발주서.xlsx`);
         };
 
-        window.toggleRead = async function(id, cur) {
+        window.toggleRead = async function(id, currentRead) {
             if (!window.isAdmin) return;
-            try { await updateDoc(doc(db,"inquiries",id),{read:!cur}); await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid); }
-            catch(e) { alert('업데이트 실패: '+e.message); }
+            try {
+                await updateDoc(doc(db, "inquiries", id), { read: !currentRead });
+                await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid);
+            } catch (e) { alert('업데이트 실패: ' + e.message); }
         };
 
         window.deleteAdminOrder = async function(id) {
             if (!window.isAdmin) return;
             if (!confirm('관리자 권한으로 이 발주를 삭제하시겠습니까?')) return;
-            try { await deleteDoc(doc(db,"inquiries",id)); await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid); }
-            catch(e) { alert('삭제 실패: '+e.message); }
+            try {
+                await deleteDoc(doc(db, "inquiries", id));
+                await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid);
+            } catch (e) { alert('삭제 실패: ' + e.message); }
         };
 
         window.filterInbox = function(filter, btn) {
-            if (!window.isAdmin) return;
             currentFilter = filter;
             document.querySelectorAll('.inbox-tab').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
             renderOrders();
         };
 
+        // ✅ 모달 열릴 때 푸시 버튼 상태 자동 반영
         window.openInbox = async function(e) {
             e.preventDefault();
             if (!window.isAdmin) return;
-            await loadOrders(); renderOrders();
+            await loadOrders();
+            renderOrders();
+            await updatePushButtonState();
             document.getElementById('inboxModal').style.display = 'flex';
         };
 
         window.closeInbox = function() { document.getElementById('inboxModal').style.display = 'none'; };
-        document.getElementById('inboxModal').addEventListener('click', function(e) { if (e.target===this) closeInbox(); });
+        document.getElementById('inboxModal').addEventListener('click', function(e) { if (e.target === this) closeInbox(); });
+
     </script>
 </body>
 </html>

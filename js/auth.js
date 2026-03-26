@@ -16,8 +16,8 @@ const isProductPage = path.includes('/product');
 const isContactPage = path.includes('/contact');
 
 // ── 세션 설정 ────────────────────────────────────
-const SESSION_LIMIT   = 60 * 60 * 1000; // 1시간 (밀리초)
-const LOGIN_TIME_KEY  = 'sessionLoginTime';
+const SESSION_LIMIT  = 60 * 60 * 1000; // 1시간 (밀리초)
+const LOGIN_TIME_KEY = 'sessionLoginTime';
 
 let sessionTimer;
 
@@ -43,13 +43,12 @@ function getRemainingTime() {
     return Math.max(SESSION_LIMIT - elapsed, 0);
 }
 
+// ✅ 수정: 절대경로로 단순화 (상대경로 계산 제거)
 async function performLogout() {
     clearTimeout(sessionTimer);
     localStorage.removeItem(LOGIN_TIME_KEY);
     await signOut(auth);
-    const depth  = (path.match(/\//g) || []).length - 1;
-    const prefix = depth > 1 ? '../' : '';
-    window.location.href = prefix + 'login/';
+    window.location.href = '/login/';
 }
 
 // 남은 시간만큼 타이머 설정
