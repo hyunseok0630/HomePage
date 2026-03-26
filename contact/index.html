@@ -106,6 +106,7 @@
 </head>
 <body>
 
+<!-- ── 헤더 (다른 페이지와 동일) ── -->
 <header id="main-header">
     <div class="header-inner">
         <div class="header-left logo">
@@ -115,8 +116,31 @@
             <ul class="nav-menu">
                 <li><a href="../">홈</a></li>
                 <li><a href="../about/">회사 소개</a></li>
-                <li><a href="../product/">제품</a></li>
+                <li class="has-dropdown">
+                    <a href="../product/">제품 <i class="fas fa-chevron-down chevron"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="../product/#section-wearable"><i class="fas fa-glasses"></i> 스마트 웨어러블</a></li>
+                        <li><a href="../product/#section-industrial"><i class="fas fa-hard-hat"></i> 환경 안전 용품</a></li>
+                        <li><a href="../product/#section-grating"><i class="fas fa-th"></i> Grating 시리즈</a></li>
+                        <li><a href="../product/#section-parts"><i class="fas fa-cog"></i> 산업용 특수 소재</a></li>
+                    </ul>
+                </li>
                 <li><a href="../contact/" class="active">발주하기</a></li>
+                <li class="has-dropdown">
+                    <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
+                    <ul class="dropdown">
+                        <li>
+                            <a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener">
+                                <i class="fas fa-play-circle"></i> Watch the video
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <div class="header-right utility-icons">
@@ -126,6 +150,7 @@
                 <i class="fas fa-envelope"></i>
                 <span id="inboxBadge">0</span>
             </a>
+            <a href="../product/" id="adminEditBtn" title="제품 관리" style="display:none;"><i class="fas fa-edit"></i></a>
             <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
             <a href="#"><i class="fas fa-shopping-cart"></i></a>
             <button class="hamburger" id="hamburger" aria-label="메뉴">
@@ -135,12 +160,20 @@
     </div>
 </header>
 
+<!-- ── 모바일 메뉴 ── -->
 <nav class="mobile-menu" id="mobileMenu">
     <ul>
         <li><a href="../">홈</a></li>
         <li><a href="../about/">회사 소개</a></li>
         <li><a href="../product/">제품</a></li>
+        <li><a href="../product/#section-wearable"   class="sub-item">· 스마트 웨어러블</a></li>
+        <li><a href="../product/#section-industrial" class="sub-item">· 환경 안전 용품</a></li>
+        <li><a href="../product/#section-grating"    class="sub-item">· Grating 시리즈</a></li>
+        <li><a href="../product/#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
         <li><a href="../contact/" class="active">발주하기</a></li>
+        <li><a href="#">How to Use</a></li>
+        <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener" class="sub-item">· Watch the video</a></li>
+        <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
     </ul>
 </nav>
 
@@ -330,7 +363,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom"><p>&copy; 2025 SKY Commerce. All Rights Reserved.</p></div>
+        <div class="footer-bottom"><p>&copy; 2026 SKY Commerce. All Rights Reserved.</p></div>
     </div>
 </footer>
 
@@ -517,7 +550,6 @@
                 const name = data.name || data.title || d.id;
                 if (name) allProducts.push(name);
             });
-            // 관리자: 전체 / 업체: allowedProducts 있으면 필터, 없으면 전체
             let filtered = allProducts;
             if (!window.isAdmin && vendorAllowedProducts.length > 0) {
                 filtered = allProducts.filter(n => vendorAllowedProducts.includes(n));
@@ -551,7 +583,7 @@
         document.getElementById('recipientName').value     = '';
         document.getElementById('recipientPhone').value    = '';
         document.getElementById('recipientAddress').value  = '';
-        document.getElementById('unitPriceDisplay').innerHTML  = '단가: -';
+        document.getElementById('unitPriceDisplay').innerHTML   = '단가: -';
         document.getElementById('unitPriceDisplay').style.color = '#aaa';
         renderOrderInputList();
     };
@@ -764,7 +796,7 @@
     async function generateInvoicePdf(orderId) {
         const orderDoc = await getDoc(doc(db,"inquiries",orderId));
         if (!orderDoc.exists()) throw new Error('발주 데이터를 찾을 수 없습니다.');
-        const order = orderDoc.data();
+        const order    = orderDoc.data();
         const { jsPDF } = window.jspdf;
         const pdf      = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
         const date     = order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('ko-KR') : '';
@@ -962,7 +994,6 @@
         } catch(e) { list.innerHTML = '<div class="empty-inbox">오류: ' + e.message + '</div>'; }
     }
 
-    // ✅ 중첩 템플릿 리터럴 완전 제거 버전
     window.loadPriceEditor = async function() {
         const uid  = document.getElementById('priceVendorSelect').value;
         const area = document.getElementById('priceEditorArea');
@@ -988,9 +1019,7 @@
                 area.innerHTML = '<div class="empty-inbox">등록된 제품이 없습니다.</div>'; return;
             }
             const vendorName = allUsers.find(u => u.uid === uid)?.vendorName || uid;
-
-            // ✅ buildProductRow 헬퍼로 중첩 제거
-            const rowsHtml = currentPriceProducts
+            const rowsHtml   = currentPriceProducts
                 .map((name, idx) => buildProductRow(name, idx, savedAllowed.includes(name), savedPrices))
                 .join('');
 
