@@ -306,7 +306,16 @@
                     <h3 style="font-size:18px; font-weight:700; margin:0;">📦 전체 발주 목록 (관리자)</h3>
                     <p style="font-size:12px; color:#aaa; margin:4px 0 0;">최신순으로 표시됩니다</p>
                 </div>
-                <button onclick="closeInbox()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#888;">✕</button>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <!-- ✅ 푸시 알림 등록 버튼 -->
+                    <button id="pushRegBtn" onclick="registerPushToken()"
+                        style="display:none; background:#f0f7ff; color:#0071e3; border:1.5px solid #c0dcf8;
+                               border-radius:8px; padding:8px 16px; font-size:13px; font-weight:600;
+                               cursor:pointer; font-family:inherit;">
+                        <i class="fas fa-bell"></i> 푸시 알림 등록
+                    </button>
+                    <button onclick="closeInbox()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#888;">✕</button>
+                </div>
             </div>
             <div style="padding:14px 28px; border-bottom:1px solid #f0f0f0; display:flex; gap:8px; flex-shrink:0;">
                 <button class="inbox-tab active" onclick="filterInbox('all',this)">전체</button>
@@ -356,6 +365,7 @@
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy, getDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
@@ -366,9 +376,13 @@
             appId: "1:232403511014:web:318ebb689d678e998b7d27"
         };
 
-        const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
-        const db   = getFirestore(app);
-        const auth = getAuth(app);
+        // ✅ Firebase Console → 프로젝트 설정 → 클라우드 메시징 → 웹 푸시 인증서 → 키 쌍 생성 후 여기에 붙여넣기
+        const VAPID_KEY = 'BBlkX8AWtFgKxGhxP2pn7YUD7tBE17cIaOchHB8qTD1uS4MoPrj_ubepL0lJdcae31vKTC9sBthx_j_tp8T_8cA';
+
+        const app       = getApps().length ? getApp() : initializeApp(firebaseConfig);
+        const db        = getFirestore(app);
+        const auth      = getAuth(app);
+        const messaging = getMessaging(app);
 
         window.isAdmin = false;
         let currentFilter  = 'all';
@@ -384,6 +398,69 @@
             return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
         }
 
+        // ── 포그라운드 푸시 알림 수신 (페이지 열려있을 때) ──
+        onMessage(messaging, (payload) => {
+            const { title, body } = payload.notification;
+            if (Notification.permission === 'granted') {
+                new Notification(title, {
+                    body,
+                    icon: '../img/logo_blue.png',
+                    tag:  'new-order',
+                    requireInteraction: true
+                });
+            }
+        });
+
+        // ── 푸시 알림 토큰 등록 (관리자 전용) ──
+        window.registerPushToken = async function() {
+            if (!window.isAdmin) return;
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission !== 'granted') {
+                    alert('푸시 알림 권한이 거부되었습니다.\n브라우저 주소창 왼쪽 자물쇠 아이콘에서 허용해주세요.');
+                    return;
+                }
+
+                const swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+
+                const token = await getToken(messaging, {
+                    vapidKey: VAPID_KEY,
+                    serviceWorkerRegistration: swReg
+                });
+
+                if (!token) { alert('토큰 발급 실패: 잠시 후 다시 시도해주세요.'); return; }
+
+                const existing = await getDocs(query(
+                    collection(db, 'adminTokens'),
+                    where('token', '==', token)
+                ));
+
+                if (!existing.empty) {
+                    alert('✅ 이미 이 기기에서 푸시 알림이 등록되어 있습니다.');
+                    return;
+                }
+
+                await addDoc(collection(db, 'adminTokens'), {
+                    token,
+                    device:    navigator.userAgent.substring(0, 80),
+                    createdAt: serverTimestamp()
+                });
+
+                document.getElementById('pushRegBtn').innerHTML = '<i class="fas fa-bell"></i> 알림 등록됨 ✅';
+                document.getElementById('pushRegBtn').style.background = '#ecfdf5';
+                document.getElementById('pushRegBtn').style.color = '#166534';
+                document.getElementById('pushRegBtn').style.borderColor = '#6ee7b7';
+                document.getElementById('pushRegBtn').onclick = null;
+
+                alert('✅ 푸시 알림 등록 완료!\n새 발주가 들어오면 이 기기로 알림이 전송됩니다.\n(로그인 여부와 무관하게 크롬이 실행 중이면 수신됩니다.)');
+
+            } catch(e) {
+                console.error(e);
+                alert('푸시 등록 실패: ' + e.message);
+            }
+        };
+
+        // ── 인증 상태 감지 ──
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 alert("발주 시스템은 로그인이 필요합니다.");
@@ -414,11 +491,38 @@
 
             if (window.isAdmin) {
                 document.getElementById('inboxBtn').style.display = 'block';
+                // 푸시 알림 버튼 표시
+                const pushBtn = document.getElementById('pushRegBtn');
+                if (pushBtn) pushBtn.style.display = 'inline-block';
+                // 이미 등록된 기기인지 확인 후 버튼 상태 변경
+                checkPushTokenStatus();
                 loadOrders();
             }
             loadProducts();
             loadMyOrders(user.uid);
         });
+
+        // 이미 등록된 토큰 기기인지 확인
+        async function checkPushTokenStatus() {
+            if (!('serviceWorker' in navigator) || !('Notification' in window)) return;
+            if (Notification.permission !== 'granted') return;
+            try {
+                const swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg });
+                if (!token) return;
+                const existing = await getDocs(query(collection(db, 'adminTokens'), where('token', '==', token)));
+                if (!existing.empty) {
+                    const btn = document.getElementById('pushRegBtn');
+                    if (btn) {
+                        btn.innerHTML     = '<i class="fas fa-bell"></i> 알림 등록됨 ✅';
+                        btn.style.background   = '#ecfdf5';
+                        btn.style.color        = '#166534';
+                        btn.style.borderColor  = '#6ee7b7';
+                        btn.onclick = null;
+                    }
+                }
+            } catch(e) { /* 무시 */ }
+        }
 
         async function loadProducts() {
             const select = document.getElementById('productSelect');
