@@ -79,6 +79,17 @@
         .btn-pdf { background: #fff0f7; color: #9d174d; border: 1px solid #fbcfe8; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; transition: 0.2s; }
         .btn-pdf:hover { background: #fce7f3; }
         .btn-pdf:disabled { background: #f0f0f0; color: #aaa; border-color: #ddd; cursor: not-allowed; }
+        .btn-default-addr { background: #f0fdf4; color: #166534; border: 1px solid #6ee7b7; border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; transition: 0.2s; }
+        .btn-default-addr:hover { background: #dcfce7; }
+        .btn-default-addr:disabled { background: #f0f0f0; color: #aaa; border-color: #ddd; cursor: not-allowed; }
+        .default-addr-panel { background: #f0fdf4; border: 1.5px solid #6ee7b7; border-radius: 12px; padding: 16px; margin-bottom: 14px; display: none; }
+        .default-addr-panel.show { display: block; }
+        .default-addr-panel .da-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .default-addr-panel .da-row:last-child { margin-bottom: 0; }
+        .default-addr-panel input { flex: 1; padding: 10px 12px; border: 1.5px solid #a7f3d0; border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; }
+        .default-addr-panel input:focus { border-color: #059669; }
+        .default-addr-panel .da-save-btn { background: #059669; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
+        .default-addr-panel .da-save-btn:hover { background: #047857; }
         #inboxBadge { display: none; position: absolute; top: -4px; right: -4px; background: crimson; color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; line-height: 16px; text-align: center; }
         #inboxBtn { position: relative; }
         .inbox-tab { background: #f5f5f7; border: none; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; font-family: inherit; transition: background 0.2s; }
@@ -216,10 +227,29 @@
                 </div>
 
                 <div class="order-input-area">
-                    <div class="input-group">
+                    <div class="input-group" style="display:flex;gap:8px;align-items:center;">
                         <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중..."
-                               style="background-color:#e8eaed; color:#555; cursor:not-allowed; font-weight:600;">
+                               style="flex:1;background-color:#e8eaed;color:#555;cursor:not-allowed;font-weight:600;">
+                        <button class="btn-default-addr" id="btnDefaultAddr" onclick="fillDefaultAddr()" title="기본 배송지 자동입력">
+                            <i class="fas fa-map-marker-alt"></i> 기본 배송지
+                        </button>
+                        <button class="btn-default-addr" onclick="toggleDefaultAddrPanel()" title="기본 배송지 설정"
+                                style="padding:10px 11px;background:#f8fafc;color:#555;border-color:#d0d0d7;">
+                            <i class="fas fa-cog"></i>
+                        </button>
                         <input type="hidden" id="vendorNameInput">
+                    </div>
+                    <!-- 기본 배송지 패널 -->
+                    <div class="default-addr-panel" id="defaultAddrPanel">
+                        <p style="font-size:12px;color:#065f46;font-weight:600;margin:0 0 10px;"><i class="fas fa-map-marker-alt"></i> 기본 배송지 설정</p>
+                        <div class="da-row">
+                            <input type="text" id="daRecipient" placeholder="수취인명">
+                            <input type="text" id="daPhone"     placeholder="전화번호">
+                        </div>
+                        <div class="da-row">
+                            <input type="text" id="daAddress"   placeholder="배송지 주소">
+                            <button class="da-save-btn" onclick="saveDefaultAddr()"><i class="fas fa-save"></i> 저장</button>
+                        </div>
                     </div>
                     <div class="item-add-box">
                         <div class="item-add-flex">
@@ -397,6 +427,7 @@
     let editingOrderId        = null;
     let vendorPrices          = {};
     let vendorAllowedProducts = [];
+    let defaultDelivery       = { recipient: '', phone: '', address: '' };
     let currentPeriodMonths   = 1;
     let customFrom            = null;
     let customTo              = null;
@@ -460,6 +491,16 @@
                 } else {
                     vendorDisplay.value = `👤 ${user.email} (업체명 미등록)`;
                     vendorInput.value   = user.email;
+                }
+                // 기본 배송지 로딩
+                if (data.defaultRecipient || data.defaultPhone || data.defaultAddress) {
+                    defaultDelivery = {
+                        recipient: data.defaultRecipient || '',
+                        phone:     data.defaultPhone     || '',
+                        address:   data.defaultAddress   || ''
+                    };
+                    const btn = document.getElementById('btnDefaultAddr');
+                    if (btn) btn.innerHTML = '<i class="fas fa-map-marker-alt"></i> 기본 배송지 ✓';
                 }
             }
         } catch(e) {
@@ -782,6 +823,55 @@
         } catch(e) { alert('불러오기 실패: ' + e.message); }
     };
 
+    // ── 기본 배송지 패널 토글 ──
+    window.toggleDefaultAddrPanel = function() {
+        const panel = document.getElementById('defaultAddrPanel');
+        const showing = panel.classList.toggle('show');
+        if (showing) {
+            document.getElementById('daRecipient').value = defaultDelivery.recipient;
+            document.getElementById('daPhone').value     = defaultDelivery.phone;
+            document.getElementById('daAddress').value   = defaultDelivery.address;
+        }
+    };
+
+    // ── 기본 배송지 → 수취인/전화/주소 자동 입력 ──
+    window.fillDefaultAddr = function() {
+        if (!defaultDelivery.recipient && !defaultDelivery.phone && !defaultDelivery.address) {
+            alert('저장된 기본 배송지가 없습니다.\n⚙️ 설정 버튼을 눌러 먼저 등록해 주세요.');
+            return;
+        }
+        document.getElementById('recipientName').value    = defaultDelivery.recipient;
+        document.getElementById('recipientPhone').value   = defaultDelivery.phone;
+        document.getElementById('recipientAddress').value = defaultDelivery.address;
+    };
+
+    // ── Firestore에 기본 배송지 저장 ──
+    window.saveDefaultAddr = async function() {
+        const user = auth.currentUser;
+        if (!user) { alert('로그인이 필요합니다.'); return; }
+        const recipient = document.getElementById('daRecipient').value.trim();
+        const phone     = document.getElementById('daPhone').value.trim();
+        const address   = document.getElementById('daAddress').value.trim();
+        if (!recipient || !phone || !address) {
+            alert('수취인명, 전화번호, 배송지 주소를 모두 입력해 주세요.');
+            return;
+        }
+        try {
+            await updateDoc(doc(db, 'users', user.uid), {
+                defaultRecipient: recipient,
+                defaultPhone:     phone,
+                defaultAddress:   address
+            });
+            defaultDelivery = { recipient, phone, address };
+            const btn = document.getElementById('btnDefaultAddr');
+            if (btn) btn.innerHTML = '<i class="fas fa-map-marker-alt"></i> 기본 배송지 ✓';
+            document.getElementById('defaultAddrPanel').classList.remove('show');
+            alert('기본 배송지가 저장되었습니다!');
+        } catch(e) {
+            alert('저장 실패: ' + e.message);
+        }
+    };
+
     window.deleteMyOrder = async function(id) {
         if (!confirm("해당 발주 내역을 정말 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) return;
         try {
@@ -834,7 +924,7 @@
             <!-- 귀하 행 -->
             <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-bottom:none;margin-bottom:0;font-size:12.5px;">
                 <tr>
-                    <td style="padding:8px 12px;border:1px solid #ccc;font-size:13px;">
+                    <td style="padding:8px 12px;border:1px solid #ccc;font-size:13px;text-align:right;">
                         <span style="font-weight:600;">${order.vendorName || ''}</span>&nbsp;&nbsp;귀하
                     </td>
                 </tr>
