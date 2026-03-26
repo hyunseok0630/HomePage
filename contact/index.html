@@ -20,6 +20,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         .contact-section { padding: 100px 0; background: var(--bg-color); }
         .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start; }
@@ -106,7 +108,6 @@
 </head>
 <body>
 
-<!-- ── 헤더 (다른 페이지와 동일) ── -->
 <header id="main-header">
     <div class="header-inner">
         <div class="header-left logo">
@@ -160,7 +161,6 @@
     </div>
 </header>
 
-<!-- ── 모바일 메뉴 ── -->
 <nav class="mobile-menu" id="mobileMenu">
     <ul>
         <li><a href="../">홈</a></li>
@@ -307,10 +307,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
+
 <div id="inboxModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
     <div style="background:#fff; border-radius:16px; width:90%; max-width:760px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.3);">
         <div style="padding:24px 28px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
@@ -794,46 +794,146 @@
 
     // ── PDF 생성 ──────────────────────────────────────────
     async function generateInvoicePdf(orderId) {
-        const orderDoc = await getDoc(doc(db,"inquiries",orderId));
+        const orderDoc = await getDoc(doc(db, 'inquiries', orderId));
         if (!orderDoc.exists()) throw new Error('발주 데이터를 찾을 수 없습니다.');
-        const order    = orderDoc.data();
+        const order = orderDoc.data();
+
+        const orderDate = order.createdAt?.toDate ? order.createdAt.toDate() : new Date();
+        const yyyy = orderDate.getFullYear();
+        const mm   = orderDate.getMonth() + 1;
+        const dd   = orderDate.getDate();
+        const dateStr = `${yyyy}년 ${mm}월 ${dd}일`;
+        const mmdd    = `${mm}.${dd}`;
+
+        const grandTotal = (order.items || []).reduce((s, i) => s + (i.unitPrice != null ? i.unitPrice * i.qty : 0), 0);
+        const totalQty   = (order.items || []).reduce((s, i) => s + i.qty, 0);
+
+        const EMPTY_ROWS = Math.max(0, 10 - (order.items || []).length);
+        const emptyRowHtml = `<tr>
+            <td style="border:1px solid #ddd;padding:9px 6px;">&nbsp;</td>
+            <td style="border:1px solid #ddd;padding:9px 6px;"></td>
+            <td style="border:1px solid #ddd;padding:9px 6px;"></td>
+            <td style="border:1px solid #ddd;padding:9px 6px;"></td>
+            <td style="border:1px solid #ddd;padding:9px 6px;"></td>
+        </tr>`;
+
+        const itemsHtml = (order.items || []).map(item => `
+            <tr>
+                <td style="text-align:center;border:1px solid #ddd;padding:9px 6px;">${mmdd}</td>
+                <td style="border:1px solid #ddd;padding:9px 8px;">${item.product || ''}</td>
+                <td style="text-align:center;border:1px solid #ddd;padding:9px 6px;">${item.qty}</td>
+                <td style="text-align:right;border:1px solid #ddd;padding:9px 8px;">${item.unitPrice != null ? item.unitPrice.toLocaleString() + '원' : '-'}</td>
+                <td style="text-align:right;border:1px solid #ddd;padding:9px 8px;font-weight:700;color:#0071e3;">${item.unitPrice != null ? (item.unitPrice * item.qty).toLocaleString() + '원' : '-'}</td>
+            </tr>
+        `).join('');
+
+        const invoiceHtml = `
+        <div id="sc-invoice-wrap" style="width:740px;padding:36px 40px;font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;font-size:13px;background:#fff;color:#1d1d1f;box-sizing:border-box;">
+            <h2 style="text-align:center;font-size:19px;letter-spacing:8px;margin:0 0 18px;font-weight:700;">거 래 명 세 표</h2>
+            <p style="text-align:center;margin:0 0 14px;font-size:12px;color:#555;">(공급받는자용)</p>
+
+            <!-- 공급자 정보 -->
+            <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;margin-bottom:0;font-size:12.5px;">
+                <tr>
+                    <td rowspan="4" style="width:36px;text-align:center;font-weight:700;border-right:1.5px solid #555;background:#f5f5f7;writing-mode:vertical-lr;letter-spacing:6px;font-size:13px;padding:0 6px;">공&nbsp;급&nbsp;자</td>
+                    <td style="width:90px;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 6px;font-weight:600;">사업자등록번호</td>
+                    <td colspan="3" style="border:1px solid #ccc;padding:7px 10px;">248-86-00192</td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 6px;font-weight:600;">상&nbsp;&nbsp;&nbsp;&nbsp;호</td>
+                    <td style="border:1px solid #ccc;padding:7px 10px;">㈜스카이커머스</td>
+                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 6px;font-weight:600;width:52px;">성&nbsp;&nbsp;명</td>
+                    <td style="border:1px solid #ccc;padding:7px 10px;">김 나 경 (인)</td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 6px;font-weight:600;">사업장 소재지</td>
+                    <td colspan="3" style="border:1px solid #ccc;padding:7px 10px;">경기도 화성시 동탄대로 677-12, 효성ICT타워 621</td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 6px;font-weight:600;">업&nbsp;&nbsp;&nbsp;&nbsp;태</td>
+                    <td style="border:1px solid #ccc;padding:7px 10px;">도소매업외</td>
+                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 6px;font-weight:600;">종&nbsp;&nbsp;목</td>
+                    <td style="border:1px solid #ccc;padding:7px 10px;">종합무역업외</td>
+                </tr>
+            </table>
+
+            <!-- 작성년월일 + 공급대가 총액 -->
+            <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-top:none;margin-bottom:0;font-size:12.5px;">
+                <tr>
+                    <td style="width:50%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;">작&nbsp;&nbsp;성&nbsp;&nbsp;년&nbsp;&nbsp;월&nbsp;&nbsp;일</td>
+                    <td style="width:50%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;">공&nbsp;&nbsp;급&nbsp;&nbsp;대&nbsp;&nbsp;가&nbsp;&nbsp;총&nbsp;&nbsp;액</td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:13px;">${dateStr}</td>
+                    <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:14px;font-weight:700;color:#0071e3;">
+                        ${grandTotal.toLocaleString()}원 <span style="font-size:11px;font-weight:400;color:#777;">(VAT포함)</span>
+                    </td>
+                </tr>
+            </table>
+
+            <p style="text-align:center;margin:12px 0 10px;font-size:13px;font-weight:500;">위 금액을 정히 청구 함.</p>
+
+            <!-- 품목 테이블 -->
+            <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;font-size:12.5px;">
+                <thead>
+                    <tr style="background:#1d1d1f;color:#fff;">
+                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:70px;">날&nbsp;&nbsp;짜</th>
+                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;">품&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명</th>
+                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:60px;">수&nbsp;량</th>
+                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:100px;">단&nbsp;&nbsp;가</th>
+                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:110px;">금&nbsp;&nbsp;액</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${itemsHtml}
+                    ${Array(EMPTY_ROWS).fill(emptyRowHtml).join('')}
+                </tbody>
+                <tfoot>
+                    <tr style="background:#f0f7ff;">
+                        <td colspan="2" style="text-align:right;padding:9px 10px;border:1px solid #ccc;font-weight:700;color:#333;">합&nbsp;&nbsp;계</td>
+                        <td style="text-align:center;border:1px solid #ccc;padding:9px;font-weight:700;">${totalQty}</td>
+                        <td style="border:1px solid #ccc;padding:9px;"></td>
+                        <td style="text-align:right;border:1px solid #ccc;padding:9px 10px;font-weight:700;color:#0071e3;">${grandTotal.toLocaleString()}원</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <p style="text-align:right;margin-top:12px;font-size:10.5px;color:#aaa;">
+                발행일: ${new Date().toLocaleDateString('ko-KR')} &nbsp;|&nbsp; 본 문서는 SKY Commerce에서 자동 발행되었습니다.
+            </p>
+        </div>`;
+
+        const container = document.createElement('div');
+        container.style.cssText = 'position:fixed;top:-99999px;left:-99999px;z-index:-9999;background:#fff;';
+        container.innerHTML = invoiceHtml;
+        document.body.appendChild(container);
+        const el = container.querySelector('#sc-invoice-wrap');
+
+        const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#fff', logging: false });
+        document.body.removeChild(container);
+
         const { jsPDF } = window.jspdf;
-        const pdf      = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-        const date     = order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('ko-KR') : '';
-        const tracking = order.trackingNumber || '-';
-        pdf.setFontSize(20); pdf.setFont('helvetica','bold');
-        pdf.text('INVOICE / Statement', 105, 20, { align:'center' });
-        pdf.setFontSize(10); pdf.setFont('helvetica','normal');
-        pdf.text('SKY Commerce', 105, 28, { align:'center' });
-        pdf.text('677-12 Dongtan-daero, Hwaseong-si, Gyeonggi-do | 031-205-4133', 105, 33, { align:'center' });
-        pdf.text('Vendor  : ' + (order.vendorName || '-'), 14, 45);
-        pdf.text('Date    : ' + date,                       14, 51);
-        pdf.text('Tracking: ' + tracking,                   14, 57);
-        pdf.text('Order ID: ' + orderId.slice(0,8).toUpperCase(), 140, 45);
-        pdf.setDrawColor(200); pdf.line(14, 62, 196, 62);
-        const tableData = (order.items || []).map((item, idx) => [
-            idx+1, item.product, item.qty,
-            item.unitPrice != null ? item.unitPrice.toLocaleString()+'W' : '-',
-            item.unitPrice != null ? (item.unitPrice*item.qty).toLocaleString()+'W' : '-',
-            item.recipient||'', item.phone||'', item.address||''
-        ]);
-        const grandTotal = (order.items||[]).reduce((s,i)=>s+(i.unitPrice!=null?i.unitPrice*i.qty:0),0);
-        pdf.autoTable({
-            startY: 66,
-            head: [['#','Product','Qty','Unit Price','Total','Recipient','Phone','Address']],
-            body: tableData,
-            foot: grandTotal > 0 ? [['','','','Grand Total',grandTotal.toLocaleString()+'W','','','']] : [],
-            styles:       { fontSize:8, cellPadding:2.5 },
-            headStyles:   { fillColor:[29,29,31], textColor:255, fontStyle:'bold' },
-            footStyles:   { fillColor:[240,247,255], textColor:[0,113,227], fontStyle:'bold' },
-            columnStyles: { 0:{cellWidth:7}, 1:{cellWidth:28}, 2:{cellWidth:10}, 3:{cellWidth:20},
-                            4:{cellWidth:20}, 5:{cellWidth:18}, 6:{cellWidth:22}, 7:{cellWidth:'auto'} }
-        });
-        const finalY = pdf.lastAutoTable.finalY + 10;
-        pdf.setFontSize(9); pdf.setTextColor(150);
-        pdf.text('This document was automatically issued by SKY Commerce.', 105, finalY, { align:'center' });
-        pdf.text('Issued: ' + new Date().toLocaleDateString('ko-KR'), 105, finalY+5, { align:'center' });
-        return { pdf, fileName: 'SKY_Invoice_' + order.vendorName + '_' + orderId.slice(0,8) + '.pdf' };
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        const imgData = canvas.toDataURL('image/png');
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
+        const imgW  = pageW;
+        const imgH  = (canvas.height * imgW) / canvas.width;
+
+        if (imgH <= pageH) {
+            pdf.addImage(imgData, 'PNG', 0, 0, imgW, imgH);
+        } else {
+            let posY = 0, left = imgH;
+            while (left > 0) {
+                pdf.addImage(imgData, 'PNG', 0, posY, imgW, imgH);
+                left -= pageH;
+                posY -= pageH;
+                if (left > 0) pdf.addPage();
+            }
+        }
+
+        const safeName = (order.vendorName || 'order').replace(/[^a-zA-Z0-9가-힣]/g, '_');
+        return { pdf, fileName: `거래명세표_${safeName}_${orderId.slice(0,8)}.pdf` };
     }
 
     window.downloadPdfAdmin = async function(orderId) {
@@ -1008,7 +1108,6 @@
             const savedData    = priceDoc.exists() ? priceDoc.data() : {};
             const savedPrices  = savedData.prices          || {};
             const savedAllowed = savedData.allowedProducts  || [];
-
             currentPriceProducts = [];
             productSnap.forEach(d => {
                 const data = d.data();
