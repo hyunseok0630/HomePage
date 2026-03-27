@@ -79,34 +79,26 @@
         .btn-pdf { background: #fff0f7; color: #9d174d; border: 1px solid #fbcfe8; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; font-family: inherit; font-weight: 600; transition: 0.2s; }
         .btn-pdf:hover { background: #fce7f3; }
         .btn-pdf:disabled { background: #f0f0f0; color: #aaa; border-color: #ddd; cursor: not-allowed; }
-        .btn-default-addr { background: #f0fdf4; color: #166534; border: 1px solid #6ee7b7; border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; transition: 0.2s; }
-        .btn-default-addr:hover { background: #dcfce7; }
-        .btn-default-addr:disabled { background: #f0f0f0; color: #aaa; border-color: #ddd; cursor: not-allowed; }
-        .default-addr-panel { background: #f0fdf4; border: 1.5px solid #6ee7b7; border-radius: 12px; padding: 16px; margin-bottom: 14px; display: none; }
-        .default-addr-panel.show { display: block; }
-        .default-addr-panel .da-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-        .default-addr-panel .da-row:last-child { margin-bottom: 0; }
-        .default-addr-panel input { flex: 1; padding: 10px 12px; border: 1.5px solid #a7f3d0; border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; }
-        .default-addr-panel input:focus { border-color: #059669; }
-        .default-addr-panel .da-save-btn { background: #059669; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
-        .default-addr-panel .da-save-btn:hover { background: #047857; }
+        /* ── 인박스 뱃지 (링크용) ── */
         #inboxBadge { display: none; position: absolute; top: -4px; right: -4px; background: crimson; color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; line-height: 16px; text-align: center; }
         #inboxBtn { position: relative; }
-        .inbox-tab { background: #f5f5f7; border: none; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; font-family: inherit; transition: background 0.2s; }
-        .inbox-tab.active { background: #1d1d1f; color: #fff; }
-        .inbox-item { border: 1px solid #eee; border-radius: 12px; padding: 18px 20px; margin-bottom: 10px; }
-        .inbox-item.unread { border-left: 4px solid #0071e3; background: #f0f7ff; }
-        .inbox-item.read   { border-left: 4px solid #ddd; }
-        .inbox-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .inbox-name { font-size: 15px; font-weight: 700; color: #1d1d1f; }
-        .inbox-date { font-size: 12px; color: #aaa; }
-        .inbox-summary { font-size: 13px; color: #555; background: #f8f8fc; padding: 10px 14px; border-radius: 8px; margin: 8px 0; }
-        .inbox-file-btn { display: inline-flex; align-items: center; gap: 6px; background: #f0f7ff; color: var(--accent-blue); border: 1.5px solid #c0dcf8; border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; font-family: inherit; transition: background 0.2s; margin-top: 6px; }
-        .inbox-file-btn:hover { background: #dbeeff; }
-        .inbox-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
-        .btn-read-toggle    { background: #e8f4ff; color: #0071e3; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 500; }
-        .btn-delete-inquiry { background: #fff0f0; color: crimson; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 500; }
-        .empty-inbox { text-align: center; padding: 60px 0; color: #bbb; font-size: 15px; }
+
+        /* ── 기본 배송지 ── */
+        .vendor-row { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+        .vendor-row input { flex: 1; padding: 14px; border: 1.5px solid #d0d0d7; border-radius: 10px; font-family: inherit; font-size: 14px; outline: none; background-color: #e8eaed; color: #555; cursor: not-allowed; font-weight: 600; }
+        .btn-default-addr { background: #f0f7ff; color: #0071e3; border: 1.5px solid #c0dcf8; border-radius: 10px; padding: 0 16px; height: 50px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; font-family: inherit; transition: background 0.2s; flex-shrink: 0; }
+        .btn-default-addr:hover { background: #dbeeff; }
+        .btn-default-addr.set { background: #ecfdf5; color: #166534; border-color: #6ee7b7; }
+        /* 기본 배송지 모달 */
+        #addrModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; }
+        #addrModal.open { display:flex; }
+        .addr-modal-box { background:#fff; border-radius:16px; padding:28px 28px 24px; width:90%; max-width:420px; box-shadow:0 20px 60px rgba(0,0,0,0.2); }
+        .addr-modal-box h4 { font-size:17px; font-weight:700; margin:0 0 18px; letter-spacing:-0.02em; }
+        .addr-modal-box input { width:100%; padding:12px 14px; border:1.5px solid #d0d0d7; border-radius:10px; font-family:inherit; font-size:14px; outline:none; box-sizing:border-box; margin-bottom:10px; transition:border-color 0.2s; }
+        .addr-modal-box input:focus { border-color:#0071e3; }
+        .addr-modal-btns { display:flex; gap:8px; margin-top:6px; }
+        .btn-addr-save { flex:1; background:#1d1d1f; color:#fff; border:none; border-radius:10px; padding:13px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+        .btn-addr-cancel { background:#f5f5f7; color:#555; border:none; border-radius:10px; padding:13px 18px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
         @media (max-width: 768px) {
             .contact-grid { grid-template-columns: 1fr; gap: 30px; }
             .contact-form-card, .info-card { padding: 30px 24px; }
@@ -118,6 +110,7 @@
 </head>
 <body>
 
+<!-- ── 헤더 ── -->
 <header id="main-header">
     <div class="header-inner">
         <div class="header-left logo">
@@ -140,16 +133,8 @@
                 <li class="has-dropdown">
                     <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
                     <ul class="dropdown">
-                        <li>
-                            <a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener">
-                                <i class="fas fa-play-circle"></i> Watch the video
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener">
-                                <i class="fas fa-download"></i> Download
-                            </a>
-                        </li>
+                        <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener"><i class="fas fa-play-circle"></i> Watch the video</a></li>
+                        <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download</a></li>
                     </ul>
                 </li>
             </ul>
@@ -157,11 +142,11 @@
         <div class="header-right utility-icons">
             <a href="#"><i class="fas fa-globe"></i></a>
             <a href="#"><i class="fas fa-search"></i></a>
-            <a href="#" id="inboxBtn" title="발주 확인" style="display:none;" onclick="openInbox(event)">
+            <!-- ✅ 팝업 제거: 관리자 페이지로 바로 이동 -->
+            <a href="../admin/" id="inboxBtn" title="관리자 페이지" style="display:none;">
                 <i class="fas fa-envelope"></i>
                 <span id="inboxBadge">0</span>
             </a>
-            <a href="../product/" id="adminEditBtn" title="제품 관리" style="display:none;"><i class="fas fa-edit"></i></a>
             <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
             <a href="#"><i class="fas fa-shopping-cart"></i></a>
             <button class="hamburger" id="hamburger" aria-label="메뉴">
@@ -171,6 +156,7 @@
     </div>
 </header>
 
+<!-- ── 모바일 메뉴 ── -->
 <nav class="mobile-menu" id="mobileMenu">
     <ul>
         <li><a href="../">홈</a></li>
@@ -227,29 +213,12 @@
                 </div>
 
                 <div class="order-input-area">
-                    <div class="input-group" style="display:flex;gap:8px;align-items:center;">
-                        <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중..."
-                               style="flex:1;background-color:#e8eaed;color:#555;cursor:not-allowed;font-weight:600;">
-                        <button class="btn-default-addr" id="btnDefaultAddr" onclick="fillDefaultAddr()" title="기본 배송지 자동입력">
-                            <i class="fas fa-map-marker-alt"></i> 기본 배송지
-                        </button>
-                        <button class="btn-default-addr" onclick="toggleDefaultAddrPanel()" title="기본 배송지 설정"
-                                style="padding:10px 11px;background:#f8fafc;color:#555;border-color:#d0d0d7;">
-                            <i class="fas fa-cog"></i>
-                        </button>
+                    <div class="vendor-row">
+                        <input type="text" id="vendorDisplay" readonly placeholder="사용자 정보 확인 중...">
                         <input type="hidden" id="vendorNameInput">
-                    </div>
-                    <!-- 기본 배송지 패널 -->
-                    <div class="default-addr-panel" id="defaultAddrPanel">
-                        <p style="font-size:12px;color:#065f46;font-weight:600;margin:0 0 10px;"><i class="fas fa-map-marker-alt"></i> 기본 배송지 설정</p>
-                        <div class="da-row">
-                            <input type="text" id="daRecipient" placeholder="수취인명">
-                            <input type="text" id="daPhone"     placeholder="전화번호">
-                        </div>
-                        <div class="da-row">
-                            <input type="text" id="daAddress"   placeholder="배송지 주소">
-                            <button class="da-save-btn" onclick="saveDefaultAddr()"><i class="fas fa-save"></i> 저장</button>
-                        </div>
+                        <button class="btn-default-addr" id="defaultAddrBtn" onclick="openAddrModal()" title="기본 배송지 설정">
+                            📦 기본 배송지
+                        </button>
                     </div>
                     <div class="item-add-box">
                         <div class="item-add-flex">
@@ -336,32 +305,24 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
 
-<div id="inboxModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#fff; border-radius:16px; width:90%; max-width:760px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.3);">
-        <div style="padding:24px 28px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
-            <div>
-                <h3 style="font-size:18px; font-weight:700; margin:0;">📦 전체 발주 목록 (관리자)</h3>
-                <p style="font-size:12px; color:#aaa; margin:4px 0 0;">최신순으로 표시됩니다</p>
-            </div>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <button id="pushRegisterBtn" onclick="togglePushNotification()"
-                    style="background:#0071e3; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;">
-                    🔔 푸시 알림 등록
-                </button>
-                <button onclick="closeInbox()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#888;">✕</button>
-            </div>
+<!-- ✅ inboxModal 제거됨 - 관리자 페이지(../admin/)로 이동 -->
+
+<!-- ── 기본 배송지 모달 ── -->
+<div id="addrModal">
+    <div class="addr-modal-box">
+        <h4>📦 기본 배송지 설정</h4>
+        <input type="text" id="addrName"    placeholder="수취인명" maxlength="30">
+        <input type="text" id="addrPhone"   placeholder="전화번호 (예: 010-1234-5678)" maxlength="20">
+        <input type="text" id="addrAddress" placeholder="배송지 주소" maxlength="100">
+        <div class="addr-modal-btns">
+            <button class="btn-addr-cancel" onclick="closeAddrModal()">취소</button>
+            <button class="btn-addr-save"   onclick="saveDefaultAddr()">저장</button>
         </div>
-        <div style="padding:14px 28px; border-bottom:1px solid #f0f0f0; display:flex; gap:8px; flex-shrink:0; flex-wrap:wrap;">
-            <button class="inbox-tab active" onclick="filterInbox('all',this)">전체</button>
-            <button class="inbox-tab"        onclick="filterInbox('unread',this)">미확인 <span id="unreadCount"></span></button>
-            <button class="inbox-tab"        onclick="filterInbox('read',this)">확인됨</button>
-            <button class="inbox-tab"        onclick="filterInbox('price',this)">💰 단가 관리</button>
-        </div>
-        <div id="inboxList" style="overflow-y:auto; flex:1; padding:16px 28px;"></div>
     </div>
 </div>
 
@@ -401,41 +362,27 @@
 
 <script type="module">
     import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, setDoc,
-             serverTimestamp, query, orderBy, getDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc,
+             serverTimestamp, query, orderBy, getDoc, where, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+    import { firebaseConfig } from "../js/firebase-init.js";
 
-    const VAPID_KEY = "BGxbvkmxV9MLk740bk3As6Zh2hRQd9axal0KwjiokV1sJ8VHaWP2NWxKXVoy1sv5PJw8N3fHyG8knTiGIXuqgLk";
-    const firebaseConfig = {
-        apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
-        authDomain: "skycommerce-7fec4.firebaseapp.com",
-        projectId: "skycommerce-7fec4",
-        storageBucket: "skycommerce-7fec4.firebasestorage.app",
-        messagingSenderId: "232403511014",
-        appId: "1:232403511014:web:318ebb689d678e998b7d27"
-    };
     const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
     const db   = getFirestore(app);
     const auth = getAuth(app);
 
-    // ── 상태 변수 ─────────────────────────────────────────
+    // ── 상태 변수 ──────────────────────────────────────────
     window.isAdmin            = false;
-    let currentFilter         = 'all';
-    let allOrders             = [];
     let orderItems            = [];
     let editingOrderId        = null;
     let vendorPrices          = {};
     let vendorAllowedProducts = [];
-    let defaultDelivery       = { recipient: '', phone: '', address: '' };
     let currentPeriodMonths   = 1;
     let customFrom            = null;
     let customTo              = null;
-    let allUsers              = [];
-    let currentPriceUid       = '';
-    let currentPriceProducts  = [];
+    let defaultAddr           = { name:'', phone:'', address:'' };  // 기본 배송지
 
-    // ── 유틸 ──────────────────────────────────────────────
+    // ── 유틸 ───────────────────────────────────────────────
     function esc(str = '') {
         return String(str)
             .replace(/&/g,'&amp;').replace(/</g,'&lt;')
@@ -446,31 +393,7 @@
         return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
     }
 
-    // ✅ 중첩 템플릿 리터럴 방지 헬퍼
-    function buildProductRow(name, idx, isAllowed, savedPrices) {
-        const bg     = isAllowed ? '#fff'    : '#f9f9f9';
-        const border = isAllowed ? '#c0dcf8' : '#e5e5ea';
-        const price  = savedPrices[name] != null ? savedPrices[name] : '';
-        const chk    = isAllowed ? 'checked' : '';
-        return '<div id="productRow_' + idx + '" '
-            + 'style="display:grid;grid-template-columns:24px 1fr auto auto;align-items:center;'
-            + 'gap:10px;margin-bottom:8px;padding:10px 12px;border-radius:10px;transition:0.2s;'
-            + 'background:' + bg + ';border:1.5px solid ' + border + ';">'
-            + '<input type="checkbox" id="allowed_' + idx + '" ' + chk + ' '
-            + 'onchange="onAllowedChange(' + idx + ')" '
-            + 'style="width:17px;height:17px;accent-color:#0071e3;cursor:pointer;">'
-            + '<label for="allowed_' + idx + '" style="font-size:13px;font-weight:500;cursor:pointer;">'
-            + esc(name) + '</label>'
-            + '<div style="display:flex;align-items:center;gap:6px;min-width:140px;">'
-            + '<input type="number" id="priceInput_' + idx + '" min="0" value="' + price + '" '
-            + 'placeholder="단가 입력" '
-            + 'style="width:100%;padding:8px 10px;border:1.5px solid #d0d0d7;border-radius:8px;'
-            + 'font-family:inherit;font-size:13px;outline:none;text-align:right;">'
-            + '<span style="font-size:13px;color:#555;white-space:nowrap;">원</span>'
-            + '</div></div>';
-    }
-
-    // ── 로그인 상태 확인 ──────────────────────────────────
+    // ── 로그인 상태 확인 ────────────────────────────────────
     onAuthStateChanged(auth, async (user) => {
         if (!user) {
             alert("발주 시스템은 로그인이 필요합니다.");
@@ -492,68 +415,37 @@
                     vendorDisplay.value = `👤 ${user.email} (업체명 미등록)`;
                     vendorInput.value   = user.email;
                 }
-                // 기본 배송지 로딩
-                if (data.defaultRecipient || data.defaultPhone || data.defaultAddress) {
-                    defaultDelivery = {
-                        recipient: data.defaultRecipient || '',
-                        phone:     data.defaultPhone     || '',
-                        address:   data.defaultAddress   || ''
-                    };
-                    const btn = document.getElementById('btnDefaultAddr');
-                    if (btn) btn.innerHTML = '<i class="fas fa-map-marker-alt"></i> 기본 배송지 ✓';
-                }
             }
         } catch(e) {
             vendorDisplay.value = `👤 ${user.email}`;
             vendorInput.value   = user.email;
         }
+
+        // ✅ 관리자: 인박스 아이콘 표시 + 미확인 뱃지 업데이트만 (모달 없음)
         if (window.isAdmin) {
             document.getElementById('inboxBtn').style.display = 'block';
-            loadOrders();
+            updateInboxBadge();
         }
         await loadVendorPrices(user.uid);
+        await loadDefaultAddr(user.uid);   // 기본 배송지 로드
         loadProducts();
         loadMyOrders(user.uid);
     });
 
-    // ── 푸시 알림 ─────────────────────────────────────────
-    async function updatePushButtonState() {
-        const user = auth.currentUser;
-        if (!user || !window.isAdmin) return;
-        const btn = document.getElementById('pushRegisterBtn');
-        if (!btn) return;
+    // ✅ 미확인 뱃지 업데이트 (관리자 페이지 이동 전 카운트만)
+    async function updateInboxBadge() {
         try {
-            const t = await getDoc(doc(db, 'adminTokens', user.uid));
-            if (t.exists()) { btn.textContent = '🔔 알림 등록됨 ✓'; btn.style.background = '#16a34a'; }
-            else            { btn.textContent = '🔔 푸시 알림 등록'; btn.style.background = '#0071e3'; }
+            const snap   = await getDocs(query(collection(db, "inquiries"), orderBy("createdAt", "desc")));
+            const unread = snap.docs.filter(d => !d.data().read && d.data().type === '발주').length;
+            const badge  = document.getElementById('inboxBadge');
+            if (badge) {
+                badge.textContent    = unread;
+                badge.style.display  = unread > 0 ? 'block' : 'none';
+            }
         } catch(e) { console.error(e); }
     }
 
-    window.togglePushNotification = async function() {
-        const user = auth.currentUser;
-        if (!user || !window.isAdmin) { alert('관리자만 등록할 수 있습니다.'); return; }
-        const btn = document.getElementById('pushRegisterBtn');
-        try {
-            const t = await getDoc(doc(db, 'adminTokens', user.uid));
-            if (t.exists()) {
-                if (!confirm('푸시 알림 등록을 취소하시겠습니까?')) return;
-                await deleteDoc(doc(db, 'adminTokens', user.uid));
-                btn.textContent = '🔔 푸시 알림 등록'; btn.style.background = '#0071e3';
-                alert('푸시 알림이 해제되었습니다.');
-            } else {
-                const perm = await Notification.requestPermission();
-                if (perm !== 'granted') { alert('알림 권한이 거부되었습니다.'); return; }
-                const messaging = getMessaging(app);
-                const fcmToken  = await getToken(messaging, { vapidKey: VAPID_KEY });
-                if (!fcmToken) { alert('FCM 토큰을 가져오지 못했습니다.'); return; }
-                await setDoc(doc(db, 'adminTokens', user.uid), { token: fcmToken, uid: user.uid, updatedAt: serverTimestamp() });
-                btn.textContent = '🔔 알림 등록됨 ✓'; btn.style.background = '#16a34a';
-                alert('✅ 푸시 알림 등록 완료!');
-            }
-        } catch(e) { alert('처리 실패: ' + e.message); }
-    };
-
-    // ── 단가 + 허용품목 로드 ──────────────────────────────
+    // ── 단가 + 허용품목 로드 ───────────────────────────────
     async function loadVendorPrices(uid) {
         try {
             const d = await getDoc(doc(db, 'vendorPrices', uid));
@@ -566,7 +458,7 @@
         } catch(e) { vendorPrices = {}; vendorAllowedProducts = []; }
     }
 
-    // ── 단가 표시 (개당만) ────────────────────────────────
+    // ── 단가 표시 ──────────────────────────────────────────
     window.showUnitPrice = function() {
         const product = document.getElementById('productSelect').value;
         const display = document.getElementById('unitPriceDisplay');
@@ -575,10 +467,10 @@
             display.innerHTML = '단가: -'; display.style.color = '#aaa'; return;
         }
         display.style.color = '#0071e3';
-        display.innerHTML = `개당 ${price.toLocaleString()}원`;
+        display.innerHTML   = `개당 ${price.toLocaleString()}원`;
     };
 
-    // ── 제품 목록 (허용 품목 필터) ────────────────────────
+    // ── 제품 목록 로드 ─────────────────────────────────────
     async function loadProducts() {
         const sel = document.getElementById('productSelect');
         try {
@@ -599,12 +491,12 @@
                 return;
             }
             let html = '<option value="">발주 품목 선택</option>';
-            filtered.forEach(n => { html += '<option value="' + esc(n) + '">' + esc(n) + '</option>'; });
+            filtered.forEach(n => { html += `<option value="${esc(n)}">${esc(n)}</option>`; });
             sel.innerHTML = html;
         } catch(e) { sel.innerHTML = '<option value="">목록을 불러오지 못했습니다.</option>'; }
     }
 
-    // ── 품목 추가/삭제/수정 ───────────────────────────────
+    // ── 품목 추가 / 수정 / 삭제 ────────────────────────────
     window.addOrderItem = function() {
         const product   = document.getElementById('productSelect').value;
         const qty       = parseInt(document.getElementById('productQty').value);
@@ -675,7 +567,7 @@
             </tr>` : '');
     }
 
-    // ── 발주 제출 ─────────────────────────────────────────
+    // ── 발주 제출 ───────────────────────────────────────────
     window.submitOrder = async function() {
         const vendor  = document.getElementById('vendorNameInput').value;
         const agreed  = document.getElementById('privacyAgree').checked;
@@ -686,8 +578,8 @@
         if (!agreed)                 { alert('발주 정보 제출에 동의해주세요.'); return; }
         btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>제출 중...';
         try {
-            const totalQty    = orderItems.reduce((s,i) => s + i.qty, 0);
-            const grandTotal  = orderItems.reduce((s,i) => s + (i.unitPrice != null ? i.unitPrice * i.qty : 0), 0);
+            const totalQty   = orderItems.reduce((s,i) => s + i.qty, 0);
+            const grandTotal = orderItems.reduce((s,i) => s + (i.unitPrice != null ? i.unitPrice * i.qty : 0), 0);
             const summaryText = orderItems.length === 1
                 ? `${orderItems[0].product} (${totalQty}개)`
                 : `${orderItems[0].product} 외 ${orderItems.length-1}건 (총 ${totalQty}개)`;
@@ -714,11 +606,11 @@
             document.getElementById('privacyAgree').checked = false;
             orderItems = []; renderOrderInputList();
             loadMyOrders(auth.currentUser.uid);
-            if (window.isAdmin) { await loadOrders(); renderOrders(); }
+            if (window.isAdmin) updateInboxBadge();
         } catch(e) { alert('처리 실패: ' + e.message); btn.disabled = false; btn.innerHTML = '발주 제출하기'; }
     };
 
-    // ── 기간 설정 ─────────────────────────────────────────
+    // ── 기간 설정 ───────────────────────────────────────────
     window.setPeriod = function(months, btn) {
         currentPeriodMonths = months; customFrom = null; customTo = null;
         document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
@@ -757,7 +649,7 @@
         loadMyOrders(auth.currentUser.uid);
     };
 
-    // ── 나의 발주내역 ─────────────────────────────────────
+    // ── 나의 발주내역 ───────────────────────────────────────
     async function loadMyOrders(uid) {
         const tbody = document.getElementById('myOrdersBody');
         tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#aaa;padding:25px;">불러오는 중...</td></tr>';
@@ -823,55 +715,6 @@
         } catch(e) { alert('불러오기 실패: ' + e.message); }
     };
 
-    // ── 기본 배송지 패널 토글 ──
-    window.toggleDefaultAddrPanel = function() {
-        const panel = document.getElementById('defaultAddrPanel');
-        const showing = panel.classList.toggle('show');
-        if (showing) {
-            document.getElementById('daRecipient').value = defaultDelivery.recipient;
-            document.getElementById('daPhone').value     = defaultDelivery.phone;
-            document.getElementById('daAddress').value   = defaultDelivery.address;
-        }
-    };
-
-    // ── 기본 배송지 → 수취인/전화/주소 자동 입력 ──
-    window.fillDefaultAddr = function() {
-        if (!defaultDelivery.recipient && !defaultDelivery.phone && !defaultDelivery.address) {
-            alert('저장된 기본 배송지가 없습니다.\n⚙️ 설정 버튼을 눌러 먼저 등록해 주세요.');
-            return;
-        }
-        document.getElementById('recipientName').value    = defaultDelivery.recipient;
-        document.getElementById('recipientPhone').value   = defaultDelivery.phone;
-        document.getElementById('recipientAddress').value = defaultDelivery.address;
-    };
-
-    // ── Firestore에 기본 배송지 저장 ──
-    window.saveDefaultAddr = async function() {
-        const user = auth.currentUser;
-        if (!user) { alert('로그인이 필요합니다.'); return; }
-        const recipient = document.getElementById('daRecipient').value.trim();
-        const phone     = document.getElementById('daPhone').value.trim();
-        const address   = document.getElementById('daAddress').value.trim();
-        if (!recipient || !phone || !address) {
-            alert('수취인명, 전화번호, 배송지 주소를 모두 입력해 주세요.');
-            return;
-        }
-        try {
-            await updateDoc(doc(db, 'users', user.uid), {
-                defaultRecipient: recipient,
-                defaultPhone:     phone,
-                defaultAddress:   address
-            });
-            defaultDelivery = { recipient, phone, address };
-            const btn = document.getElementById('btnDefaultAddr');
-            if (btn) btn.innerHTML = '<i class="fas fa-map-marker-alt"></i> 기본 배송지 ✓';
-            document.getElementById('defaultAddrPanel').classList.remove('show');
-            alert('기본 배송지가 저장되었습니다!');
-        } catch(e) {
-            alert('저장 실패: ' + e.message);
-        }
-    };
-
     window.deleteMyOrder = async function(id) {
         if (!confirm("해당 발주 내역을 정말 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) return;
         try {
@@ -881,173 +724,123 @@
         } catch(e) { alert("삭제 오류: " + e.message); }
     };
 
-    // ── PDF 생성 ──────────────────────────────────────────
+    // ── PDF 생성 (사용자용) ─────────────────────────────────
     async function generateInvoicePdf(orderId) {
-        const orderDoc = await getDoc(doc(db, 'inquiries', orderId));
-        if (!orderDoc.exists()) throw new Error('발주 데이터를 찾을 수 없습니다.');
-        const order = orderDoc.data();
-
-        const orderDate = order.createdAt?.toDate ? order.createdAt.toDate() : new Date();
-        const yyyy = orderDate.getFullYear();
-        const mm   = orderDate.getMonth() + 1;
-        const dd   = orderDate.getDate();
-        const dateStr = `${yyyy}년 ${mm}월 ${dd}일`;
-        const mmdd    = `${mm}.${dd}`;
-
-        const grandTotal = (order.items || []).reduce((s, i) => s + (i.unitPrice != null ? i.unitPrice * i.qty : 0), 0);
-        const totalQty   = (order.items || []).reduce((s, i) => s + i.qty, 0);
-
-        const EMPTY_ROWS = Math.max(0, 10 - (order.items || []).length);
-        const emptyRowHtml = `<tr>
-            <td style="border:1px solid #ddd;padding:9px 6px;">&nbsp;</td>
-            <td style="border:1px solid #ddd;padding:9px 6px;"></td>
-            <td style="border:1px solid #ddd;padding:9px 6px;"></td>
-            <td style="border:1px solid #ddd;padding:9px 6px;"></td>
-            <td style="border:1px solid #ddd;padding:9px 6px;"></td>
-        </tr>`;
-
-        const itemsHtml = (order.items || []).map(item => `
+    const snap = await getDoc(doc(db,'inquiries',orderId));
+    if (!snap.exists()) throw new Error('발주 데이터 없음');
+    const order = snap.data();
+    const od = order.createdAt?.toDate ? order.createdAt.toDate() : new Date();
+    const dateStr = `${od.getFullYear()}년 ${od.getMonth()+1}월 ${od.getDate()}일`;
+    const mmdd    = `${od.getMonth()+1}.${od.getDate()}`;
+    const grandTotal = (order.items||[]).reduce((s,i)=>s+(i.unitPrice!=null?i.unitPrice*i.qty:0),0);
+    const totalQty   = (order.items||[]).reduce((s,i)=>s+i.qty,0);
+    const EMPTY = Math.max(0,10-(order.items||[]).length);
+    const emptyRow = `<tr><td style="border:1px solid #ddd;padding:9px 6px;">&nbsp;</td><td style="border:1px solid #ddd;"></td><td style="border:1px solid #ddd;"></td><td style="border:1px solid #ddd;"></td><td style="border:1px solid #ddd;"></td></tr>`;
+    const rows = (order.items||[]).map(it=>`
+        <tr>
+            <td style="text-align:center;border:1px solid #ddd;padding:9px 6px;">${mmdd}</td>
+            <td style="border:1px solid #ddd;padding:9px 8px;">${esc(it.product||'')}</td>
+            <td style="text-align:center;border:1px solid #ddd;padding:9px 6px;">${it.qty}</td>
+            <td style="text-align:right;border:1px solid #ddd;padding:9px 8px;">${it.unitPrice!=null?it.unitPrice.toLocaleString()+'원':'-'}</td>
+            <td style="text-align:right;border:1px solid #ddd;padding:9px 8px;font-weight:700;color:#0071e3;">${it.unitPrice!=null?(it.unitPrice*it.qty).toLocaleString()+'원':'-'}</td>
+        </tr>`).join('');
+    const html = `
+    <div id="_inv" style="width:740px;padding:36px 40px;font-family:'Noto Sans KR',sans-serif;font-size:13px;background:#fff;color:#1d1d1f;box-sizing:border-box;">
+        <h2 style="text-align:center;font-size:19px;letter-spacing:8px;margin:0 0 18px;font-weight:700;">거 래 명 세 표</h2>
+        <p style="text-align:center;margin:0 0 14px;font-size:12px;color:#555;">(공급받는자용)</p>
+        <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-bottom:none;font-size:12.5px;">
+            <tr><td style="padding:8px 12px;border:1px solid #ccc;font-size:13px;text-align:right;">
+                <span style="font-weight:600;">${esc(order.vendorName||'')}</span>&nbsp;&nbsp;귀하
+            </td></tr>
+        </table>
+        <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-top:none;margin-bottom:0;font-size:12.5px;">
             <tr>
-                <td style="text-align:center;border:1px solid #ddd;padding:9px 6px;">${mmdd}</td>
-                <td style="border:1px solid #ddd;padding:9px 8px;">${item.product || ''}</td>
-                <td style="text-align:center;border:1px solid #ddd;padding:9px 6px;">${item.qty}</td>
-                <td style="text-align:right;border:1px solid #ddd;padding:9px 8px;">${item.unitPrice != null ? item.unitPrice.toLocaleString() + '원' : '-'}</td>
-                <td style="text-align:right;border:1px solid #ddd;padding:9px 8px;font-weight:700;color:#0071e3;">${item.unitPrice != null ? (item.unitPrice * item.qty).toLocaleString() + '원' : '-'}</td>
+                <td rowspan="4" style="width:36px;text-align:center;font-weight:700;border-right:1.5px solid #555;background:#f5f5f7;writing-mode:vertical-lr;letter-spacing:6px;font-size:13px;padding:0 6px;white-space:nowrap;">공&nbsp;급&nbsp;자</td>
+                <td style="width:100px;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">사업자등록번호</td>
+                <td colspan="3" style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">248-86-00192</td>
             </tr>
-        `).join('');
-
-        const invoiceHtml = `
-        <div id="sc-invoice-wrap" style="width:740px;padding:36px 40px;font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;font-size:13px;background:#fff;color:#1d1d1f;box-sizing:border-box;">
-            <h2 style="text-align:center;font-size:19px;letter-spacing:8px;margin:0 0 18px;font-weight:700;">거 래 명 세 표</h2>
-            <p style="text-align:center;margin:0 0 14px;font-size:12px;color:#555;">(공급받는자용)</p>
-
-            <!-- 귀하 행 -->
-            <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-bottom:none;margin-bottom:0;font-size:12.5px;">
-                <tr>
-                    <td style="padding:8px 12px;border:1px solid #ccc;font-size:13px;text-align:right;">
-                        <span style="font-weight:600;">${order.vendorName || ''}</span>&nbsp;&nbsp;귀하
-                    </td>
-                </tr>
-            </table>
-
-            <!-- 공급자 정보 -->
-            <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-top:none;margin-bottom:0;font-size:12.5px;">
-                <tr>
-                    <td rowspan="4" style="width:36px;text-align:center;font-weight:700;border-right:1.5px solid #555;background:#f5f5f7;writing-mode:vertical-lr;letter-spacing:6px;font-size:13px;padding:0 6px;white-space:nowrap;">공&nbsp;급&nbsp;자</td>
-                    <td style="width:100px;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">사업자등록번호</td>
-                    <td colspan="3" style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">248-86-00192</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">상&nbsp;&nbsp;&nbsp;&nbsp;호</td>
-                    <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">㈜스카이커머스</td>
-                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;width:52px;">성&nbsp;&nbsp;명</td>
-                    <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">
-                        <span style="position:relative;display:inline-block;">
-                            김 나 경 <span id="in-mark" style="position:relative;display:inline-block;">(인)
-                                <img src="../img/dojang.png"
-                                     crossorigin="anonymous"
-                                     style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;object-fit:contain;opacity:0.85;mix-blend-mode:multiply;pointer-events:none;" />
-                            </span>
+            <tr>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">상&nbsp;&nbsp;&nbsp;&nbsp;호</td>
+                <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">㈜스카이커머스</td>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;width:52px;">성&nbsp;&nbsp;명</td>
+                <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">
+                    <span style="position:relative;display:inline-block;">김 나 경
+                        <span style="position:relative;display:inline-block;">(인)
+                            <img src="../img/dojang.jpg" crossorigin="anonymous"
+                                 style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;object-fit:contain;opacity:0.85;mix-blend-mode:multiply;pointer-events:none;"/>
                         </span>
-                    </td>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">사업장 소재지</td>
+                <td colspan="3" style="border:1px solid #ccc;padding:7px 10px;">경기도 화성시 동탄대로 677-12, 효성ICT타워 621</td>
+            </tr>
+            <tr>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">업&nbsp;&nbsp;&nbsp;&nbsp;태</td>
+                <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">도소매업외</td>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">종&nbsp;&nbsp;목</td>
+                <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">종합무역업외</td>
+            </tr>
+        </table>
+        <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-top:none;margin-bottom:0;font-size:12.5px;">
+            <tr>
+                <td style="width:26%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">작&nbsp;&nbsp;성&nbsp;&nbsp;년&nbsp;&nbsp;월&nbsp;&nbsp;일</td>
+                <td style="width:40%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">공&nbsp;&nbsp;급&nbsp;&nbsp;대&nbsp;&nbsp;가&nbsp;&nbsp;총&nbsp;&nbsp;액</td>
+                <td style="width:34%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">비&nbsp;&nbsp;고&nbsp;(備考)</td>
+            </tr>
+            <tr>
+                <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:13px;white-space:nowrap;">${dateStr}</td>
+                <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:14px;font-weight:700;color:#0071e3;white-space:nowrap;">
+                    ${grandTotal.toLocaleString()}원 <span style="font-size:11px;font-weight:400;color:#777;">(VAT포함)</span>
+                </td>
+                <td style="border:1px solid #ccc;padding:9px;"></td>
+            </tr>
+        </table>
+        <p style="text-align:center;margin:12px 0 10px;font-size:13px;font-weight:500;">위 금액을 정히 청구 함.</p>
+        <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;font-size:12.5px;">
+            <thead>
+                <tr style="background:#1d1d1f;color:#fff;">
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:70px;">날&nbsp;&nbsp;짜</th>
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;">품&nbsp;&nbsp;&nbsp;&nbsp;명</th>
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:60px;">수&nbsp;량</th>
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:100px;">단&nbsp;&nbsp;가</th>
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:110px;">금&nbsp;&nbsp;액</th>
                 </tr>
-                <tr>
-                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">사업장 소재지</td>
-                    <td colspan="3" style="border:1px solid #ccc;padding:7px 10px;">경기도 화성시 동탄대로 677-12, 효성ICT타워 621</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">업&nbsp;&nbsp;&nbsp;&nbsp;태</td>
-                    <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">도소매업외</td>
-                    <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">종&nbsp;&nbsp;목</td>
-                    <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">종합무역업외</td>
-                </tr>
-            </table>
-
-            <!-- 작성년월일 + 공급대가 총액 + 비고 -->
-            <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-top:none;margin-bottom:0;font-size:12.5px;">
-                <tr>
-                    <td style="width:26%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">작&nbsp;&nbsp;성&nbsp;&nbsp;년&nbsp;&nbsp;월&nbsp;&nbsp;일</td>
-                    <td style="width:40%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">공&nbsp;&nbsp;급&nbsp;&nbsp;대&nbsp;&nbsp;가&nbsp;&nbsp;총&nbsp;&nbsp;액</td>
-                    <td style="width:34%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">비&nbsp;&nbsp;고&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:13px;white-space:nowrap;">${dateStr}</td>
-                    <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:14px;font-weight:700;color:#0071e3;white-space:nowrap;">
-                        ${grandTotal.toLocaleString()}원 <span style="font-size:11px;font-weight:400;color:#777;">(VAT포함)</span>
-                    </td>
+            </thead>
+            <tbody>${rows}${Array(EMPTY).fill(emptyRow).join('')}</tbody>
+            <tfoot>
+                <tr style="background:#f0f7ff;">
+                    <td colspan="2" style="text-align:right;padding:9px 10px;border:1px solid #ccc;font-weight:700;">합&nbsp;&nbsp;계</td>
+                    <td style="text-align:center;border:1px solid #ccc;padding:9px;font-weight:700;">${totalQty}</td>
                     <td style="border:1px solid #ccc;padding:9px;"></td>
+                    <td style="text-align:right;border:1px solid #ccc;padding:9px 10px;font-weight:700;color:#0071e3;">${grandTotal.toLocaleString()}원</td>
                 </tr>
-            </table>
-
-            <p style="text-align:center;margin:12px 0 10px;font-size:13px;font-weight:500;">위 금액을 정히 청구 함.</p>
-
-            <!-- 품목 테이블 -->
-            <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;font-size:12.5px;">
-                <thead>
-                    <tr style="background:#1d1d1f;color:#fff;">
-                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:70px;">날&nbsp;&nbsp;짜</th>
-                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;">품&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명</th>
-                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:60px;">수&nbsp;량</th>
-                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:100px;">단&nbsp;&nbsp;가</th>
-                        <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:110px;">금&nbsp;&nbsp;액</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${itemsHtml}
-                    ${Array(EMPTY_ROWS).fill(emptyRowHtml).join('')}
-                </tbody>
-                <tfoot>
-                    <tr style="background:#f0f7ff;">
-                        <td colspan="2" style="text-align:right;padding:9px 10px;border:1px solid #ccc;font-weight:700;color:#333;">합&nbsp;&nbsp;계</td>
-                        <td style="text-align:center;border:1px solid #ccc;padding:9px;font-weight:700;">${totalQty}</td>
-                        <td style="border:1px solid #ccc;padding:9px;"></td>
-                        <td style="text-align:right;border:1px solid #ccc;padding:9px 10px;font-weight:700;color:#0071e3;">${grandTotal.toLocaleString()}원</td>
-                    </tr>
-                </tfoot>
-            </table>
-
-            <p style="text-align:right;margin-top:12px;font-size:10.5px;color:#aaa;">
-                발행일: ${new Date().toLocaleDateString('ko-KR')} &nbsp;|&nbsp; 본 문서는 SKY Commerce에서 자동 발행되었습니다.
-            </p>
-        </div>`;
-
-        const container = document.createElement('div');
-        container.style.cssText = 'position:fixed;top:-99999px;left:-99999px;z-index:-9999;background:#fff;';
-        container.innerHTML = invoiceHtml;
-        document.body.appendChild(container);
-        const el = container.querySelector('#sc-invoice-wrap');
-
-        const canvas = await html2canvas(el, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#fff', logging: false });
-        document.body.removeChild(container);
-
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-        const imgData = canvas.toDataURL('image/png');
-        const pageW = pdf.internal.pageSize.getWidth();
-        const pageH = pdf.internal.pageSize.getHeight();
-        const imgW  = pageW;
-        const imgH  = (canvas.height * imgW) / canvas.width;
-
-        if (imgH <= pageH) {
-            pdf.addImage(imgData, 'PNG', 0, 0, imgW, imgH);
-        } else {
-            let posY = 0, left = imgH;
-            while (left > 0) {
-                pdf.addImage(imgData, 'PNG', 0, posY, imgW, imgH);
-                left -= pageH;
-                posY -= pageH;
-                if (left > 0) pdf.addPage();
-            }
-        }
-
-        const safeName = (order.vendorName || 'order').replace(/[^a-zA-Z0-9가-힣]/g, '_');
-        return { pdf, fileName: `거래명세표_${safeName}_${orderId.slice(0,8)}.pdf` };
-    }
-
-    window.downloadPdfAdmin = async function(orderId) {
-        try { const { pdf, fileName } = await generateInvoicePdf(orderId); pdf.save(fileName); }
-        catch(e) { alert('PDF 생성 실패: ' + e.message); }
-    };
+            </tfoot>
+        </table>
+        <p style="text-align:right;margin-top:12px;font-size:10.5px;color:#aaa;">
+            발행일: ${new Date().toLocaleDateString('ko-KR')} | 본 문서는 SKY Commerce에서 자동 발행되었습니다.
+        </p>
+    </div>`;
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:fixed;top:-99999px;left:-99999px;z-index:-1;background:#fff;';
+    wrap.innerHTML = html;
+    document.body.appendChild(wrap);
+    const el = wrap.querySelector('#_inv');
+    const canvas = await html2canvas(el, { scale:2, useCORS:true, allowTaint:true, backgroundColor:'#fff', logging:false });
+    document.body.removeChild(wrap);
+    const { jsPDF } = window.jspdf;
+    const pdf  = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    const imgD = canvas.toDataURL('image/png');
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const ih = (canvas.height * pw) / canvas.width;
+    if (ih <= ph) { pdf.addImage(imgD,'PNG',0,0,pw,ih); }
+    else { let py=0,left=ih; while(left>0){ pdf.addImage(imgD,'PNG',0,py,pw,ih); left-=ph; py-=ph; if(left>0) pdf.addPage(); } }
+    const safe = (order.vendorName||'order').replace(/[^a-zA-Z0-9가-힣]/g,'_');
+    const dt   = new Date().toISOString().slice(0,10).replace(/-/g,'');
+    return { pdf, fileName: `${safe}_거래명세표_${dt}.pdf` };
+}
 
     window.downloadPdfUser = async function(orderId) {
         try {
@@ -1062,249 +855,79 @@
         } catch(e) { alert('다운로드 실패: ' + e.message); }
     };
 
-    // ── 관리자 발주 목록 ──────────────────────────────────
-    async function loadOrders() {
-        if (!window.isAdmin) return;
+    // ── 기본 배송지 ─────────────────────────────────────────
+    async function loadDefaultAddr(uid) {
         try {
-            const snap = await getDocs(query(collection(db,"inquiries"), orderBy("createdAt","desc")));
-            allOrders = [];
-            snap.forEach(d => allOrders.push({ id:d.id, ...d.data() }));
-            const unread = allOrders.filter(i => !i.read && i.type==='발주').length;
-            const badge  = document.getElementById('inboxBadge');
-            if (badge) { badge.textContent = unread; badge.style.display = unread>0?'block':'none'; }
-            const uc = document.getElementById('unreadCount');
-            if (uc) uc.textContent = unread>0 ? '('+unread+')' : '';
+            const d = await getDoc(doc(db, 'users', uid));
+            if (d.exists() && d.data().defaultAddr) {
+                defaultAddr = d.data().defaultAddr;
+                const btn = document.getElementById('defaultAddrBtn');
+                if (btn && defaultAddr.name) {
+                    btn.classList.add('set');
+                    btn.innerHTML = '✅ ' + esc(defaultAddr.name);
+                }
+            }
         } catch(e) { console.error(e); }
     }
 
-    function renderOrders() {
-        if (!window.isAdmin) return;
-        const list     = document.getElementById('inboxList');
-        const filtered = allOrders.filter(i => {
-            if (i.type !== '발주') return false;
-            if (currentFilter === 'unread') return !i.read;
-            if (currentFilter === 'read')   return i.read;
-            return true;
-        });
-        if (filtered.length === 0) { list.innerHTML = '<div class="empty-inbox">📭 발주 내역이 없습니다.</div>'; return; }
-        list.innerHTML = filtered.map(item => {
-            const date        = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
-            const vendor      = item.vendorName || '알 수 없는 업체';
-            const summary     = item.summary    || '상세 품목 없음';
-            const trackingVal = item.trackingNumber || '';
-            return `
-            <div class="inbox-item ${item.read?'read':'unread'}">
-                <div class="inbox-item-header">
-                    <span class="inbox-name">${item.read?'':'🔵 '}🏢 [${esc(vendor)}] 발주</span>
-                    <span class="inbox-date">${esc(date)}</span>
-                </div>
-                <div class="inbox-summary">📦 <strong>요약:</strong> ${esc(summary)}</div>
-                <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-                    <input type="text" id="tracking_${esc(item.id)}" value="${esc(trackingVal)}"
-                           placeholder="송장번호 입력"
-                           style="flex:1;padding:9px 12px;border:1.5px solid #d0d0d7;border-radius:8px;font-family:inherit;font-size:13px;outline:none;">
-                    <button onclick="saveTracking('${esc(item.id)}')"
-                        style="background:#0071e3;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">
-                        📦 저장
-                    </button>
-                    <button onclick="downloadPdfAdmin('${esc(item.id)}')"
-                        style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">
-                        📄 PDF
-                    </button>
-                </div>
-                <button class="inbox-file-btn" onclick="downloadAdminExcel('${esc(item.id)}')">
-                    <i class="fas fa-file-excel"></i> 엑셀로 저장
-                </button>
-                <div class="inbox-actions">
-                    <button class="btn-read-toggle" onclick="toggleRead('${esc(item.id)}',${item.read})">
-                        ${item.read?'미확인으로 변경':'✔ 확인됨으로 표시'}
-                    </button>
-                    <button class="btn-delete-inquiry" onclick="deleteAdminOrder('${esc(item.id)}')">🗑 삭제</button>
-                </div>
-            </div>`;
-        }).join('');
-    }
+    window.closeAddrModal = function() {
+        document.getElementById('addrModal').classList.remove('open');
+    };
 
-    window.saveTracking = async function(id) {
-        const trackingNumber = document.getElementById('tracking_' + id)?.value.trim();
-        if (!trackingNumber) { alert('송장번호를 입력해주세요.'); return; }
+    window.saveDefaultAddr = async function() {
+        const name    = document.getElementById('addrName').value.trim();
+        const phone   = document.getElementById('addrPhone').value.trim();
+        const address = document.getElementById('addrAddress').value.trim();
+        if (!name || !phone || !address) { alert('모든 항목을 입력해주세요.'); return; }
+        const uid = auth.currentUser?.uid;
+        if (!uid) return;
         try {
-            await updateDoc(doc(db,"inquiries",id), { trackingNumber, trackingAddedAt: serverTimestamp() });
-            alert('✅ 송장번호가 저장되었습니다.');
-            await loadOrders(); renderOrders();
-            loadMyOrders(auth.currentUser.uid);
+            await updateDoc(doc(db, 'users', uid), { defaultAddr: { name, phone, address } });
+            defaultAddr = { name, phone, address };
+            const btn = document.getElementById('defaultAddrBtn');
+            if (btn) { btn.classList.add('set'); btn.innerHTML = '✅ ' + esc(name); }
+            // 저장 즉시 필드에도 적용
+            document.getElementById('recipientName').value    = name;
+            document.getElementById('recipientPhone').value   = phone;
+            document.getElementById('recipientAddress').value = address;
+            closeAddrModal();
+            alert('✅ 기본 배송지가 저장되었습니다.');
         } catch(e) { alert('저장 실패: ' + e.message); }
     };
 
-    window.downloadAdminExcel = function(orderId) {
-        if (!window.isAdmin) return;
-        const order = allOrders.find(i => i.id===orderId);
-        if (!order || !order.items || order.items.length===0) { alert('엑셀로 변환할 품목 데이터가 없습니다.'); return; }
-        const excelData = order.items.map((item,idx) => ({
-            "연번": idx+1, "협력업체": order.vendorName, "품목명": item.product,
-            "수량": item.qty, "단가": item.unitPrice ?? '-',
-            "합계": item.unitPrice != null ? item.unitPrice*item.qty : '-',
-            "수취인": item.recipient||'', "전화번호": item.phone||'', "배송지 주소": item.address||'',
-            "송장번호": order.trackingNumber||'',
-            "발주일시": order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString('ko-KR') : ''
-        }));
-        const ws = XLSX.utils.json_to_sheet(excelData);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "발주서");
-        ws['!cols'] = [{wch:5},{wch:15},{wch:25},{wch:8},{wch:12},{wch:14},{wch:12},{wch:15},{wch:45},{wch:15},{wch:20}];
-        XLSX.writeFile(wb, order.vendorName + '_' + getTodayStr() + '_발주서.xlsx');
-    };
-
-    window.toggleRead = async function(id, cur) {
-        if (!window.isAdmin) return;
-        try {
-            await updateDoc(doc(db,"inquiries",id), { read: !cur });
-            await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid);
-        } catch(e) { alert('업데이트 실패: ' + e.message); }
-    };
-
-    window.deleteAdminOrder = async function(id) {
-        if (!window.isAdmin) return;
-        if (!confirm('관리자 권한으로 이 발주를 삭제하시겠습니까?')) return;
-        try {
-            await deleteDoc(doc(db,"inquiries",id));
-            await loadOrders(); renderOrders(); loadMyOrders(auth.currentUser.uid);
-        } catch(e) { alert('삭제 실패: ' + e.message); }
-    };
-
-    // ── 단가 관리 탭 ──────────────────────────────────────
-    window.filterInbox = function(filter, btn) {
-        currentFilter = filter;
-        document.querySelectorAll('.inbox-tab').forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        if (filter === 'price') renderPriceManager();
-        else renderOrders();
-    };
-
-    async function renderPriceManager() {
-        const list = document.getElementById('inboxList');
-        list.innerHTML = '<div style="text-align:center;padding:30px;color:#aaa;">업체 목록 불러오는 중...</div>';
-        try {
-            const snap = await getDocs(collection(db,'users'));
-            allUsers = [];
-            snap.forEach(d => { const data = d.data(); if (!data.isAdmin) allUsers.push({ uid:d.id, ...data }); });
-            if (allUsers.length === 0) { list.innerHTML = '<div class="empty-inbox">등록된 업체가 없습니다.</div>'; return; }
-            const userOptions = allUsers.map(u =>
-                '<option value="' + esc(u.uid) + '">' + esc(u.vendorName || u.uid) + '</option>'
-            ).join('');
-            list.innerHTML = '<div style="margin-bottom:16px;">'
-                + '<label style="font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:8px;">업체 선택</label>'
-                + '<select id="priceVendorSelect" onchange="loadPriceEditor()" '
-                + 'style="width:100%;padding:12px;border:1.5px solid #d0d0d7;border-radius:8px;font-family:inherit;font-size:14px;outline:none;">'
-                + '<option value="">업체를 선택하세요</option>' + userOptions
-                + '</select></div>'
-                + '<div id="priceEditorArea"></div>';
-        } catch(e) { list.innerHTML = '<div class="empty-inbox">오류: ' + e.message + '</div>'; }
-    }
-
-    window.loadPriceEditor = async function() {
-        const uid  = document.getElementById('priceVendorSelect').value;
-        const area = document.getElementById('priceEditorArea');
-        if (!uid) { area.innerHTML = ''; return; }
-        currentPriceUid = uid;
-        area.innerHTML = '<div style="text-align:center;padding:20px;color:#aaa;">단가 정보 불러오는 중...</div>';
-        try {
-            const [productSnap, priceDoc] = await Promise.all([
-                getDocs(collection(db, 'products')),
-                getDoc(doc(db, 'vendorPrices', uid))
-            ]);
-            const savedData    = priceDoc.exists() ? priceDoc.data() : {};
-            const savedPrices  = savedData.prices          || {};
-            const savedAllowed = savedData.allowedProducts  || [];
-            currentPriceProducts = [];
-            productSnap.forEach(d => {
-                const data = d.data();
-                const name = data.name || data.title || d.id;
-                if (name) currentPriceProducts.push(name);
-            });
-            if (currentPriceProducts.length === 0) {
-                area.innerHTML = '<div class="empty-inbox">등록된 제품이 없습니다.</div>'; return;
+    // 기본 배송지 버튼 클릭: 이미 설정됨 → 필드 자동 입력 / 미설정 → 모달 열기
+    window.openAddrModal = function() {
+        if (defaultAddr.name) {
+            // 이미 설정된 경우: 필드 자동 입력 + 수정 여부 확인
+            document.getElementById('recipientName').value    = defaultAddr.name;
+            document.getElementById('recipientPhone').value   = defaultAddr.phone;
+            document.getElementById('recipientAddress').value = defaultAddr.address;
+            // 수정 버튼도 제공 (모달 열기)
+            if (confirm('기본 배송지가 자동 입력되었습니다.\n수정하시겠습니까?')) {
+                document.getElementById('addrName').value    = defaultAddr.name;
+                document.getElementById('addrPhone').value   = defaultAddr.phone;
+                document.getElementById('addrAddress').value = defaultAddr.address;
+                document.getElementById('addrModal').classList.add('open');
+                document.getElementById('addrName').focus();
             }
-            const vendorName = allUsers.find(u => u.uid === uid)?.vendorName || uid;
-            const rowsHtml   = currentPriceProducts
-                .map((name, idx) => buildProductRow(name, idx, savedAllowed.includes(name), savedPrices))
-                .join('');
-
-            area.innerHTML = '<div style="background:#f8f8fc;border-radius:12px;padding:20px;">'
-                + '<h4 style="margin:0 0 4px;font-size:14px;color:#1d1d1f;">🏢 [' + esc(vendorName) + '] 제품별 단가 및 발주 허용 설정</h4>'
-                + '<p style="font-size:12px;color:#aaa;margin:0 0 14px;">✅ 체크한 제품만 해당 업체의 발주 목록에 표시됩니다.</p>'
-                + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e5e5ea;">'
-                + '<input type="checkbox" id="checkAll" onchange="toggleAllProducts(this)" '
-                + 'style="width:16px;height:16px;accent-color:#0071e3;cursor:pointer;">'
-                + '<label for="checkAll" style="font-size:13px;font-weight:600;color:#555;cursor:pointer;">전체 선택 / 해제</label>'
-                + '</div>'
-                + rowsHtml
-                + '<button onclick="savePrices()" '
-                + 'style="width:100%;margin-top:16px;background:#1d1d1f;color:#fff;border:none;'
-                + 'border-radius:8px;padding:13px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">'
-                + '💾 설정 저장</button></div>';
-
-            const allChecked = currentPriceProducts.length > 0 &&
-                currentPriceProducts.every((_, i) => document.getElementById('allowed_' + i)?.checked);
-            document.getElementById('checkAll').checked = allChecked;
-
-        } catch(e) { area.innerHTML = '<div class="empty-inbox">오류: ' + e.message + '</div>'; }
-    };
-
-    window.onAllowedChange = function(idx) {
-        const checked = document.getElementById('allowed_' + idx)?.checked;
-        const row     = document.getElementById('productRow_' + idx);
-        if (row) {
-            row.style.background  = checked ? '#fff'    : '#f9f9f9';
-            row.style.borderColor = checked ? '#c0dcf8' : '#e5e5ea';
+        } else {
+            document.getElementById('addrName').value    = '';
+            document.getElementById('addrPhone').value   = '';
+            document.getElementById('addrAddress').value = '';
+            document.getElementById('addrModal').classList.add('open');
+            document.getElementById('addrName').focus();
         }
-        const allChecked = currentPriceProducts.length > 0 &&
-            currentPriceProducts.every((_, i) => document.getElementById('allowed_' + i)?.checked);
-        const checkAll = document.getElementById('checkAll');
-        if (checkAll) checkAll.checked = allChecked;
     };
 
-    window.toggleAllProducts = function(masterCb) {
-        currentPriceProducts.forEach((_, idx) => {
-            const cb  = document.getElementById('allowed_' + idx);
-            const row = document.getElementById('productRow_' + idx);
-            if (!cb || !row) return;
-            cb.checked            = masterCb.checked;
-            row.style.background  = masterCb.checked ? '#fff'    : '#f9f9f9';
-            row.style.borderColor = masterCb.checked ? '#c0dcf8' : '#e5e5ea';
-        });
-    };
+    // 모달 배경 클릭 닫기
+    document.getElementById('addrModal').addEventListener('click', function(e) {
+        if (e.target === this) closeAddrModal();
+    });
+    // ESC 키 닫기
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeAddrModal();
+    });
 
-    window.savePrices = async function() {
-        if (!currentPriceUid)                  { alert('업체를 먼저 선택해주세요.'); return; }
-        if (currentPriceProducts.length === 0) { alert('제품 목록이 없습니다.'); return; }
-        const prices          = {};
-        const allowedProducts = [];
-        currentPriceProducts.forEach((name, idx) => {
-            const input   = document.getElementById('priceInput_' + idx);
-            const allowed = document.getElementById('allowed_' + idx);
-            if (input && input.value !== '') prices[name] = Number(input.value);
-            if (allowed?.checked) allowedProducts.push(name);
-        });
-        try {
-            await setDoc(doc(db, 'vendorPrices', currentPriceUid), {
-                prices, allowedProducts, updatedAt: serverTimestamp()
-            });
-            alert('✅ 저장 완료! (허용 품목 ' + allowedProducts.length + '개)');
-        } catch(e) { alert('저장 실패: ' + e.message); console.error(e); }
-    };
-
-    // ── 인박스 열기/닫기 ─────────────────────────────────
-    window.openInbox = async function(e) {
-        e.preventDefault();
-        if (!window.isAdmin) return;
-        await loadOrders(); renderOrders();
-        await updatePushButtonState();
-        document.getElementById('inboxModal').style.display = 'flex';
-    };
-
-    window.closeInbox = function() { document.getElementById('inboxModal').style.display = 'none'; };
-    document.getElementById('inboxModal').addEventListener('click', function(e) { if (e.target===this) closeInbox(); });
 
 </script>
 </body>

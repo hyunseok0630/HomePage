@@ -10,282 +10,787 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         body { background: #f5f5f7; padding-top: 80px; }
-        .admin-wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .admin-header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; }
-        .admin-actions { display: flex; gap: 10px; }
-        .btn-danger { background: crimson; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.2s; }
+        .admin-wrap { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 12px; }
+        .admin-header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; margin: 0; }
+        .admin-actions { display: flex; gap: 8px; }
+        .btn-danger  { background: crimson; color: #fff; border: none; border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; }
+        .btn-logout  { background: #1d1d1f; color: #fff; border: none; border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; }
         .btn-danger:hover { background: #a00; }
-        .btn-logout { background: #1d1d1f; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background 0.2s; }
         .btn-logout:hover { background: #000; }
 
-        .tab-bar { display: flex; gap: 8px; margin-bottom: 24px; }
-        .tab-btn { background: #fff; border: 1.5px solid #ddd; border-radius: 20px; padding: 8px 18px; font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+        /* 탭 */
+        .tab-bar { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+        .tab-btn  { background: #fff; border: 1.5px solid #ddd; border-radius: 20px; padding: 8px 18px; font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
         .tab-btn.active { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+        .tab-btn .bdg { display: inline-block; background: crimson; color: #fff; font-size: 10px; font-weight: 700; border-radius: 10px; padding: 1px 6px; margin-left: 5px; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
 
-        .inquiry-card { background: #fff; border-radius: 14px; padding: 22px 24px; margin-bottom: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border-left: 4px solid #ddd; }
-        .inquiry-card.unread { border-left-color: #0071e3; background: #f0f7ff; }
-        .inquiry-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .inquiry-name { font-size: 16px; font-weight: 700; color: #1d1d1f; }
-        .inquiry-date { font-size: 12px; color: #aaa; }
-        .inquiry-type { display: inline-block; background: #f5f5f7; color: #555; font-size: 11px; padding: 3px 10px; border-radius: 10px; margin-bottom: 8px; }
-        .inquiry-msg { font-size: 14px; color: #444; line-height: 1.7; white-space: pre-wrap; margin-bottom: 10px; }
-        .inquiry-contact { font-size: 12px; color: #888; margin-bottom: 12px; }
-        .inquiry-btns { display: flex; gap: 8px; }
-        .btn-read { background: #e8f4ff; color: #0071e3; border: none; border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
-        .btn-del  { background: #fff0f0; color: crimson; border: none; border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
-        .empty-msg { text-align: center; padding: 80px 0; color: #bbb; font-size: 16px; }
-
-        .stats-bar { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
-        .stat-box { background: #fff; border-radius: 12px; padding: 16px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); flex: 1; min-width: 120px; text-align: center; }
-        .stat-box .num   { font-size: 28px; font-weight: 700; color: #1d1d1f; }
-        .stat-box .label { font-size: 12px; color: #aaa; margin-top: 4px; }
+        /* 통계 카드 */
+        .stats-bar { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+        .stat-box { background: #fff; border-radius: 12px; padding: 16px 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); flex: 1; min-width: 110px; text-align: center; }
+        .stat-box .num   { font-size: 26px; font-weight: 700; color: #1d1d1f; }
+        .stat-box .lbl   { font-size: 12px; color: #aaa; margin-top: 3px; }
         .stat-box.blue .num { color: #0071e3; }
+        .stat-box.green .num { color: #059669; }
 
+        /* 발주 카드 */
+        .inquiry-card { background: #fff; border-radius: 14px; padding: 20px 22px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 4px solid #ddd; }
+        .inquiry-card.unread { border-left-color: #0071e3; background: #f0f7ff; }
+        .inq-top  { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
+        .inq-name { font-size: 15px; font-weight: 700; }
+        .inq-date { font-size: 12px; color: #aaa; }
+        .inq-summary { font-size: 13px; color: #555; background: #f8f8fc; padding: 8px 12px; border-radius: 8px; margin: 8px 0; }
+        .inq-items { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+        .inq-tag { background: #f0f7ff; border: 1px solid #c0dcf8; border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #0071e3; }
+        .inq-tracking { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+        .inq-tracking input { flex: 1; min-width: 150px; padding: 8px 12px; border: 1.5px solid #d0d0d7; border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; }
+        .inq-tracking input:focus { border-color: #0071e3; }
+        .inq-btns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .btn-sm      { padding: 7px 13px; font-size: 12px; border-radius: 7px; cursor: pointer; border: none; font-family: inherit; font-weight: 600; white-space: nowrap; transition: 0.2s; }
+        .btn-save    { background: #0071e3; color: #fff; }
+        .btn-pdf-dl  { background: #7c3aed; color: #fff; }
+        .btn-excel   { background: #059669; color: #fff; }
+        .btn-read    { background: #e8f4ff; color: #0071e3; }
+        .btn-del     { background: #fff0f0; color: crimson; }
+        .btn-sm:hover { opacity: 0.82; }
+        .tracking-badge { display: inline-flex; align-items: center; gap: 4px; background: #ecfdf5; color: #166534; border: 1px solid #6ee7b7; border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 600; }
+
+        /* 가격 설정 */
+        .card { background: #fff; border-radius: 14px; padding: 22px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+        /* 판매량 */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+        .stat-tile { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .stat-tile h4 { font-size: 12px; color: #888; margin: 0 0 6px; }
+        .stat-tile .val { font-size: 22px; font-weight: 700; }
+        .stat-tile .sub { font-size: 11px; color: #aaa; margin-top: 2px; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .data-table th { background: #f8f8fc; padding: 10px 12px; text-align: left; border-bottom: 2px solid #eee; font-weight: 600; color: #555; }
+        .data-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+        .data-table tr:hover td { background: #fafafa; }
+        .bar-wrap { background: #f0f0f0; border-radius: 4px; height: 7px; margin-top: 4px; overflow: hidden; }
+        .bar-fill  { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #0071e3, #34aadc); transition: width 0.4s; }
+
+        /* 알림 */
+        .push-card { background: #f0f7ff; border: 1.5px solid #c0dcf8; border-radius: 14px; padding: 28px; }
+
+        /* 필터/검색 */
+        .filter-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+        .filter-tab { background: #f0f0f0; border: none; border-radius: 16px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; color: #555; }
+        .filter-tab.active { background: #1d1d1f; color: #fff; }
+        .search-input { padding: 8px 14px; border: 1.5px solid #d0d0d7; border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; min-width: 200px; }
+        .search-input:focus { border-color: #0071e3; }
+        .period-bar { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .period-btn { background: #f5f5f7; border: none; border-radius: 16px; padding: 5px 13px; font-size: 12px; font-weight: 500; cursor: pointer; color: #555; font-family: inherit; }
+        .period-btn.active { background: #1d1d1f; color: #fff; }
+        .empty-msg { text-align: center; padding: 70px 0; color: #bbb; font-size: 15px; }
+
+        /* auth overlay */
         #authBlock { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f5f5f7; z-index: 9999; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
         #authBlock p { font-size: 16px; color: #888; }
 
         @media (max-width: 600px) {
-            .admin-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .admin-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
 
-    <div id="authBlock">
-        <i class="fas fa-lock" style="font-size:32px; color:#ccc;"></i>
-        <p>접근 권한 확인 중...</p>
+<div id="authBlock">
+    <i class="fas fa-lock" style="font-size:32px;color:#ccc;"></i>
+    <p>접근 권한 확인 중...</p>
+</div>
+
+<header id="main-header">
+    <div class="header-inner">
+        <div class="header-left logo">
+            <a href="../"><img src="../img/main.jpg" alt="SKY Commerce"></a>
+        </div>
+        <nav class="header-center">
+            <ul class="nav-menu">
+                <li><a href="../">홈</a></li>
+                <li><a href="../about/">회사 소개</a></li>
+                <li class="has-dropdown">
+                    <a href="../product/">제품 <i class="fas fa-chevron-down chevron"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="../product/#section-wearable"><i class="fas fa-glasses"></i> 스마트 웨어러블</a></li>
+                        <li><a href="../product/#section-industrial"><i class="fas fa-hard-hat"></i> 환경 안전 용품</a></li>
+                        <li><a href="../product/#section-grating"><i class="fas fa-th"></i> Grating 시리즈</a></li>
+                        <li><a href="../product/#section-parts"><i class="fas fa-cog"></i> 산업용 특수 소재</a></li>
+                    </ul>
+                </li>
+                <li><a href="../contact/">발주하기</a></li>
+                <li><a href="../admin/" class="active">관리자</a></li>
+                <li class="has-dropdown">
+                    <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener"><i class="fas fa-play-circle"></i> Watch the video</a></li>
+                        <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="header-right utility-icons">
+            <a href="#"><i class="fas fa-globe"></i></a>
+            <a href="#"><i class="fas fa-search"></i></a>
+            <a href="../login/" id="userProfileBtn" title="로그인 / 계정"><i class="fas fa-user"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <button class="hamburger" id="hamburger" aria-label="메뉴">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+<nav class="mobile-menu" id="mobileMenu">
+    <ul>
+        <li><a href="../">홈</a></li>
+        <li><a href="../about/">회사 소개</a></li>
+        <li><a href="../product/">제품</a></li>
+        <li><a href="../product/#section-wearable"   class="sub-item">· 스마트 웨어러블</a></li>
+        <li><a href="../product/#section-industrial" class="sub-item">· 환경 안전 용품</a></li>
+        <li><a href="../product/#section-grating"    class="sub-item">· Grating 시리즈</a></li>
+        <li><a href="../product/#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
+        <li><a href="../contact/">발주하기</a></li>
+        <li><a href="../admin/">관리자</a></li>
+        <li><a href="#">How to Use</a></li>
+        <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener" class="sub-item">· Watch the video</a></li>
+        <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
+    </ul>
+</nav>
+
+<div class="admin-wrap">
+    <div class="admin-header">
+        <h1><i class="fas fa-shield-alt" style="color:#0071e3;margin-right:10px;"></i>관리자 페이지</h1>
     </div>
 
-    <header id="main-header">
-        <div class="header-inner">
-            <div class="header-left logo">
-                <a href="../"><img src="../img/main.jpg" alt="SKY Commerce"></a>
-            </div>
-            <nav class="header-center">
-                <ul class="nav-menu">
-                    <li><a href="../">홈</a></li>
-                    <li><a href="../product/">제품 관리</a></li>
-                    <li><a href="../contact/">문의 확인</a></li>
-                </ul>
-            </nav>
-            <div class="header-right utility-icons">
-                <a href="../product/"><i class="fas fa-box"></i></a>
-                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></a>
-                <button class="hamburger" id="hamburger" aria-label="메뉴">
-                    <span></span><span></span><span></span>
-                </button>
-            </div>
-        </div>
-    </header>
+    <!-- 탭 바 -->
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('orders',this)">
+            <i class="fas fa-inbox"></i> 발주 관리 <span class="bdg" id="unreadBadge" style="display:none;">0</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('prices',this)">
+            <i class="fas fa-tags"></i> 가격 설정
+        </button>
+        <button class="tab-btn" onclick="switchTab('stats',this)">
+            <i class="fas fa-chart-bar"></i> 업체별 판매량
+        </button>
+        <button class="tab-btn" onclick="switchTab('push',this)">
+            <i class="fas fa-bell"></i> 알림 설정
+        </button>
+    </div>
 
-    <nav class="mobile-menu" id="mobileMenu">
-        <ul>
-            <li><a href="../">홈</a></li>
-            <li><a href="../product/">제품 관리</a></li>
-            <li><a href="../contact/">문의 확인</a></li>
-        </ul>
-    </nav>
-
-    <div class="admin-wrap">
-        <div class="admin-header">
-            <h1>📋 문의 관리</h1>
-            <div class="admin-actions">
-                <button class="btn-danger" onclick="deleteAllRead()">읽은 문의 전체 삭제</button>
-                <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
-            </div>
-        </div>
-
+    <!-- ① 발주 관리 -->
+    <div id="tab-orders" class="tab-panel active">
         <div class="stats-bar">
-            <div class="stat-box blue">
-                <div class="num" id="statUnread">-</div>
-                <div class="label">미확인</div>
-            </div>
-            <div class="stat-box">
-                <div class="num" id="statTotal">-</div>
-                <div class="label">전체</div>
-            </div>
-            <div class="stat-box">
-                <div class="num" id="statRead">-</div>
-                <div class="label">확인됨</div>
-            </div>
+            <div class="stat-box blue">  <div class="num" id="statUnread">-</div><div class="lbl">미확인</div></div>
+            <div class="stat-box">       <div class="num" id="statTotal">-</div> <div class="lbl">전체</div></div>
+            <div class="stat-box">       <div class="num" id="statRead">-</div>  <div class="lbl">확인됨</div></div>
+            <div class="stat-box green"> <div class="num" id="statAmt">-</div>   <div class="lbl">총 금액(원)</div></div>
         </div>
-
-        <div class="tab-bar">
-            <button class="tab-btn active" onclick="filterList('all', this)">전체</button>
-            <button class="tab-btn"        onclick="filterList('unread', this)">미확인</button>
-            <button class="tab-btn"        onclick="filterList('read', this)">확인됨</button>
+        <div class="filter-bar">
+            <button class="filter-tab active" onclick="setFilter('all',this)">전체</button>
+            <button class="filter-tab"        onclick="setFilter('unread',this)">미확인</button>
+            <button class="filter-tab"        onclick="setFilter('read',this)">확인됨</button>
+            <input class="search-input" id="searchInput" placeholder="🔍 업체명·품목 검색" oninput="renderOrders()">
         </div>
-
-        <div id="inquiryList"></div>
+        <div id="orderList"><div class="empty-msg">⏳ 발주 내역을 불러오는 중...</div></div>
     </div>
 
-    <script src="../js/main.js"></script>
-    <script type="module">
-        import { initializeApp, getApps, getApp }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, deleteDoc,
-                 doc, getDoc, updateDoc, query, orderBy, writeBatch }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged, signOut }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { firebaseConfig } from "../js/firebase-init.js"; // ✅ 중앙화된 config
+    <!-- ② 가격 설정 -->
+    <div id="tab-prices" class="tab-panel">
+        <div class="card">
+            <label style="font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:8px;">업체 선택</label>
+            <select id="priceVendorSelect" onchange="loadPriceEditor()"
+                    style="width:100%;padding:12px;border:1.5px solid #d0d0d7;border-radius:8px;font-family:inherit;font-size:14px;outline:none;">
+                <option value="">-- 업체를 선택하세요 --</option>
+            </select>
+        </div>
+        <div id="priceEditorArea"></div>
+    </div>
 
-        const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
-        const db   = getFirestore(app);
-        const auth = getAuth(app);
+    <!-- ③ 업체별 판매량 -->
+    <div id="tab-stats" class="tab-panel">
+        <div class="period-bar">
+            <button class="period-btn active" onclick="setStatPeriod(1,this)">1개월</button>
+            <button class="period-btn"        onclick="setStatPeriod(3,this)">3개월</button>
+            <button class="period-btn"        onclick="setStatPeriod(6,this)">6개월</button>
+            <button class="period-btn"        onclick="setStatPeriod(0,this)">전체</button>
+        </div>
+        <div class="stat-grid" id="statCards"></div>
+        <div class="card" style="margin-bottom:14px;">
+            <h3 style="font-size:15px;font-weight:700;margin:0 0 14px;"><i class="fas fa-building" style="color:#0071e3;margin-right:8px;"></i>업체별 발주 현황</h3>
+            <table class="data-table">
+                <thead><tr><th>업체명</th><th>발주건수</th><th>총수량</th><th>총금액</th><th style="min-width:130px;">비율</th></tr></thead>
+                <tbody id="statVendorBody"></tbody>
+            </table>
+        </div>
+        <div class="card">
+            <h3 style="font-size:15px;font-weight:700;margin:0 0 14px;"><i class="fas fa-box" style="color:#059669;margin-right:8px;"></i>품목별 판매 현황</h3>
+            <table class="data-table">
+                <thead><tr><th>품목명</th><th>총수량</th><th>총금액</th><th style="min-width:130px;">판매비율</th></tr></thead>
+                <tbody id="statProductBody"></tbody>
+            </table>
+        </div>
+    </div>
 
-        let allInquiries  = [];
-        let currentFilter = 'all';
+    <!-- ④ 알림 설정 -->
+    <div id="tab-push" class="tab-panel">
+        <div class="push-card">
+            <h3 style="font-size:17px;font-weight:700;margin:0 0 8px;"><i class="fas fa-bell" style="color:#0071e3;margin-right:8px;"></i>푸시 알림 설정</h3>
+            <p style="font-size:13px;color:#555;margin:0 0 18px;line-height:1.7;">새 발주가 등록될 때 브라우저 알림을 받을 수 있습니다.</p>
+            <button id="pushRegisterBtn" onclick="togglePush()"
+                    style="background:#0071e3;color:#fff;border:none;border-radius:8px;padding:11px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">
+                🔕 알림 등록하기
+            </button>
+        </div>
+    </div>
+</div>
 
-        // ✅ 로그인 + isAdmin 2중 검증
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.replace('../login/');
-                return;
-            }
-            try {
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (!userDoc.exists() || userDoc.data().isAdmin !== true) {
-                    alert('관리자 권한이 없습니다.');
-                    window.location.replace('../');
-                    return;
-                }
-            } catch (e) {
-                alert('권한 확인 실패: ' + e.message);
-                window.location.replace('../');
-                return;
-            }
-            document.getElementById('authBlock').style.display = 'none';
-            loadInquiries();
+<script src="../js/main.js"></script>
+<script type="module">
+import { initializeApp, getApps, getApp }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, deleteDoc,
+         doc, getDoc, updateDoc, setDoc, serverTimestamp,
+         query, orderBy, writeBatch, where }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getMessaging, getToken }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+import { firebaseConfig } from "../js/firebase-init.js";
+
+const VAPID_KEY = "BGxbvkmxV9MLk740bk3As6Zh2hRQd9axal0KwjiokV1sJ8VHaWP2NWxKXVoy1sv5PJw8N3fHyG8knTiGIXuqgLk";
+const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
+
+let allOrders        = [];
+let allUsers         = [];
+let currentFilter    = 'all';
+let statPeriodMonths = 1;
+let currentPriceUid  = '';
+let currentPriceProducts = [];
+
+function esc(str) {
+    return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ─── 인증 ───
+onAuthStateChanged(auth, async user => {
+    if (!user) { location.replace('../login/'); return; }
+    try {
+        const d = await getDoc(doc(db,'users',user.uid));
+        if (!d.exists() || d.data().isAdmin !== true) {
+            alert('관리자 권한이 없습니다.'); location.replace('../'); return;
+        }
+    } catch(e) { alert('권한 확인 실패: '+e.message); location.replace('../'); return; }
+    document.getElementById('authBlock').style.display = 'none';
+    // ✅ 로그인 아이콘 파란색 표시
+    const _ub = document.getElementById('userProfileBtn');
+    if (_ub) { _ub.style.color = '#0071e3'; _ub.setAttribute('title','로그아웃'); }
+    await loadOrders();
+    updatePushBtn(user);
+});
+
+// ─── 로그아웃 ───
+window.handleLogout = async function() {
+    if (!confirm('로그아웃 하시겠습니까?')) return;
+    try { await signOut(auth); localStorage.clear(); location.replace('/login/'); }
+    catch(e) { alert('로그아웃 실패: '+e.message); }
+};
+// userProfileBtn: 로그인 상태면 로그아웃, 비로그인이면 로그인 페이지로
+const _uBtn = document.getElementById('userProfileBtn');
+if (_uBtn) _uBtn.addEventListener('click', e => {
+    e.preventDefault();
+    if (auth.currentUser) handleLogout();
+    else window.location.href = '../login/';
+});
+
+// ─── 탭 전환 ───
+window.switchTab = function(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-'+name).classList.add('active');
+    btn.classList.add('active');
+    if (name === 'stats')  renderStats();
+    if (name === 'prices') loadVendorList();
+};
+
+// ════════════════════════════════════════
+// ① 발주 관리
+// ════════════════════════════════════════
+async function loadOrders() {
+    try {
+        const snap = await getDocs(query(collection(db,'inquiries'), orderBy('createdAt','desc')));
+        allOrders = [];
+        snap.forEach(d => allOrders.push({ id: d.id, ...d.data() }));
+        updateStats();
+        renderOrders();
+    } catch(e) {
+        document.getElementById('orderList').innerHTML = '<div class="empty-msg">⚠️ '+esc(e.message)+'</div>';
+    }
+}
+
+function updateStats() {
+    const orders = allOrders.filter(i => i.type === '발주');
+    const unread = orders.filter(i => !i.read).length;
+    const totalAmt = orders.reduce((s,i)=>s+(i.grandTotal||0),0);
+    document.getElementById('statTotal').textContent  = orders.length;
+    document.getElementById('statUnread').textContent = unread;
+    document.getElementById('statRead').textContent   = orders.length - unread;
+    document.getElementById('statAmt').textContent    = totalAmt > 0 ? (totalAmt/10000).toFixed(0)+'만' : '0';
+    const badge = document.getElementById('unreadBadge');
+    badge.textContent = unread;
+    badge.style.display = unread > 0 ? 'inline-block' : 'none';
+}
+
+window.setFilter = function(f, btn) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderOrders();
+};
+
+function renderOrders() {
+    const kw   = (document.getElementById('searchInput')?.value||'').toLowerCase();
+    const list = document.getElementById('orderList');
+    let filtered = allOrders.filter(i => {
+        if (i.type !== '발주') return false;
+        if (currentFilter === 'unread') return !i.read;
+        if (currentFilter === 'read')   return i.read;
+        return true;
+    });
+    if (kw) filtered = filtered.filter(i =>
+        (i.vendorName||'').toLowerCase().includes(kw) ||
+        (i.summary||'').toLowerCase().includes(kw)
+    );
+    if (filtered.length === 0) { list.innerHTML = '<div class="empty-msg">📭 발주 내역이 없습니다.</div>'; return; }
+    list.innerHTML = filtered.map(item => {
+        const date    = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString('ko-KR') : '날짜 없음';
+        const trk     = item.trackingNumber || '';
+        const trkBadge = trk ? `<span class="tracking-badge"><i class="fas fa-truck"></i> ${esc(trk)}</span>` : '';
+        const amtStr  = item.grandTotal ? `<strong style="color:#0071e3;margin-left:8px;">₩${item.grandTotal.toLocaleString()}</strong>` : '';
+        const tagsHtml = (item.items||[]).map(it =>
+            `<span class="inq-tag">${esc(it.product)} × ${it.qty}</span>`
+        ).join('');
+        return `
+        <div class="inquiry-card ${item.read?'read':'unread'}">
+            <div class="inq-top">
+                <span class="inq-name">${item.read?'':'🔵 '}🏢 ${esc(item.vendorName||'알 수 없음')}</span>
+                <span class="inq-date">${esc(date)}</span>
+            </div>
+            <div class="inq-summary">📦 ${esc(item.summary||'')}${amtStr}</div>
+            <div class="inq-items">${tagsHtml}</div>
+            ${trkBadge ? `<div style="margin:6px 0;">${trkBadge}</div>` : ''}
+            <div class="inq-tracking">
+                <input type="text" id="trk_${esc(item.id)}" value="${esc(trk)}" placeholder="송장번호 입력">
+                <button class="btn-sm btn-save"   onclick="saveTracking('${esc(item.id)}')"><i class="fas fa-truck"></i> 저장</button>
+                <button class="btn-sm btn-pdf-dl" onclick="downloadPdf('${esc(item.id)}')"><i class="fas fa-file-pdf"></i> PDF</button>
+                <button class="btn-sm btn-excel"  onclick="downloadExcel('${esc(item.id)}')"><i class="fas fa-file-excel"></i> Excel</button>
+            </div>
+            <div class="inq-btns">
+                <button class="btn-sm btn-read" onclick="toggleRead('${esc(item.id)}',${item.read})">${item.read?'미확인 처리':'✔ 확인됨'}</button>
+                <button class="btn-sm btn-del"  onclick="deleteOne('${esc(item.id)}')"><i class="fas fa-trash"></i> 삭제</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+window.saveTracking = async function(id) {
+    const val = document.getElementById('trk_'+id)?.value.trim();
+    if (!val) { alert('송장번호를 입력해주세요.'); return; }
+    try {
+        // ✅ 송장번호 저장 시 자동으로 확인됨(read=true) 처리
+        await updateDoc(doc(db,'inquiries',id), {
+            trackingNumber: val,
+            trackingAddedAt: serverTimestamp(),
+            read: true
         });
+        const o = allOrders.find(i=>i.id===id);
+        if (o) { o.trackingNumber = val; o.read = true; }
+        updateStats();
+        renderOrders();
+    } catch(e) { alert('저장 실패: '+e.message); }
+};
 
-        function esc(str = '') {
-            return String(str)
-                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-                .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+window.toggleRead = async function(id, cur) {
+    try {
+        await updateDoc(doc(db,'inquiries',id), { read: !cur });
+        const o = allOrders.find(i=>i.id===id); if(o) o.read = !cur;
+        updateStats(); renderOrders();
+    } catch(e) { alert(e.message); }
+};
+
+window.deleteOne = async function(id) {
+    if (!confirm('이 발주를 삭제하시겠습니까?')) return;
+    try {
+        await deleteDoc(doc(db,'inquiries',id));
+        allOrders = allOrders.filter(i=>i.id!==id);
+        updateStats(); renderOrders();
+    } catch(e) { alert(e.message); }
+};
+
+window.deleteAllRead = async function() {
+    const items = allOrders.filter(i => i.read);
+    if (!items.length) { alert('삭제할 읽은 항목이 없습니다.'); return; }
+    if (!confirm(`확인된 발주 ${items.length}건을 모두 삭제하시겠습니까?`)) return;
+    try {
+        const batch = writeBatch(db);
+        items.forEach(i => batch.delete(doc(db,'inquiries',i.id)));
+        await batch.commit();
+        allOrders = allOrders.filter(i=>!i.read);
+        updateStats(); renderOrders();
+    } catch(e) { alert('삭제 실패: '+e.message); }
+};
+
+// ─── PDF ───
+async function generateInvoicePdf(orderId) {
+    const snap = await getDoc(doc(db,'inquiries',orderId));
+    if (!snap.exists()) throw new Error('발주 데이터 없음');
+    const order = snap.data();
+    const od = order.createdAt?.toDate ? order.createdAt.toDate() : new Date();
+    const dateStr = `${od.getFullYear()}년 ${od.getMonth()+1}월 ${od.getDate()}일`;
+    const mmdd    = `${od.getMonth()+1}.${od.getDate()}`;
+    const grandTotal = (order.items||[]).reduce((s,i)=>s+(i.unitPrice!=null?i.unitPrice*i.qty:0),0);
+    const totalQty   = (order.items||[]).reduce((s,i)=>s+i.qty,0);
+    const EMPTY = Math.max(0,10-(order.items||[]).length);
+    const emptyRow = `<tr><td style="border:1px solid #ddd;padding:9px 6px;">&nbsp;</td><td style="border:1px solid #ddd;"></td><td style="border:1px solid #ddd;"></td><td style="border:1px solid #ddd;"></td><td style="border:1px solid #ddd;"></td></tr>`;
+    const rows = (order.items||[]).map(it=>`
+        <tr>
+            <td style="text-align:center;border:1px solid #ddd;padding:9px 6px;">${mmdd}</td>
+            <td style="border:1px solid #ddd;padding:9px 8px;">${esc(it.product||'')}</td>
+            <td style="text-align:center;border:1px solid #ddd;padding:9px 6px;">${it.qty}</td>
+            <td style="text-align:right;border:1px solid #ddd;padding:9px 8px;">${it.unitPrice!=null?it.unitPrice.toLocaleString()+'원':'-'}</td>
+            <td style="text-align:right;border:1px solid #ddd;padding:9px 8px;font-weight:700;color:#0071e3;">${it.unitPrice!=null?(it.unitPrice*it.qty).toLocaleString()+'원':'-'}</td>
+        </tr>`).join('');
+    const html = `
+    <div id="_inv" style="width:740px;padding:36px 40px;font-family:'Noto Sans KR',sans-serif;font-size:13px;background:#fff;color:#1d1d1f;box-sizing:border-box;">
+        <h2 style="text-align:center;font-size:19px;letter-spacing:8px;margin:0 0 18px;font-weight:700;">거 래 명 세 표</h2>
+        <p style="text-align:center;margin:0 0 14px;font-size:12px;color:#555;">(공급받는자용)</p>
+        <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-bottom:none;font-size:12.5px;">
+            <tr><td style="padding:8px 12px;border:1px solid #ccc;font-size:13px;text-align:right;">
+                <span style="font-weight:600;">${esc(order.vendorName||'')}</span>&nbsp;&nbsp;귀하
+            </td></tr>
+        </table>
+        <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-top:none;margin-bottom:0;font-size:12.5px;">
+            <tr>
+                <td rowspan="4" style="width:36px;text-align:center;font-weight:700;border-right:1.5px solid #555;background:#f5f5f7;writing-mode:vertical-lr;letter-spacing:6px;font-size:13px;padding:0 6px;white-space:nowrap;">공&nbsp;급&nbsp;자</td>
+                <td style="width:100px;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">사업자등록번호</td>
+                <td colspan="3" style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">248-86-00192</td>
+            </tr>
+            <tr>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">상&nbsp;&nbsp;&nbsp;&nbsp;호</td>
+                <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">㈜스카이커머스</td>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;width:52px;">성&nbsp;&nbsp;명</td>
+                <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">
+                    <span style="position:relative;display:inline-block;">김 나 경
+                        <span style="position:relative;display:inline-block;">(인)
+                            <img src="../img/dojang.jpg" crossorigin="anonymous"
+                                 style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;object-fit:contain;opacity:0.85;mix-blend-mode:multiply;pointer-events:none;"/>
+                        </span>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">사업장 소재지</td>
+                <td colspan="3" style="border:1px solid #ccc;padding:7px 10px;">경기도 화성시 동탄대로 677-12, 효성ICT타워 621</td>
+            </tr>
+            <tr>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">업&nbsp;&nbsp;&nbsp;&nbsp;태</td>
+                <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">도소매업외</td>
+                <td style="text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px 8px;font-weight:600;white-space:nowrap;">종&nbsp;&nbsp;목</td>
+                <td style="border:1px solid #ccc;padding:7px 10px;white-space:nowrap;">종합무역업외</td>
+            </tr>
+        </table>
+        <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;border-top:none;margin-bottom:0;font-size:12.5px;">
+            <tr>
+                <td style="width:26%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">작&nbsp;&nbsp;성&nbsp;&nbsp;년&nbsp;&nbsp;월&nbsp;&nbsp;일</td>
+                <td style="width:40%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">공&nbsp;&nbsp;급&nbsp;&nbsp;대&nbsp;&nbsp;가&nbsp;&nbsp;총&nbsp;&nbsp;액</td>
+                <td style="width:34%;text-align:center;background:#f5f5f7;border:1px solid #ccc;padding:7px;font-weight:600;white-space:nowrap;">비&nbsp;&nbsp;고&nbsp;(備考)</td>
+            </tr>
+            <tr>
+                <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:13px;white-space:nowrap;">${dateStr}</td>
+                <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:14px;font-weight:700;color:#0071e3;white-space:nowrap;">
+                    ${grandTotal.toLocaleString()}원 <span style="font-size:11px;font-weight:400;color:#777;">(VAT포함)</span>
+                </td>
+                <td style="border:1px solid #ccc;padding:9px;"></td>
+            </tr>
+        </table>
+        <p style="text-align:center;margin:12px 0 10px;font-size:13px;font-weight:500;">위 금액을 정히 청구 함.</p>
+        <table style="width:100%;border-collapse:collapse;border:1.5px solid #555;font-size:12.5px;">
+            <thead>
+                <tr style="background:#1d1d1f;color:#fff;">
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:70px;">날&nbsp;&nbsp;짜</th>
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;">품&nbsp;&nbsp;&nbsp;&nbsp;명</th>
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:60px;">수&nbsp;량</th>
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:100px;">단&nbsp;&nbsp;가</th>
+                    <th style="padding:9px 6px;text-align:center;border:1px solid #444;width:110px;">금&nbsp;&nbsp;액</th>
+                </tr>
+            </thead>
+            <tbody>${rows}${Array(EMPTY).fill(emptyRow).join('')}</tbody>
+            <tfoot>
+                <tr style="background:#f0f7ff;">
+                    <td colspan="2" style="text-align:right;padding:9px 10px;border:1px solid #ccc;font-weight:700;">합&nbsp;&nbsp;계</td>
+                    <td style="text-align:center;border:1px solid #ccc;padding:9px;font-weight:700;">${totalQty}</td>
+                    <td style="border:1px solid #ccc;padding:9px;"></td>
+                    <td style="text-align:right;border:1px solid #ccc;padding:9px 10px;font-weight:700;color:#0071e3;">${grandTotal.toLocaleString()}원</td>
+                </tr>
+            </tfoot>
+        </table>
+        <p style="text-align:right;margin-top:12px;font-size:10.5px;color:#aaa;">
+            발행일: ${new Date().toLocaleDateString('ko-KR')} | 본 문서는 SKY Commerce에서 자동 발행되었습니다.
+        </p>
+    </div>`;
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:fixed;top:-99999px;left:-99999px;z-index:-1;background:#fff;';
+    wrap.innerHTML = html;
+    document.body.appendChild(wrap);
+    const el = wrap.querySelector('#_inv');
+    const canvas = await html2canvas(el, { scale:2, useCORS:true, allowTaint:true, backgroundColor:'#fff', logging:false });
+    document.body.removeChild(wrap);
+    const { jsPDF } = window.jspdf;
+    const pdf  = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    const imgD = canvas.toDataURL('image/png');
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const ih = (canvas.height * pw) / canvas.width;
+    if (ih <= ph) { pdf.addImage(imgD,'PNG',0,0,pw,ih); }
+    else { let py=0,left=ih; while(left>0){ pdf.addImage(imgD,'PNG',0,py,pw,ih); left-=ph; py-=ph; if(left>0) pdf.addPage(); } }
+    const safe = (order.vendorName||'order').replace(/[^a-zA-Z0-9가-힣]/g,'_');
+    const dt   = new Date().toISOString().slice(0,10).replace(/-/g,'');
+    return { pdf, fileName: `${safe}_거래명세표_${dt}.pdf` };
+}
+
+window.downloadPdf = async function(id) {
+    try { const {pdf,fileName} = await generateInvoicePdf(id); pdf.save(fileName); }
+    catch(e) { alert('PDF 오류: '+e.message); }
+};
+
+window.downloadExcel = function(id) {
+    const o = allOrders.find(i=>i.id===id);
+    if (!o||!o.items||!o.items.length) { alert('품목 데이터 없음'); return; }
+    const pad = n => String(n).padStart(2,'0');
+    const d   = new Date();
+    const today = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
+    const data = o.items.map((it,idx)=>({
+        'No': idx+1, '업체명': o.vendorName, '품목': it.product,
+        '수량': it.qty, '단가': it.unitPrice??'-',
+        '금액': it.unitPrice!=null?it.unitPrice*it.qty:'-',
+        '수취인': it.recipient, '전화': it.phone, '배송지': it.address,
+        '송장번호': o.trackingNumber||'',
+        '발주일': o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString('ko-KR') : ''
+    }));
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '발주');
+    ws['!cols'] = [{wch:5},{wch:15},{wch:25},{wch:8},{wch:12},{wch:14},{wch:12},{wch:15},{wch:45},{wch:15},{wch:20}];
+    XLSX.writeFile(wb, `${o.vendorName}_${today}.xlsx`);
+};
+
+// ════════════════════════════════════════
+// ② 가격 설정
+// ════════════════════════════════════════
+async function loadVendorList() {
+    const sel = document.getElementById('priceVendorSelect');
+    try {
+        const snap = await getDocs(collection(db,'users'));
+        allUsers = [];
+        snap.forEach(d => { const dt=d.data(); if(!dt.isAdmin) allUsers.push({uid:d.id,...dt}); });
+        sel.innerHTML = '<option value="">-- 업체를 선택하세요 --</option>' +
+            allUsers.map(u=>`<option value="${esc(u.uid)}">${esc(u.vendorName||u.uid)}</option>`).join('');
+    } catch(e) { sel.innerHTML = '<option value="">불러오기 실패</option>'; }
+}
+
+window.loadPriceEditor = async function() {
+    const uid  = document.getElementById('priceVendorSelect').value;
+    const area = document.getElementById('priceEditorArea');
+    if (!uid) { area.innerHTML=''; return; }
+    currentPriceUid = uid;
+    area.innerHTML = '<div class="empty-msg">⏳ 불러오는 중...</div>';
+    try {
+        const [pSnap, pDoc] = await Promise.all([
+            getDocs(collection(db,'products')),
+            getDoc(doc(db,'vendorPrices',uid))
+        ]);
+        const saved     = pDoc.exists() ? pDoc.data() : {};
+        const prices    = saved.prices || {};
+        const allowed   = saved.allowedProducts || [];
+        currentPriceProducts = [];
+        pSnap.forEach(d => { const n=d.data().name||d.data().title||d.id; if(n) currentPriceProducts.push(n); });
+        const vName = allUsers.find(u=>u.uid===uid)?.vendorName||uid;
+        const rows  = currentPriceProducts.map((name,idx)=>{
+            const isOk = allowed.includes(name);
+            const pr   = prices[name]!=null ? prices[name] : '';
+            return `<div id="pr_${idx}" style="display:grid;grid-template-columns:24px 1fr auto auto;align-items:center;gap:10px;margin-bottom:8px;padding:10px 12px;border-radius:10px;border:1.5px solid ${isOk?'#c0dcf8':'#e5e5ea'};background:${isOk?'#fff':'#f9f9f9'};">
+                <input type="checkbox" id="ck_${idx}" ${isOk?'checked':''} onchange="onCkChange(${idx})" style="width:17px;height:17px;accent-color:#0071e3;cursor:pointer;">
+                <label for="ck_${idx}" style="font-size:13px;font-weight:500;cursor:pointer;">${esc(name)}</label>
+                <input type="number" id="pi_${idx}" min="0" value="${pr}" placeholder="단가"
+                       style="width:110px;padding:8px 10px;border:1.5px solid #d0d0d7;border-radius:8px;font-family:inherit;font-size:13px;outline:none;text-align:right;">
+                <span style="font-size:13px;color:#555;white-space:nowrap;">원</span>
+            </div>`;
+        }).join('');
+        area.innerHTML = `
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+                <div><h4 style="margin:0 0 2px;font-size:15px;">🏢 ${esc(vName)}</h4>
+                     <p style="margin:0;font-size:12px;color:#aaa;">품목별 공개 여부와 단가를 설정합니다.</p></div>
+                <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer;">
+                    <input type="checkbox" id="ckAll" onchange="toggleAll(this)" style="width:16px;height:16px;accent-color:#0071e3;"> 전체 선택
+                </label>
+            </div>
+            ${rows}
+            <button onclick="savePrices()" style="width:100%;margin-top:16px;background:#1d1d1f;color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">💾 저장</button>
+        </div>`;
+        document.getElementById('ckAll').checked = currentPriceProducts.every((_,i)=>document.getElementById('ck_'+i)?.checked);
+    } catch(e) { area.innerHTML=`<div class="empty-msg">오류: ${esc(e.message)}</div>`; }
+};
+
+window.onCkChange = function(idx) {
+    const ck  = document.getElementById('ck_'+idx)?.checked;
+    const row = document.getElementById('pr_'+idx);
+    if(row){ row.style.borderColor=ck?'#c0dcf8':'#e5e5ea'; row.style.background=ck?'#fff':'#f9f9f9'; }
+    const master = document.getElementById('ckAll');
+    if(master) master.checked = currentPriceProducts.every((_,i)=>document.getElementById('ck_'+i)?.checked);
+};
+
+window.toggleAll = function(cb) {
+    currentPriceProducts.forEach((_,idx)=>{
+        const ck=document.getElementById('ck_'+idx), row=document.getElementById('pr_'+idx);
+        if(!ck||!row) return;
+        ck.checked=cb.checked;
+        row.style.borderColor=cb.checked?'#c0dcf8':'#e5e5ea';
+        row.style.background=cb.checked?'#fff':'#f9f9f9';
+    });
+};
+
+window.savePrices = async function() {
+    if(!currentPriceUid){alert('업체를 먼저 선택해주세요.');return;}
+    const prices={}, allowedProducts=[];
+    currentPriceProducts.forEach((name,idx)=>{
+        const inp=document.getElementById('pi_'+idx), ck=document.getElementById('ck_'+idx);
+        if(inp&&inp.value!=='') prices[name]=Number(inp.value);
+        if(ck?.checked) allowedProducts.push(name);
+    });
+    try {
+        await setDoc(doc(db,'vendorPrices',currentPriceUid),{prices,allowedProducts},{merge:true});
+        alert('✅ 저장되었습니다!');
+    } catch(e){ alert('저장 실패: '+e.message); }
+};
+
+// ════════════════════════════════════════
+// ③ 업체별 판매량
+// ════════════════════════════════════════
+window.setStatPeriod = function(months, btn) {
+    statPeriodMonths = months;
+    document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderStats();
+};
+
+function renderStats() {
+    const now  = new Date();
+    const from = statPeriodMonths===0 ? null : (() => { const d=new Date(now); d.setMonth(d.getMonth()-statPeriodMonths); return d; })();
+    const filt = allOrders.filter(i => {
+        if(i.type!=='발주') return false;
+        if(!from) return true;
+        const t = i.createdAt?.toDate ? i.createdAt.toDate() : null;
+        return t && t >= from;
+    });
+    const totalQty = filt.reduce((s,i)=>(i.items||[]).reduce((ss,it)=>ss+it.qty,0)+s,0);
+    const totalAmt = filt.reduce((s,i)=>s+(i.grandTotal||0),0);
+    const vCount   = new Set(filt.map(i=>i.vendorName)).size;
+    document.getElementById('statCards').innerHTML = `
+        <div class="stat-tile"><h4>총 발주 건수</h4><div class="val">${filt.length}건</div><div class="sub">기간 내 전체</div></div>
+        <div class="stat-tile"><h4>총 발주 수량</h4><div class="val">${totalQty.toLocaleString()}개</div><div class="sub">모든 품목 합계</div></div>
+        <div class="stat-tile"><h4>총 거래 금액</h4><div class="val" style="color:#0071e3;">₩${totalAmt.toLocaleString()}</div><div class="sub">VAT 포함</div></div>
+        <div class="stat-tile"><h4>거래 업체 수</h4><div class="val" style="color:#059669;">${vCount}개사</div><div class="sub">기간 내 활성</div></div>`;
+
+    // 업체별
+    const vm={};
+    filt.forEach(i=>{
+        const v=i.vendorName||'알 수 없음';
+        if(!vm[v]) vm[v]={orders:0,qty:0,amount:0};
+        vm[v].orders++;
+        (i.items||[]).forEach(it=>{ vm[v].qty+=it.qty; });
+        vm[v].amount+=(i.grandTotal||0);
+    });
+    const vList=Object.entries(vm).sort((a,b)=>b[1].amount-a[1].amount);
+    const maxA=vList[0]?.[1]?.amount||1;
+    document.getElementById('statVendorBody').innerHTML = vList.length===0
+        ? '<tr><td colspan="5" style="text-align:center;padding:30px;color:#bbb;">데이터 없음</td></tr>'
+        : vList.map(([n,v])=>`<tr>
+            <td><strong>${esc(n)}</strong></td>
+            <td>${v.orders}건</td>
+            <td>${v.qty.toLocaleString()}개</td>
+            <td>₩${v.amount.toLocaleString()}</td>
+            <td><div class="bar-wrap"><div class="bar-fill" style="width:${Math.round(v.amount/maxA*100)}%"></div></div>
+                <span style="font-size:11px;color:#888;">${Math.round(v.amount/maxA*100)}%</span></td>
+          </tr>`).join('');
+
+    // 품목별
+    const pm={};
+    filt.forEach(i=>(i.items||[]).forEach(it=>{
+        if(!pm[it.product]) pm[it.product]={qty:0,amount:0};
+        pm[it.product].qty+=it.qty;
+        pm[it.product].amount+=it.unitPrice!=null?it.unitPrice*it.qty:0;
+    }));
+    const pList=Object.entries(pm).sort((a,b)=>b[1].qty-a[1].qty);
+    const maxQ=pList[0]?.[1]?.qty||1;
+    document.getElementById('statProductBody').innerHTML = pList.length===0
+        ? '<tr><td colspan="4" style="text-align:center;padding:30px;color:#bbb;">데이터 없음</td></tr>'
+        : pList.map(([n,v])=>`<tr>
+            <td><strong>${esc(n)}</strong></td>
+            <td>${v.qty.toLocaleString()}개</td>
+            <td>₩${v.amount.toLocaleString()}</td>
+            <td><div class="bar-wrap"><div class="bar-fill" style="width:${Math.round(v.qty/maxQ*100)}%"></div></div>
+                <span style="font-size:11px;color:#888;">${Math.round(v.qty/maxQ*100)}%</span></td>
+          </tr>`).join('');
+}
+
+// ════════════════════════════════════════
+// ④ 알림 설정
+// ════════════════════════════════════════
+async function updatePushBtn(user) {
+    const btn = document.getElementById('pushRegisterBtn');
+    try {
+        const t = await getDoc(doc(db,'adminTokens',user.uid));
+        btn.textContent    = t.exists() ? '🔔 알림 등록됨 (클릭 시 해제)' : '🔕 알림 등록하기';
+        btn.style.background = t.exists() ? '#16a34a' : '#0071e3';
+    } catch(e){}
+}
+
+window.togglePush = async function() {
+    const user = auth.currentUser;
+    if(!user) { alert('로그인이 필요합니다.'); return; }
+    const btn = document.getElementById('pushRegisterBtn');
+    try {
+        const t = await getDoc(doc(db,'adminTokens',user.uid));
+        if(t.exists()) {
+            if(!confirm('알림 등록을 해제하시겠습니까?')) return;
+            await deleteDoc(doc(db,'adminTokens',user.uid));
+            btn.textContent='🔕 알림 등록하기'; btn.style.background='#0071e3';
+            alert('알림이 해제되었습니다.');
+        } else {
+            const perm = await Notification.requestPermission();
+            if(perm!=='granted'){ alert('알림 권한이 필요합니다.'); return; }
+            const msg  = getMessaging(app);
+            const tok  = await getToken(msg,{vapidKey:VAPID_KEY});
+            if(!tok){ alert('FCM 토큰 발급 실패'); return; }
+            await setDoc(doc(db,'adminTokens',user.uid),{token:tok,uid:user.uid,updatedAt:serverTimestamp()});
+            btn.textContent='🔔 알림 등록됨 (클릭 시 해제)'; btn.style.background='#16a34a';
+            alert('알림이 등록되었습니다!');
         }
-
-        async function loadInquiries() {
-            try {
-                const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
-                const snapshot = await getDocs(q);
-                allInquiries = [];
-                snapshot.forEach(d => allInquiries.push({ id: d.id, ...d.data() }));
-                updateStats();
-                renderList();
-            } catch (e) {
-                document.getElementById('inquiryList').innerHTML =
-                    '<p class="empty-msg">⚠️ 불러오기 실패: ' + esc(e.message) + '</p>';
-            }
-        }
-
-        function updateStats() {
-            const unread = allInquiries.filter(i => !i.read).length;
-            document.getElementById('statTotal').textContent  = allInquiries.length;
-            document.getElementById('statUnread').textContent = unread;
-            document.getElementById('statRead').textContent   = allInquiries.length - unread;
-        }
-
-        function renderList() {
-            const list     = document.getElementById('inquiryList');
-            const filtered = allInquiries.filter(i => {
-                if (currentFilter === 'unread') return !i.read;
-                if (currentFilter === 'read')   return i.read;
-                return true;
-            });
-
-            if (filtered.length === 0) {
-                list.innerHTML = '<p class="empty-msg">📭 문의가 없습니다.</p>';
-                return;
-            }
-
-            list.innerHTML = filtered.map(item => {
-                const date = item.createdAt?.toDate
-                    ? item.createdAt.toDate().toLocaleString('ko-KR')
-                    : '날짜 없음';
-                const displayName = item.vendorName || item.name || '(이름 없음)';
-                const displayMsg  = item.summary    || item.message || '(내용 없음)';
-                const contact     = item.phone
-                    ? `📞 ${esc(item.phone)}${item.email ? `　✉️ ${esc(item.email)}` : ''}`
-                    : '';
-                return `
-                <div class="inquiry-card ${item.read ? 'read' : 'unread'}">
-                    <div class="inquiry-top">
-                        <span class="inquiry-name">${item.read ? '' : '🔵 '}${esc(displayName)}</span>
-                        <span class="inquiry-date">${esc(date)}</span>
-                    </div>
-                    <span class="inquiry-type">${esc(item.type || '발주')}</span>
-                    <div class="inquiry-msg">${esc(displayMsg)}</div>
-                    ${contact ? `<div class="inquiry-contact">${contact}</div>` : ''}
-                    <div class="inquiry-btns">
-                        <button class="btn-read" onclick="toggleRead('${esc(item.id)}', ${item.read})">
-                            ${item.read ? '미확인으로 변경' : '✔ 확인됨으로 표시'}
-                        </button>
-                        <button class="btn-del" onclick="deleteOne('${esc(item.id)}')">🗑 삭제</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        window.filterList = function(filter, btn) {
-            currentFilter = filter;
-            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            renderList();
-        };
-
-        window.toggleRead = async function(id, currentRead) {
-            try {
-                await updateDoc(doc(db, "inquiries", id), { read: !currentRead });
-                const item = allInquiries.find(i => i.id === id);
-                if (item) item.read = !currentRead;
-                updateStats();
-                renderList();
-            } catch (e) { alert('업데이트 실패: ' + e.message); }
-        };
-
-        window.deleteOne = async function(id) {
-            if (!confirm('이 문의를 삭제하시겠습니까?')) return;
-            try {
-                await deleteDoc(doc(db, "inquiries", id));
-                allInquiries = allInquiries.filter(i => i.id !== id);
-                updateStats();
-                renderList();
-            } catch (e) { alert('삭제 실패: ' + e.message); }
-        };
-
-        window.deleteAllRead = async function() {
-            const readItems = allInquiries.filter(i => i.read);
-            if (readItems.length === 0) { alert('삭제할 읽은 문의가 없습니다.'); return; }
-            if (!confirm(`확인된 문의 ${readItems.length}건을 모두 삭제하시겠습니까?`)) return;
-            try {
-                const batch = writeBatch(db);
-                readItems.forEach(i => batch.delete(doc(db, "inquiries", i.id)));
-                await batch.commit();
-                allInquiries = allInquiries.filter(i => !i.read);
-                updateStats();
-                renderList();
-            } catch (e) { alert('삭제 실패: ' + e.message); }
-        };
-
-        window.handleLogout = async function() {
-            if (!confirm('로그아웃 하시겠습니까?')) return;
-            try {
-                await signOut(auth);
-                localStorage.removeItem('loginTime');
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('userRole');
-                window.location.replace('/login/'); // ✅ 절대 경로
-            } catch (e) { alert('로그아웃 실패: ' + e.message); }
-        };
-
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            handleLogout();
-        });
-    </script>
+    } catch(e){ alert(e.message); }
+};
+</script>
 </body>
 </html>
