@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
+
     <style>
         body.edit-mode .product-card { cursor: grab; border: 2px dashed #007bff; box-shadow: 0 4px 15px rgba(0,123,255,0.2); }
         body.edit-mode .admin-add-btn { display: inline-flex !important; }
@@ -26,10 +27,12 @@
         .sortable-ghost { opacity: 0.4; background: #e3f0ff; border: 2px dashed #007bff !important; }
         .empty-notice { color: #aaa; font-size: 14px; padding: 30px 0; text-align: center; }
 
+
         .sortable-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
         @media (max-width: 1200px) { .sortable-grid { grid-template-columns: repeat(3,1fr); } }
         @media (max-width: 900px)  { .sortable-grid { grid-template-columns: repeat(2,1fr); } }
         @media (max-width: 560px)  { .sortable-grid { grid-template-columns: repeat(1,1fr); } }
+
 
         .product-card {
             position: relative; border-radius: 16px; overflow: hidden;
@@ -40,6 +43,7 @@
         }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
 
+
         .card-img-wrap {
             height: 260px; background: #f5f5f7; overflow: hidden;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -48,13 +52,16 @@
         .card-img-wrap.contain img { width: auto; height: auto; max-width: 85%; max-height: 85%; object-fit: contain; }
         .product-card:hover .card-img-wrap img { opacity: 0.88; }
 
+
         .card-info { padding: 22px 20px 24px; text-align: left; display: flex; flex-direction: column; flex: 1; }
         .card-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
         .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; white-space: pre-line; word-break: break-word; }
         .card-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; margin-bottom: 10px; }
 
+
         .card-price { font-size: 18px; font-weight: 700; color: #1d1d1f; margin-top: auto; margin-bottom: 14px; padding-top: 8px; }
         .card-price--inquiry { color: #1d1d1f; font-weight: 700; }
+
 
         .card-buy-btn {
             display: inline-flex; align-items: center; justify-content: center;
@@ -64,6 +71,7 @@
         }
         .card-buy-btn:hover { background: #000; transform: translateY(-1px); }
 
+
         .card-admin-btns { display: none; position: absolute; top: 8px; right: 8px; flex-direction: column; gap: 6px; z-index: 10; }
         body.edit-mode .card-admin-btns { display: flex; }
         .delete-btn, .edit-btn { border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 13px; line-height: 32px; text-align: center; transition: opacity 0.2s; }
@@ -71,11 +79,14 @@
         .edit-btn   { background: #007bff; color: #fff; }
         .delete-btn:hover, .edit-btn:hover { opacity: 0.8; }
 
+
         .admin-add-btn { display: none; align-items: center; gap: 6px; background: #007bff; color: #fff; border: none; padding: 7px 16px; border-radius: 50px; cursor: pointer; font-weight: 600; font-family: inherit; font-size: 13px; white-space: nowrap; flex-shrink: 0; }
         .admin-add-btn:hover { background: #0056d6; }
 
+
         #saveToast { display: none; position: fixed; bottom: 30px; right: 30px; background: #333; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 14px; z-index: 99999; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
 
         .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; }
         .modal-content { background:#fff; padding:30px; border-radius:12px; width:90%; max-width:500px; max-height:90vh; overflow-y:auto; }
@@ -103,10 +114,12 @@
         .img-type-btn { flex:1; padding:8px; border:1.5px solid #ddd; border-radius:8px; background:#fafafa; cursor:pointer; font-size:13px; font-weight:500; font-family:inherit; transition:all 0.2s; text-align:center; }
         .img-type-btn.active { border-color:#007bff; background:#e8f4ff; color:#007bff; }
 
+
         .category-section-anchor { scroll-margin-top: 80px; }
     </style>
 </head>
 <body>
+
 
     <!-- ── 헤더 ── -->
     <header id="main-header">
@@ -128,6 +141,7 @@
                         </ul>
                     </li>
                     <li><a href="../contact/">발주하기</a></li>
+                        <li><a href="../as/">A/S 신청</a></li>
                     <!-- ✅ How to Use 추가 -->
                     <li class="has-dropdown">
                         <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
@@ -161,6 +175,7 @@
         </div>
     </header>
 
+
     <!-- ── 모바일 메뉴 ── -->
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
@@ -172,12 +187,14 @@
             <li><a href="#section-grating"    class="sub-item">· Grating 시리즈</a></li>
             <li><a href="#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
             <li><a href="../contact/">발주하기</a></li>
+            <li><a href="../as/">A/S 신청</a></li>
             <!-- ✅ How to Use 추가 -->
             <li><a href="#">How to Use</a></li>
             <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener" class="sub-item">· Watch the video</a></li>
             <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
         </ul>
     </nav>
+
 
     <!-- ── 서브 히어로 ── -->
     <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.7)), url('../img/Air4girl.png') center/cover no-repeat;">
@@ -186,6 +203,7 @@
             <p style="position:relative;z-index:2;">스마트 웨어러블부터 고품질 산업용 소재까지, 혁신을 제공합니다.</p>
         </div>
     </section>
+
 
     <!-- ── 제품 목록 ── -->
     <section class="products-section" style="padding:80px 0; background:var(--bg-color);">
@@ -197,7 +215,9 @@
         </div>
     </section>
 
+
     <div id="saveToast">✅ 저장되었습니다.</div>
+
 
     <!-- ── 제품 추가/수정 모달 ── -->
     <div class="modal-overlay" id="productModal">
@@ -264,6 +284,7 @@
         </div>
     </div>
 
+
     <!-- ── 푸터 ── -->
     <footer>
         <div class="container">
@@ -276,6 +297,7 @@
                         <li><a href="../about/">회사 소개</a></li>
                         <li><a href="../product/">제품</a></li>
                         <li><a href="../contact/">발주하기</a></li>
+                        <li><a href="../as/">A/S 신청</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
@@ -296,8 +318,10 @@
         </div>
     </footer>
 
+
     <script src="../js/main.js"></script>
     <script type="module" src="../js/auth.js"></script>
+
 
     <script type="module">
         import { initializeApp, getApps, getApp }
@@ -311,10 +335,12 @@
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { firebaseConfig } from "../js/firebase-init.js";
 
+
         const app     = getApps().length ? getApp() : initializeApp(firebaseConfig);
         const db      = getFirestore(app);
         const storage = getStorage(app);
         const auth    = getAuth(app);
+
 
         const CATEGORIES = [
             { key: 'wearable',   label: '스마트 웨어러블 및 액세서리' },
@@ -323,12 +349,14 @@
             { key: 'parts',      label: '산업용 특수 소재 및 정밀 부품' }
         ];
 
+
         let editMode          = false;
         let editingId         = null;
         let uploadedImgUrl    = null;
         let uploadedPath      = null;
         let currentImgTab     = 'upload';
         let sortableInstances = {};
+
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -342,6 +370,7 @@
             loadAllProducts();
         });
 
+
         document.querySelectorAll('.dropdown a[href^="#"], .mobile-menu a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -354,6 +383,7 @@
             });
         });
 
+
         async function loadAllProducts() {
             const root = document.getElementById('productRoot');
             try {
@@ -365,6 +395,7 @@
                     snapshot = await getDocs(collection(db, "products"));
                 }
 
+
                 const grouped = {};
                 CATEGORIES.forEach(c => grouped[c.key] = []);
                 snapshot.forEach(d => {
@@ -374,6 +405,7 @@
                 CATEGORIES.forEach(({ key }) => {
                     grouped[key].sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
                 });
+
 
                 root.innerHTML = CATEGORIES.map(({ key, label }) => `
                     <div class="category-section-anchor" id="section-${key}" style="margin-bottom:60px;">
@@ -392,7 +424,9 @@
                     </div>
                 `).join('');
 
+
                 if (editMode) initSortable();
+
 
                 if (window.location.hash) {
                     setTimeout(() => {
@@ -410,10 +444,12 @@
             }
         }
 
+
         function buildCard(p, cat) {
             const tags    = (p.tags || []).map(t => `<span class="premium-tag">${t}</span>`).join('');
             const contain = p.imgMode === 'contain';
             const imgSrc  = p.imageUrl || p.imgUrl || '';
+
 
             const imgHtml = imgSrc
                 ? `<img src="${imgSrc}"
@@ -426,13 +462,16 @@
                             : 'width:100%;height:100%;object-fit:cover;'}">`
                 : `<i class="fas fa-image" style="font-size:48px;color:#ccc;"></i>`;
 
+
             const priceHtml = p.price
                 ? `<div class="card-price">${p.price}</div>`
                 : `<div class="card-price card-price--inquiry">견적 문의</div>`;
 
+
             const buyBtn = p.buyUrl
                 ? `<a href="${p.buyUrl}" target="_blank" class="card-buy-btn">구매하기</a>`
                 : '';
+
 
             return `
             <div class="product-card" data-id="${p.id}">
@@ -453,6 +492,7 @@
             </div>`;
         }
 
+
         function initSortable() {
             CATEGORIES.forEach(({ key }) => {
                 const grid = document.getElementById(`grid-${key}`);
@@ -465,6 +505,7 @@
             });
         }
 
+
         async function saveOrder(cat) {
             const cards = document.getElementById(`grid-${cat}`).querySelectorAll('.product-card');
             const batch = writeBatch(db);
@@ -473,11 +514,13 @@
             showToast();
         }
 
+
         function showToast() {
             const toast = document.getElementById('saveToast');
             toast.style.display = 'block';
             setTimeout(() => { toast.style.display = 'none'; }, 2000);
         }
+
 
         window.toggleEditMode = function(e) {
             e.preventDefault();
@@ -492,6 +535,7 @@
             });
         };
 
+
         window.openModal = async function(productId, cat) {
             editingId = productId; uploadedImgUrl = null; uploadedPath = null;
             document.getElementById('modalTitle').textContent = productId ? '제품 수정' : '새 제품 추가';
@@ -502,6 +546,7 @@
             document.getElementById('imgPreview').src           = '';
             document.getElementById('modalCategory').value      = cat || 'wearable';
             switchImgTab('upload');
+
 
             if (productId) {
                 try {
@@ -527,6 +572,7 @@
             document.getElementById('productModal').style.display = 'flex';
         };
 
+
         window.closeModal = function() {
             document.getElementById('productModal').style.display = 'none';
             editingId = null;
@@ -534,6 +580,7 @@
         document.getElementById('productModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
+
 
         window.switchImgTab = function(tab) {
             currentImgTab = tab;
@@ -550,6 +597,7 @@
             if (e.dataTransfer.files[0]) uploadImage(e.dataTransfer.files[0]);
         };
         window.onImgFileSelect = (e) => { if (e.target.files[0]) uploadImage(e.target.files[0]); };
+
 
         function uploadImage(file) {
             if (file.size > 5*1024*1024) { alert('파일 크기는 5MB 이하만 가능합니다.'); return; }
@@ -574,16 +622,17 @@
                     saveBtn.disabled = false;
                 },
                 async () => {
-                    uploadedImgUrl         = await getDownloadURL(uploadTask.snapshot.ref);
-                    uploadedPath           = filePath;
-                    preview.src            = uploadedImgUrl;
-                    preview.style.display  = 'block';
-                    progress.style.display = 'none';
-                    text.textContent       = '✅ 업로드 완료';
-                    saveBtn.disabled       = false;
+                    uploadedImgUrl           = await getDownloadURL(uploadTask.snapshot.ref);
+                    uploadedPath             = filePath;
+                    preview.src              = uploadedImgUrl;
+                    preview.style.display    = 'block';
+                    progress.style.display   = 'none';
+                    text.textContent         = '✅ 업로드 완료';
+                    saveBtn.disabled         = false;
                 }
             );
         }
+
 
         window.saveProduct = async function() {
             const name     = document.getElementById('modalName').value.trim();
@@ -596,12 +645,15 @@
                 ? document.getElementById('modalImg').value.trim()
                 : (uploadedImgUrl || '');
 
+
             if (!name)     { alert('상품 이름을 입력해주세요.'); return; }
             if (!imageUrl) { alert('이미지를 등록해주세요.'); return; }
+
 
             const tags = tagRaw ? tagRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
             const data = { name, desc, imageUrl, tags, price, buyUrl, category };
             if (uploadedPath) data.storagePath = uploadedPath;
+
 
             const saveBtn = document.getElementById('modalSaveBtn');
             saveBtn.disabled = true; saveBtn.textContent = '저장 중...';
@@ -622,6 +674,7 @@
             } catch (e) { alert('저장 실패: ' + e.message); }
             finally { saveBtn.disabled = false; saveBtn.textContent = 'DB 저장'; }
         };
+
 
         window.deleteProduct = async function(productId) {
             if (!confirm('이 제품을 삭제하시겠습니까?')) return;

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/S 신청 | SKY Commerce</title>
+    <link rel="icon" type="image/png" sizes="any" href="../img/logo_blue.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SKY Commerce">
+    <meta property="og:title" content="A/S 신청 | SKY Commerce">
+    <meta property="og:description" content="SKY Commerce 제품 A/S 접수 및 처리 현황을 확인하세요.">
+    <meta property="og:url" content="https://skycommerce.co.kr/as/">
+    <meta property="og:image" content="https://skycommerce.co.kr/img/og_image.png">
+    <meta property="og:locale" content="ko_KR">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root { --as-blue:#0071e3; --as-blue-dark:#005bb5; --as-bg:#f5f7fb; --as-line:#e6eaf0; --as-text:#1d1d1f; --as-muted:#6e6e73; }
+        * { box-sizing:border-box; }
+        body { background: var(--bg-color, #fff); color: var(--as-text); }
+        .as-section { padding: 96px 0; background: var(--as-bg); }
+        .as-grid { display:grid; grid-template-columns: 1fr 1.6fr; gap: 32px; align-items:start; }
+        .as-card, .as-form-card { background:#fff; border:1px solid var(--as-line); border-radius:20px; box-shadow:0 10px 30px rgba(16,24,40,0.05); }
+        .as-card { padding: 32px 28px; }
+        .as-form-card { padding: 34px 30px; }
+        .as-title { font-size: 28px; font-weight: 700; letter-spacing:-0.03em; margin:0 0 8px; }
+        .as-sub { font-size:14px; color:var(--as-muted); margin:0 0 22px; line-height:1.7; }
+        .as-info-list { display:grid; gap:16px; }
+        .as-info { display:flex; gap:12px; align-items:flex-start; }
+        .as-info i { width:18px; margin-top:4px; color:var(--as-blue); }
+        .as-info span { font-size:14px; color:#444; line-height:1.7; }
+        .as-steps { margin-top:24px; padding-top:22px; border-top:1px solid var(--as-line); }
+        .as-steps h4 { margin:0 0 12px; font-size:14px; }
+        .as-step { display:flex; gap:10px; margin-bottom:10px; font-size:13px; color:var(--as-muted); }
+        .as-step b { width:22px; height:22px; border-radius:50%; background:var(--as-blue); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; }
+        .as-top { margin-bottom: 22px; }
+        .as-top h3 { margin:0; font-size:26px; letter-spacing:-0.03em; }
+        .as-top p { margin:6px 0 0; color:var(--as-muted); font-size:13px; }
+        .as-box { background:#fafbfd; border:1px solid var(--as-line); border-radius:16px; padding:20px; }
+        .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+        .field { margin-bottom:12px; }
+        .field label { display:block; font-size:13px; font-weight:600; margin:0 0 8px; }
+        .field input, .field select, .field textarea { width:100%; border:1.5px solid #d3d8e1; border-radius:12px; padding:13px 14px; font-size:14px; font-family:inherit; outline:none; background:#fff; }
+        .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--as-blue); box-shadow:0 0 0 4px rgba(0,113,227,.08); }
+        .field textarea { min-height:120px; resize:vertical; }
+                .as-upload { border:1.5px dashed #c6d4ea; background:#f7fbff; border-radius:14px; padding:16px; text-align:center; }
+        .as-upload input { margin-top:8px; }
+        .as-check { display:flex; align-items:flex-start; gap:10px; background:#f8faff; border:1px solid #dbe7f8; border-radius:12px; padding:14px 16px; margin:16px 0; }
+        .as-check input { width:18px; height:18px; margin-top:2px; accent-color:var(--as-blue); }
+        .as-check p { margin:0; font-size:12px; color:#5a5f69; line-height:1.8; }
+        .as-actions { display:flex; gap:10px; }
+        .btn-primary, .btn-secondary { border:none; border-radius:12px; padding:14px 18px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; }
+        .btn-primary { flex:1; background:var(--as-text); color:#fff; }
+        .btn-primary:hover { background:#000; }
+        .btn-secondary { background:#eff4fb; color:var(--as-blue); border:1px solid #cfe0f5; }
+        .status-board { margin-top:28px; padding-top:24px; border-top:1px solid var(--as-line); }
+        .status-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+        .status-head h4 { margin:0; font-size:16px; }
+        .status-note { font-size:12px; color:#8a8f98; }
+        .table-responsive { overflow-x:auto; border:1px solid var(--as-line); border-radius:12px; background:#fff; }
+        .as-table { width:100%; min-width:720px; border-collapse:collapse; font-size:12.5px; }
+        .as-table th, .as-table td { padding:12px 10px; border-bottom:1px solid #eef2f6; text-align:left; vertical-align:middle; }
+        .as-table th { background:#f7f9fc; color:#555; font-weight:700; white-space:nowrap; }
+        .badge { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:5px 10px; font-size:11px; font-weight:700; }
+        .b-received { background:#eef6ff; color:#0759b4; }
+        .b-checking { background:#fff7e8; color:#a35a00; }
+        .b-progress { background:#f3f0ff; color:#5b3bb5; }
+        .b-done { background:#ecfdf3; color:#166534; }
+        .empty-row { text-align:center; color:#9aa1ab; padding:26px !important; }
+        @media (max-width: 960px) { .as-grid { grid-template-columns:1fr; } }
+        @media (max-width: 768px) { .as-section { padding:72px 0; } .as-card, .as-form-card { padding:24px 18px; } .row2, .row3 { grid-template-columns:1fr; } .as-actions { flex-direction:column; } }
+    </style>
+</head>
+<body>
+<header id="main-header">
+    <div class="header-inner">
+        <div class="header-left logo">
+            <a href="../"><img src="../img/main.jpg" alt="SKY Commerce"></a>
+        </div>
+        <nav class="header-center">
+            <ul class="nav-menu">
+                <li><a href="../">홈</a></li>
+                <li><a href="../about/">회사 소개</a></li>
+                <li class="has-dropdown">
+                    <a href="../product/">제품 <i class="fas fa-chevron-down chevron"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="../product/#section-wearable"><i class="fas fa-glasses"></i> 스마트 웨어러블</a></li>
+                        <li><a href="../product/#section-industrial"><i class="fas fa-hard-hat"></i> 환경 안전 용품</a></li>
+                        <li><a href="../product/#section-grating"><i class="fas fa-th"></i> Grating 시리즈</a></li>
+                        <li><a href="../product/#section-parts"><i class="fas fa-cog"></i> 산업용 특수 소재</a></li>
+                    </ul>
+                </li>
+                <li><a href="../contact/">발주하기</a></li>
+                <li><a href="../as/" class="active">A/S 신청</a></li>
+                <li class="has-dropdown">
+                    <a href="#">How to Use <i class="fas fa-chevron-down chevron"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener"><i class="fas fa-play-circle"></i> Watch the video</a></li>
+                        <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="header-right utility-icons">
+            <a href="#"><i class="fas fa-globe"></i></a>
+            <a href="#"><i class="fas fa-search"></i></a>
+            <!-- ✅ 팝업 제거: 관리자 페이지로 바로 이동 -->
+            <a href="../admin/" id="inboxBtn" title="관리자 페이지" style="display:none;">
+                <i class="fas fa-envelope"></i>
+                <span id="inboxBadge">0</span>
+            </a>
+            <a href="../login/" id="userProfileBtn"><i class="fas fa-user"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <button class="hamburger" id="hamburger" aria-label="메뉴">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ── 모바일 메뉴 ── -->
+<nav class="mobile-menu" id="mobileMenu">
+    <ul>
+        <li><a href="../">홈</a></li>
+        <li><a href="../about/">회사 소개</a></li>
+        <li><a href="../product/">제품</a></li>
+        <li><a href="../product/#section-wearable"   class="sub-item">· 스마트 웨어러블</a></li>
+        <li><a href="../product/#section-industrial" class="sub-item">· 환경 안전 용품</a></li>
+        <li><a href="../product/#section-grating"    class="sub-item">· Grating 시리즈</a></li>
+        <li><a href="../product/#section-parts"      class="sub-item">· 산업용 특수 소재</a></li>
+        <li><a href="../contact/">발주하기</a></li>
+        <li><a href="../as/" class="active">A/S 신청</a></li>
+        <li><a href="#">How to Use</a></li>
+        <li><a href="https://www.youtube.com/playlist?list=PLbchWo6qj0WywfPqOh_c3C_RWWws3S8lg" target="_blank" rel="noopener" class="sub-item">· Watch the video</a></li>
+        <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
+    </ul>
+</nav>
+<section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.72)), url('../img/Air4girl.png') center/cover no-repeat;">
+    <div class="container">
+        <h1 style="position:relative; z-index:2;">A/S 신청</h1>
+        <p style="position:relative; z-index:2;">로그인 없이 제품 A/S를 접수할 수 있으며, 유효한 시리얼번호 확인 후 신청이 가능합니다.<p>해외 직구 제품의 경우 A/S 불가합니다.</p></p>
+    </div>
+</section>
+<section class="as-section">
+  <div class="container">
+    <div class="as-grid">
+      <aside class="as-card">
+        <h2 class="as-title">A/S 안내</h2>
+        <p class="as-sub">개인 고객용 A/S 접수 페이지입니다. 제품 정보와 증상을 정확히 입력해 주시면 시리얼번호 확인 후 순차적으로 안내드립니다. 사진이 있으면 판별 속도가 빨라집니다.</p>
+        <div class="as-info-list">
+          <div class="as-info"><i class="fas fa-phone"></i><span>대표번호 031-205-4133<br>평일 09:00 - 17:00</span></div>
+          <div class="as-info"><i class="fas fa-envelope"></i><span>회신 이메일 car2314@naver.com</span></div>
+          <div class="as-info"><i class="fas fa-box-open"></i><span>회수 전 임의 발송은 지양해 주세요. 접수 확인 후 회수 또는 발송 절차를 안내합니다.</span></div>
+        </div>
+        <div class="as-steps">
+          <h4>📋 처리 절차</h4>
+          <div class="as-step"><b>1</b><span>로그인 후 A/S 신청서 작성</span></div>
+          <div class="as-step"><b>2</b><span>담당자 확인 및 증상 검토</span></div>
+          <div class="as-step"><b>3</b><span>회수·점검 또는 해결 방법 안내</span></div>
+          <div class="as-step"><b>4</b><span>수리 완료 후 결과 회신</span></div>
+        </div>
+      </aside>
+      <main class="as-form-card">
+        <div class="as-top">
+          <h3>A/S 접수 등록</h3>
+          <p>제품 정보, 고장 증상, 회신 정보를 입력해 주세요.</p>
+        </div>
+        <div class="as-box">
+          <div class="row2">
+            <div class="field"><label for="customerName">신청자명</label><input id="customerName" type="text" placeholder="이름을 입력하세요"></div>
+            <div class="field"><label for="customerPhone">연락처</label><input id="customerPhone" type="text" placeholder="010-0000-0000"></div>
+          </div>
+          <div class="field"><label for="customerEmail">이메일</label><input id="customerEmail" type="email" placeholder="회신 받을 이메일"></div>
+          <div class="row2">
+            <div class="field"><label for="asProduct">제품명 / 모델명</label><input id="asProduct" type="text" placeholder="예: RayNeo Air 4"></div>
+            <div class="field"><label for="asPurchasePlace">구매처</label><input id="asPurchasePlace" type="text" placeholder="예: 네이버 스마트스토어, 오프라인 매장명"></div>
+          </div>
+          <div class="row3">
+            <div class="field"><label for="asSerial">시리얼번호</label><input id="asSerial" type="text" placeholder="제품 시리얼번호 입력"></div>
+            <div class="field"><label for="asQty">수량</label><input id="asQty" type="number" min="1" value="1"></div>
+            <div class="field"><label for="asPurchaseDate">구매일</label><input id="asPurchaseDate" type="date"></div>
+          </div>
+          <div class="field"><label for="receiverAddress">회수 / 반송 주소</label><input id="receiverAddress" type="text" placeholder="주소를 입력하세요"></div>
+          <div class="field"><label for="serialCheckResult">시리얼번호 확인</label><input id="serialCheckResult" type="text" readonly placeholder="시리얼번호를 입력 후 확인하세요" style="background:#eef1f5;color:#555;cursor:not-allowed;font-weight:600;"></div>
+          <div class="field"><label for="asSymptom">증상 내용</label><textarea id="asSymptom" placeholder="전원 불량, 충전 불량, 화면 이상, 부품 누락 등 증상을 상세히 적어주세요."></textarea></div>
+          <div class="field"><label for="asMemo">추가 메모</label><textarea id="asMemo" placeholder="참고 사항이 있으면 입력해 주세요."></textarea></div>
+          <div class="field">
+            <label for="asPhoto">참고 사진</label>
+            <div class="as-upload">문제 부위를 촬영한 사진이 있으면 첨부해 주세요.<br><input id="asPhoto" type="file" accept="image/*"></div>
+          </div>
+        </div>
+        <label class="as-check">
+          <input type="checkbox" id="asAgree">
+          <p><strong>[필수] 개인정보 수집·이용 동의</strong><br>신청자명, 연락처, 이메일, 주소 등 A/S 처리에 필요한 개인정보를 수집·이용하는 것에 동의합니다.</p>
+        </label>
+        <div class="as-actions">
+          <button class="btn-secondary" type="button" id="checkSerialBtn">시리얼번호 확인</button>
+          <button class="btn-primary" type="button" id="submitAsBtn">A/S 신청하기</button>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo"><h3>SKY COMMERCE</h3><p>미래를 일상으로.</p></div>
+            <div class="footer-links">
+                <h4>메뉴</h4>
+                <ul>
+                    <li><a href="../">홈</a></li>
+                    <li><a href="../about/">회사 소개</a></li>
+                    <li><a href="../product/">제품</a></li>
+                    <li><a href="../contact/">발주하기</a></li>
+                    <li><a href="../as/">A/S 신청</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>고객지원</h4>
+                <p>031-205-4133</p>
+                <p>car2314@naver.com</p>
+                <p class="address">경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</p>
+            </div>
+            <div class="footer-social">
+                <h4>커뮤니티</h4>
+                <div class="social-icons">
+                    <a href="https://cafe.naver.com/skycommerce114" target="_blank"><i class="fas fa-coffee"></i></a>
+                    <a href="https://smartstore.naver.com/nxtwear" target="_blank"><i class="fas fa-shopping-cart"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 SKY Commerce. All Rights Reserved.</p></div>
+    </div>
+</footer>
+<script src="../js/main.js"></script>
+<script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
+  authDomain: "skycommerce-7fec4.firebaseapp.com",
+  projectId: "skycommerce-7fec4",
+  storageBucket: "skycommerce-7fec4.firebasestorage.app",
+  messagingSenderId: "232403511014",
+  appId: "1:232403511014:web:318ebb689d678e998b7d27"
+};
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const db = getFirestore(app);
+let serialVerified = false;
+let serialVerifiedData = null;
+
+async function verifySerialNumber(serial) {
+  const normalized = String(serial || '').trim();
+  if (!normalized) return { ok:false, message:'시리얼번호를 입력해 주세요.' };
+
+  const candidates = [
+    ['serialNumber', normalized],
+    ['serial', normalized],
+    ['serialNo', normalized],
+    ['managementNumber', normalized],
+    ['code', normalized]
+  ];
+
+  for (const [field, value] of candidates) {
+    try {
+      const q = query(collection(db, 'serialNumbers'), where(field, '==', value), limit(1));
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        const d = snap.docs[0].data();
+        return { ok:true, message:'확인 완료', data:d };
+      }
+    } catch(e) {}
+  }
+  return { ok:false, message:'등록된 시리얼번호를 찾지 못했습니다.' };
+}
+
+function setSerialResult(ok, msg) {
+  const el = document.getElementById('serialCheckResult');
+  el.value = ok ? '✅ ' + msg : '⚠️ ' + msg;
+  el.style.color = ok ? '#166534' : '#b42318';
+}
+
+async function checkSerial(){
+  const serial = document.getElementById('asSerial').value.trim();
+  serialVerified = false;
+  serialVerifiedData = null;
+  if (!serial) { setSerialResult(false, '시리얼번호를 입력해 주세요.'); return; }
+  const btn = document.getElementById('checkSerialBtn');
+  const prev = btn.textContent;
+  btn.disabled = true; btn.textContent = '확인 중...';
+  try {
+    const result = await verifySerialNumber(serial);
+    serialVerified = result.ok;
+    serialVerifiedData = result.data || null;
+    setSerialResult(result.ok, result.ok ? '유효한 시리얼번호입니다.' : result.message);
+  } finally {
+    btn.disabled = false; btn.textContent = prev;
+  }
+}
+
+async function submitAs(){
+  const payload = {
+    applicantType: 'personal',
+    customerName: document.getElementById('customerName').value.trim(),
+    customerPhone: document.getElementById('customerPhone').value.trim(),
+    customerEmail: document.getElementById('customerEmail').value.trim(),
+    product: document.getElementById('asProduct').value.trim(),
+    serialNumber: document.getElementById('asSerial').value.trim(),
+    qty: parseInt(document.getElementById('asQty').value || '1', 10),
+    purchaseDate: document.getElementById('asPurchaseDate').value || '',
+    purchasePlace: document.getElementById('asPurchasePlace').value.trim(),
+    receiverAddress: document.getElementById('receiverAddress').value.trim(),
+    symptom: document.getElementById('asSymptom').value.trim(),
+    memo: document.getElementById('asMemo').value.trim(),
+    serialVerified: true,
+    serialVerifiedAt: serverTimestamp(),
+    serialVerifiedInfo: serialVerifiedData || {},
+    status: '접수완료',
+    note: '',
+    createdAt: serverTimestamp()
+  };
+
+  if (!payload.customerName) { alert('신청자명을 입력해 주세요.'); return; }
+  if (!payload.customerPhone) { alert('연락처를 입력해 주세요.'); return; }
+  if (!payload.customerEmail) { alert('이메일을 입력해 주세요.'); return; }
+  if (!payload.product) { alert('제품명을 입력해 주세요.'); return; }
+  if (!payload.serialNumber) { alert('시리얼번호를 입력해 주세요.'); return; }
+  if (!serialVerified) { alert('시리얼번호 확인을 먼저 완료해 주세요.'); return; }
+  if (!payload.purchasePlace) { alert('구매처를 입력해 주세요.'); return; }
+  if (!payload.receiverAddress) { alert('주소를 입력해 주세요.'); return; }
+  if (!payload.symptom) { alert('증상 내용을 입력해 주세요.'); return; }
+  if (!document.getElementById('asAgree').checked) { alert('개인정보 수집·이용에 동의해 주세요.'); return; }
+
+  const btn = document.getElementById('submitAsBtn');
+  const prev = btn.textContent;
+  btn.disabled = true; btn.textContent = '접수 중...';
+  try {
+    await addDoc(collection(db,'asRequests'), payload);
+    alert('A/S 신청이 접수되었습니다.');
+    ['customerName','customerPhone','customerEmail','asProduct','asSerial','asPurchaseDate','asPurchasePlace','receiverAddress','asSymptom','asMemo'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    document.getElementById('asQty').value = '1';
+    document.getElementById('asAgree').checked = false;
+    serialVerified = false;
+    serialVerifiedData = null;
+    document.getElementById('serialCheckResult').value = '';
+  } catch(e) {
+    alert('접수 실패: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = prev;
+  }
+}
+
+document.getElementById('checkSerialBtn').addEventListener('click', checkSerial);
+document.getElementById('submitAsBtn').addEventListener('click', submitAs);
+document.getElementById('asSerial').addEventListener('input', () => {
+  serialVerified = false;
+  serialVerifiedData = null;
+  setSerialResult(false, '시리얼번호를 다시 확인해 주세요.');
+});
+</script>
+</body>
+</html>
