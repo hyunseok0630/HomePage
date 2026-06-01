@@ -634,10 +634,11 @@ window.saveTracking = async function(id) {
         await updateDoc(doc(db,'inquiries',id), {
             trackingNumber: val,
             trackingAddedAt: serverTimestamp(),
-            read: true
+            read: true,
+            confirmed: true   // 송장 등록 시 자동 확인 처리 → 발주자 삭제 불가
         });
         const o = allOrders.find(i=>i.id===id);
-        if (o) { o.trackingNumber = val; o.read = true; }
+        if (o) { o.trackingNumber = val; o.read = true; o.confirmed = true; }
         updateStats();
         renderOrders();
     } catch(e) { alert('저장 실패: '+e.message); }
@@ -645,9 +646,13 @@ window.saveTracking = async function(id) {
 
 window.toggleRead = async function(id, cur) {
     try {
-        await updateDoc(doc(db,'inquiries',id), { read: !cur });
+        const newRead = !cur;
+        // 확인됨(read=true) 처리 시 confirmed:true 함께 저장 → 발주자 삭제 불가
+        const updateData = { read: newRead };
+        if (newRead) updateData.confirmed = true;
+        await updateDoc(doc(db,'inquiries',id), updateData);
         const o = allOrders.find(i=>i.id===id);
-        if(o) o.read = !cur;
+        if(o) { o.read = newRead; if(newRead) o.confirmed = true; }
         updateStats();
         renderOrders();
     } catch(e) { alert(e.message); }
@@ -664,14 +669,15 @@ window.deleteOne = async function(id) {
 };
 
 window.deleteAllRead = async function() {
-    const items = allOrders.filter(i => i.read);
-    if (!items.length) { alert('삭제할 읽은 항목이 없습니다.'); return; }
-    if (!confirm(`확인된 발주 ${items.length}건을 모두 삭제하시겠습니까?`)) return;
+    // confirmed=true 항목은 제외하고 read만 된 항목 삭제
+    const items = allOrders.filter(i => i.read && !i.confirmed);
+    if (!items.length) { alert('삭제할 항목이 없습니다.\n(확인 완료된 발주는 삭제 불가)'); return; }
+    if (!confirm(`읽은 발주 ${items.length}건을 삭제하시겠습니까?\n※ 관리자 확인 완료 항목은 제외됩니다.`)) return;
     try {
         const batch = writeBatch(db);
         items.forEach(i => batch.delete(doc(db,'inquiries',i.id)));
         await batch.commit();
-        allOrders = allOrders.filter(i=>!i.read);
+        allOrders = allOrders.filter(i => i.confirmed || !i.read);
         updateStats();
         renderOrders();
     } catch(e) { alert('삭제 실패: '+e.message); }
@@ -744,7 +750,7 @@ async function generateInvoicePdf(orderId) {
             <tr>
                 <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:13px;white-space:nowrap;">${dateStr}</td>
                 <td style="text-align:center;border:1px solid #ccc;padding:9px;font-size:14px;font-weight:700;color:#0071e3;white-space:nowrap;">
-                    ${grandTotal.toLocaleString()}원 <span style="font-size:11px;font-weight:400;color:#777;">(VAT포함)</span>
+                    ${grandTotal.toLocaleString()}원 <span style="font-size:11px;font-weight:400;color:#777;">(VAT별도)</span>
                 </td>
                 <td style="border:1px solid #ccc;padding:9px;"></td>
             </tr>
