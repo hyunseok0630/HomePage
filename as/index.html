@@ -47,7 +47,7 @@
         .field input, .field select, .field textarea { width:100%; border:1.5px solid #d3d8e1; border-radius:12px; padding:13px 14px; font-size:14px; font-family:inherit; outline:none; background:#fff; }
         .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--as-blue); box-shadow:0 0 0 4px rgba(0,113,227,.08); }
         .field textarea { min-height:120px; resize:vertical; }
-                .as-upload { border:1.5px dashed #c6d4ea; background:#f7fbff; border-radius:14px; padding:16px; text-align:center; }
+        .as-upload { border:1.5px dashed #c6d4ea; background:#f7fbff; border-radius:14px; padding:16px; text-align:center; }
         .as-upload input { margin-top:8px; }
         .as-check { display:flex; align-items:flex-start; gap:10px; background:#f8faff; border:1px solid #dbe7f8; border-radius:12px; padding:14px 16px; margin:16px 0; }
         .as-check input { width:18px; height:18px; margin-top:2px; accent-color:var(--as-blue); }
@@ -108,7 +108,6 @@
         <div class="header-right utility-icons">
             <a href="#"><i class="fas fa-globe"></i></a>
             <a href="#"><i class="fas fa-search"></i></a>
-            <!-- ✅ 팝업 제거: 관리자 페이지로 바로 이동 -->
             <a href="../admin/" id="inboxBtn" title="관리자 페이지" style="display:none;">
                 <i class="fas fa-envelope"></i>
                 <span id="inboxBadge">0</span>
@@ -122,7 +121,6 @@
     </div>
 </header>
 
-<!-- ── 모바일 메뉴 ── -->
 <nav class="mobile-menu" id="mobileMenu">
     <ul>
         <li><a href="../">홈</a></li>
@@ -139,12 +137,14 @@
         <li><a href="https://www.rayneo.com/pages/download" target="_blank" rel="noopener" class="sub-item">· Download</a></li>
     </ul>
 </nav>
+
 <section class="sub-hero" style="background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.72)), url('../img/Air4girl.png') center/cover no-repeat;">
     <div class="container">
         <h1 style="position:relative; z-index:2;">A/S 신청</h1>
         <p style="position:relative; z-index:2;">국내 제품만 A/S를 접수할 수 있으며, 유효한 국내 정발 시리얼번호 확인 후 신청이 가능합니다.<p>해외 직구 제품의 경우 A/S 불가합니다.</p></p>
     </div>
 </section>
+
 <section class="as-section">
   <div class="container">
     <div class="as-grid">
@@ -152,8 +152,8 @@
         <h2 class="as-title">A/S 안내</h2>
         <p class="as-sub">개인 고객용 A/S 접수 페이지입니다. 제품 정보와 증상을 정확히 입력해 주시면 시리얼번호 확인 후 순차적으로 안내드립니다. 사진이 있으면 판별 속도가 빨라집니다.</p>
         <div class="as-info-list">
-          <div class="as-info"><i class="fas fa-phone"></i><span>대표번호 031-205-4133<br>평일 09:00 - 17:00</span></div>
-          <div class="as-info"><i class="fas fa-envelope"></i><span>회신 이메일 car2314@naver.com</span></div>
+          <div class="as-info"><i class="fas fa-phone"></i><span>대표번호 031-8043-1236<br>평일 09:00 - 17:00</span></div>
+          <div class="as-info"><i class="fas fa-envelope"></i><span>회신 이메일 yhs2085@nate.com</span></div>
           <div class="as-info"><i class="fas fa-box-open"></i><span>회수 전 임의 발송은 지양해 주세요. 접수 확인 후 회수 또는 발송 절차를 안내합니다.</span></div>
         </div>
         <div class="as-steps">
@@ -164,6 +164,7 @@
           <div class="as-step"><b>4</b><span>수리 완료 후 결과 회신</span></div>
         </div>
       </aside>
+
       <main class="as-form-card">
         <div class="as-top">
           <h3>A/S 접수 등록</h3>
@@ -175,17 +176,30 @@
             <div class="field"><label for="customerPhone">연락처</label><input id="customerPhone" type="text" placeholder="010-0000-0000"></div>
           </div>
           <div class="field"><label for="customerEmail">이메일</label><input id="customerEmail" type="email" placeholder="회신 받을 이메일"></div>
-          <div class="row2">
-            <div class="field"><label for="asProduct">제품명 / 모델명</label><input id="asProduct" type="text" placeholder="예: RayNeo Air 4"></div>
-            <div class="field"><label for="asPurchasePlace">구매처</label><input id="asPurchasePlace" type="text" placeholder="예: 네이버 스마트스토어, 오프라인 매장명"></div>
-          </div>
+          
+          <div class="field"><label for="receiverAddress">주소지</label><input id="receiverAddress" type="text" placeholder="주소를 입력하세요"></div>
+          
           <div class="row3">
-            <div class="field"><label for="asSerial">시리얼번호</label><input id="asSerial" type="text" placeholder="제품 시리얼번호 입력"></div>
-            <div class="field"><label for="asQty">수량</label><input id="asQty" type="number" min="1" value="1"></div>
+            <div class="field"><label for="asProduct">제품명 / 모델명</label><input id="asProduct" type="text" placeholder="예: RayNeo Air 4"></div>
+            <div class="field"><label for="asPurchasePlace">구매처</label><input id="asPurchasePlace" type="text" placeholder="예: 네이버 스마트스토어"></div>
             <div class="field"><label for="asPurchaseDate">구매일</label><input id="asPurchaseDate" type="date"></div>
           </div>
-          <div class="field"><label for="receiverAddress">회수 / 반송 주소</label><input id="receiverAddress" type="text" placeholder="주소를 입력하세요"></div>
-          <div class="field"><label for="serialCheckResult">시리얼번호 확인</label><input id="serialCheckResult" type="text" readonly placeholder="시리얼번호를 입력 후 확인하세요" style="background:#eef1f5;color:#555;cursor:not-allowed;font-weight:600;"></div>
+          
+          <div class="field">
+            <label for="asReceipt">구매영수증 첨부</label>
+            <div class="as-upload">영수증 사진/파일을 첨부해 주세요.<br><input id="asReceipt" type="file" accept="image/*,application/pdf"></div>
+          </div>
+
+          <div class="field">
+            <label for="asSerial">시리얼번호</label>
+            <div style="display: flex; gap: 8px;">
+                <input id="asSerial" type="text" placeholder="제품 시리얼번호 15자리 (영문, 숫자)" style="flex: 1;">
+                <button class="btn-primary" type="button" id="checkSerialBtn" style="background: #000; color: #fff; flex: none; white-space: nowrap; padding: 0 16px; margin: 0; display: flex; align-items: center;">시리얼번호 확인</button>
+            </div>
+          </div>
+          
+          <div class="field"><input id="serialCheckResult" type="text" readonly placeholder="시리얼번호 입력 후 우측 확인 버튼을 눌러주세요" style="background:#eef1f5;color:#555;cursor:not-allowed;font-weight:600; border: none;"></div>
+          
           <div class="field"><label for="asSymptom">증상 내용</label><textarea id="asSymptom" placeholder="전원 불량, 충전 불량, 화면 이상, 부품 누락 등 증상을 상세히 적어주세요."></textarea></div>
           <div class="field"><label for="asMemo">추가 메모</label><textarea id="asMemo" placeholder="참고 사항이 있으면 입력해 주세요."></textarea></div>
           <div class="field">
@@ -198,13 +212,13 @@
           <p><strong>[필수] 개인정보 수집·이용 동의</strong><br>신청자명, 연락처, 이메일, 주소 등 A/S 처리에 필요한 개인정보를 수집·이용하는 것에 동의합니다.</p>
         </label>
         <div class="as-actions">
-          <button class="btn-secondary" type="button" id="checkSerialBtn">시리얼번호 확인</button>
-          <button class="btn-primary" type="button" id="submitAsBtn">A/S 신청하기</button>
+          <button class="btn-primary" type="button" id="submitAsBtn" style="width: 100%;">A/S 신청하기</button>
         </div>
       </main>
     </div>
   </div>
 </section>
+
 <footer>
     <div class="container">
         <div class="footer-content">
@@ -221,8 +235,8 @@
             </div>
             <div class="footer-contact">
                 <h4>고객지원</h4>
-                <p>031-205-4133</p>
-                <p>car2314@naver.com</p>
+                <p>031-8043-1236</p>
+                <p>yhs2085@nate.com</p>
                 <p class="address">경기도 화성시 동탄대로 677-12<br>효성ICT타워 620~621호</p>
             </div>
             <div class="footer-social">
@@ -236,10 +250,11 @@
         <div class="footer-bottom"><p>&copy; 2026 SKY Commerce. All Rights Reserved.</p></div>
     </div>
 </footer>
+
 <script src="../js/main.js"></script>
 <script type="module">
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCCs0WBQeHiIoJWjbc7IP8GGb7knc9yfJw",
@@ -254,29 +269,26 @@ const db = getFirestore(app);
 let serialVerified = false;
 let serialVerifiedData = null;
 
+const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbx40WxY4SkzOpGUiMaM5A_npvUBWitnjtlPSMHbn2sDLX8Deo1WAFsV3hDzVQKyB8xBGw/exec";
+
 async function verifySerialNumber(serial) {
   const normalized = String(serial || '').trim();
   if (!normalized) return { ok:false, message:'시리얼번호를 입력해 주세요.' };
 
-  const candidates = [
-    ['serialNumber', normalized],
-    ['serial', normalized],
-    ['serialNo', normalized],
-    ['managementNumber', normalized],
-    ['code', normalized]
-  ];
-
-  for (const [field, value] of candidates) {
-    try {
-      const q = query(collection(db, 'serialNumbers'), where(field, '==', value), limit(1));
-      const snap = await getDocs(q);
-      if (!snap.empty) {
-        const d = snap.docs[0].data();
-        return { ok:true, message:'확인 완료', data:d };
-      }
-    } catch(e) {}
+  try {
+    const response = await fetch(`${GOOGLE_SHEET_API_URL}?serial=${encodeURIComponent(normalized)}`);
+    if (!response.ok) throw new Error("서버 응답 오류");
+    
+    const result = await response.json();
+    if (result.valid) {
+      return { ok:true, message:'확인 완료', data: { source: 'Google Sheets' } };
+    } else {
+      return { ok:false, message:'등록된 시리얼번호를 찾지 못했습니다.' };
+    }
+  } catch(e) {
+    console.error("검증 오류:", e);
+    return { ok:false, message:'서버 통신 중 오류가 발생했습니다.' };
   }
-  return { ok:false, message:'등록된 시리얼번호를 찾지 못했습니다.' };
 }
 
 function setSerialResult(ok, msg) {
@@ -289,7 +301,18 @@ async function checkSerial(){
   const serial = document.getElementById('asSerial').value.trim();
   serialVerified = false;
   serialVerifiedData = null;
-  if (!serial) { setSerialResult(false, '시리얼번호를 입력해 주세요.'); return; }
+  
+  if (!serial) { 
+    setSerialResult(false, '시리얼번호를 입력해 주세요.'); 
+    return; 
+  }
+
+  const alphanumericRegex = /^[A-Za-z0-9]{15}$/;
+  if (!alphanumericRegex.test(serial)) {
+    setSerialResult(false, '15자리의 영문자/숫자 조합만 가능합니다.');
+    return;
+  }
+
   const btn = document.getElementById('checkSerialBtn');
   const prev = btn.textContent;
   btn.disabled = true; btn.textContent = '확인 중...';
@@ -309,12 +332,11 @@ async function submitAs(){
     customerName: document.getElementById('customerName').value.trim(),
     customerPhone: document.getElementById('customerPhone').value.trim(),
     customerEmail: document.getElementById('customerEmail').value.trim(),
+    receiverAddress: document.getElementById('receiverAddress').value.trim(),
     product: document.getElementById('asProduct').value.trim(),
-    serialNumber: document.getElementById('asSerial').value.trim(),
-    qty: parseInt(document.getElementById('asQty').value || '1', 10),
     purchaseDate: document.getElementById('asPurchaseDate').value || '',
     purchasePlace: document.getElementById('asPurchasePlace').value.trim(),
-    receiverAddress: document.getElementById('receiverAddress').value.trim(),
+    serialNumber: document.getElementById('asSerial').value.trim(),
     symptom: document.getElementById('asSymptom').value.trim(),
     memo: document.getElementById('asMemo').value.trim(),
     serialVerified: true,
@@ -328,24 +350,23 @@ async function submitAs(){
   if (!payload.customerName) { alert('신청자명을 입력해 주세요.'); return; }
   if (!payload.customerPhone) { alert('연락처를 입력해 주세요.'); return; }
   if (!payload.customerEmail) { alert('이메일을 입력해 주세요.'); return; }
+  if (!payload.receiverAddress) { alert('주소지를 입력해 주세요.'); return; }
   if (!payload.product) { alert('제품명을 입력해 주세요.'); return; }
   if (!payload.serialNumber) { alert('시리얼번호를 입력해 주세요.'); return; }
   if (!serialVerified) { alert('시리얼번호 확인을 먼저 완료해 주세요.'); return; }
   if (!payload.purchasePlace) { alert('구매처를 입력해 주세요.'); return; }
-  if (!payload.receiverAddress) { alert('주소를 입력해 주세요.'); return; }
   if (!payload.symptom) { alert('증상 내용을 입력해 주세요.'); return; }
   if (!document.getElementById('asAgree').checked) { alert('개인정보 수집·이용에 동의해 주세요.'); return; }
 
   const btn = document.getElementById('submitAsBtn');
-  const prev = btn.textContent;
-  btn.disabled = true; btn.textContent = '접수 중...';
+  const prev = btn.innerText;
+  btn.disabled = true; btn.innerText = '접수 중...';
   try {
     await addDoc(collection(db,'asRequests'), payload);
     alert('A/S 신청이 접수되었습니다.');
-    ['customerName','customerPhone','customerEmail','asProduct','asSerial','asPurchaseDate','asPurchasePlace','receiverAddress','asSymptom','asMemo'].forEach(id => {
+    ['customerName','customerPhone','customerEmail','receiverAddress','asProduct','asSerial','asPurchaseDate','asPurchasePlace','asSymptom','asMemo'].forEach(id => {
       const el = document.getElementById(id); if (el) el.value = '';
     });
-    document.getElementById('asQty').value = '1';
     document.getElementById('asAgree').checked = false;
     serialVerified = false;
     serialVerifiedData = null;
@@ -353,16 +374,21 @@ async function submitAs(){
   } catch(e) {
     alert('접수 실패: ' + e.message);
   } finally {
-    btn.disabled = false; btn.textContent = prev;
+    btn.disabled = false; btn.innerText = prev;
   }
 }
 
 document.getElementById('checkSerialBtn').addEventListener('click', checkSerial);
 document.getElementById('submitAsBtn').addEventListener('click', submitAs);
+
 document.getElementById('asSerial').addEventListener('input', () => {
   serialVerified = false;
   serialVerifiedData = null;
-  setSerialResult(false, '시리얼번호를 다시 확인해 주세요.');
+  const resultEl = document.getElementById('serialCheckResult');
+  if (resultEl) {
+      resultEl.value = '';
+      resultEl.style.color = '#555';
+  }
 });
 </script>
 </body>
